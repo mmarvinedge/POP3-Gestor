@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXButton;
 import com.popsales.Sessao;
 import com.popsales.Utils;
 import com.popsales.controller.GerenciaController;
+import com.popsales.custom.Impressao;
 import com.popsales.model.Order;
 import com.popsales.services.OrderService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -148,6 +149,7 @@ public class GerenciaView {
                 this.view.boxAguardandoAceite.getChildren().remove(n);
                 this.view.boxAguardandoProducao.getChildren().add(createCardOrderProduzindo(order));
                 orderService.update(order);
+                Impressao.imprimirOrder(order);
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }

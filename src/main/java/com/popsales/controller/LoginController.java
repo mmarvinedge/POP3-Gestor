@@ -16,6 +16,7 @@ import com.popsales.services.LoginService;
 import com.popsales.services.ProductService;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -30,6 +31,8 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 
 /**
  * FXML Controller class
@@ -80,9 +83,15 @@ public class LoginController implements Initializable {
         if (Sessao.user.getId() != null) {
             Sessao.company = companyServices.loadCompany(Sessao.user.getCompanyId());
             List<String> printers = productServices.getPrinters();
+            Sessao.impressorasProdutos = new ArrayList();
+            Sessao.impressorasWindows = new ArrayList();
             printers.forEach(c -> {
-                System.out.println("PRINTER: " + c);
+                Sessao.impressorasProdutos.add(c);
             });
+            PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+            for (PrintService ps : printServices) {
+                Sessao.impressorasWindows.add(ps.getName());
+            }
             abreJanela();
         } else {
             System.out.println("USUARIO NAO ENCONTRADO!");

@@ -1,17 +1,28 @@
 package com.popsales;
 
+import java.io.File;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import org.ini4j.Ini;
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        File f = new File("C:/popsales/config.ini");
+        if (f.exists()) {
+            Sessao.ini = new Ini(f);
+        } else {
+            f.getParentFile().mkdir();
+            f.createNewFile();
+            Sessao.ini = new Ini();
+            Sessao.ini.store(f);
+        }
+
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginFXML.fxml"));
         Scene scene = new Scene(root);
         stage.setTitle("JavaFX and Maven");
