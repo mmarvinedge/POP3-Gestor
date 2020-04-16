@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" minHeight="512.0" minWidth="414.0" prefHeight="512.0" prefWidth="414.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.controller.LoginController">
+   <children>
+      <BorderPane layoutX="137.0" layoutY="61.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="113.0" fitWidth="117.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/sales.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="PORTAL DE PEDIDOS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <VBox spacing="35.0">
+                     <children>
+                        <JFXTextField fx:id="iptUser" focusColor="#cd4c51" labelFloat="true" prefHeight="45.0" promptText="Usuario/Email">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXPasswordField fx:id="iptSenha" focusColor="#cd4c51" labelFloat="true" prefHeight="45.0" promptText="Senha">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </JFXPasswordField>
+                        <JFXButton fx:id="btnLogin" onAction="#entrar" prefHeight="61.0" prefWidth="420.0" style="-fx-background-color: cd4c51; -fx-text-fill: white;" text="ENTRAR" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="15.0" right="15.0" top="45.0" />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets top="25.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

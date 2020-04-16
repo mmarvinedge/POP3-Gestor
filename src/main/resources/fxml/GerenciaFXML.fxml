@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane id="AnchorPane" minHeight="768.0" minWidth="1024.0" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="com.popsales.controller.GerenciaController">
+   <children>
+      <BorderPane layoutX="96.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <AnchorPane prefHeight="68.0" prefWidth="800.0" style="-fx-background-color: #cd4c51;" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="68.0" prefWidth="105.0">
+                           <children>
+                              <ImageView fitHeight="68.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../img/sales.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome da Empresa">
+                                       <font>
+                                          <Font size="25.0" />
+                                       </font>
+                                    </Text>
+                                    <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                       <children>
+                                          <FontAwesomeIconView fill="WHITE" glyphName="USER" />
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" minWidth="104.0" onAction="#toConfig" prefHeight="68.0" prefWidth="104.0" ripplerFill="WHITE">
+                                 <graphic>
+                                    <VBox alignment="CENTER">
+                                       <children>
+                                          <FontAwesomeIconView fill="WHITE" glyphName="COG" size="35" />
+                                          <Label text="Configurações" textFill="WHITE" />
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" minWidth="104.0" onAction="#toExit" prefHeight="68.0" prefWidth="104.0" ripplerFill="WHITE">
+                                 <graphic>
+                                    <VBox alignment="CENTER">
+                                       <children>
+                                          <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="35" />
+                                          <Label text="Sair" textFill="WHITE" />
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </top>
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox layoutX="21.0" layoutY="5.0" prefHeight="100.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Label text="AGUARDANDO ACEITE" textFill="#6f6f6f">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <ScrollPane fitToWidth="true" pannable="true" prefHeight="433.0" prefWidth="260.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                                      <content>
+                                          <VBox fx:id="boxAguardandoAceite" prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <HBox minHeight="150.0" prefHeight="100.0" prefWidth="200.0" style="-fx-border-width: 0 0 1 0; -fx-border-color: #ccc;">
+                                                   <children>
+                                                      <VBox HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <HBox alignment="CENTER_RIGHT">
+                                                               <children>
+                                                                  <Label text="08:00 Minutos">
+                                                                     <font>
+                                                                        <Font name="System Bold" size="12.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                                                               <children>
+                                                                  <VBox HBox.hgrow="ALWAYS">
+                                                                     <children>
+                                                                        <Label text="Nº 1500">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="16.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                        <HBox alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="ALWAYS">
+                                                                           <children>
+                                                                              <FontAwesomeIconView fill="#838383" glyphName="USER" size="25" />
+                                                                              <Label text="Jose Carlos" textFill="#545454">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="13.0" />
+                                                                                 </font>
+                                                                              </Label>
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <HBox alignment="CENTER_LEFT">
+                                                                           <children>
+                                                                              <FontAwesomeIconView fill="#838383" glyphName="PHONE" size="25" />
+                                                                              <Label text="(34)99999-9999" textFill="#545454">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="13.0" />
+                                                                                 </font>
+                                                                              </Label>
+                                                                           </children>
+                                                                        </HBox>
+                                                                     </children>
+                                                                  </VBox>
+                                                                  <HBox prefHeight="84.0" prefWidth="0.0" spacing="5.0" HBox.hgrow="NEVER">
+                                                                     <children>
+                                                                        <JFXButton contentDisplay="GRAPHIC_ONLY" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" ripplerFill="WHITE" style="-fx-background-color: #00bdaa;" HBox.hgrow="NEVER">
+                                                                           <graphic>
+                                                                              <FontAwesomeIconView fill="WHITE" glyphName="CHECK" size="25" />
+                                                                           </graphic>
+                                                                        </JFXButton>
+                                                                        <JFXButton contentDisplay="GRAPHIC_ONLY" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" ripplerFill="WHITE" style="-fx-background-color: #cd4c51;" HBox.hgrow="NEVER">
+                                                                           <graphic>
+                                                                              <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="25" />
+                                                                           </graphic>
+                                                                        </JFXButton>
+                                                                        <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="65.0" layoutY="10.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" ripplerFill="WHITE" style="-fx-background-color: #400082;" HBox.hgrow="NEVER">
+                                                                           <graphic>
+                                                                              <FontAwesomeIconView fill="WHITE" glyphName="INFO" size="25" />
+                                                                           </graphic>
+                                                                        </JFXButton>
+                                                                     </children>
+                                                                  </HBox>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-border-width: 1 0 0 0; -fx-border-color: #ccc;" VBox.vgrow="NEVER">
+                                                               <children>
+                                                                  <FontAwesomeIconView fill="#838383" glyphName="MAP_MARKER" size="25" />
+                                                                  <Label prefHeight="38.0" prefWidth="350.0" text="AV Fonse Carlos Jose, 260 &#10;Santa Terezinha - Patos de Minas" HBox.hgrow="ALWAYS">
+                                                                     <font>
+                                                                        <Font size="13.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                      </content>
+                                    </ScrollPane>
+                                    <AnchorPane prefHeight="116.0" prefWidth="335.0" style="-fx-background-color: #cd4c51;" VBox.vgrow="NEVER">
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Label text="PEDIDOS AGUARDANDO" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <Label text="150" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="System Bold" size="48.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Label text="AGUARDANDO PRODUÇÃO" textFill="#6f6f6f">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <ScrollPane fitToWidth="true" pannable="true" prefHeight="433.0" prefWidth="260.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                                       <content>
+                                          <VBox fx:id="boxAguardandoProducao" prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <HBox minHeight="150.0" prefHeight="100.0" prefWidth="200.0" style="-fx-border-width: 0 0 1 0; -fx-border-color: #ccc;">
+                                                   <children>
+                                                      <VBox HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <HBox alignment="CENTER_RIGHT">
+                                                               <children>
+                                                                  <Label text="08:00 Minutos">
+                                                                     <font>
+                                                                        <Font name="System Bold" size="12.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                                                               <children>
+                                                                  <VBox HBox.hgrow="ALWAYS">
+                                                                     <children>
+                                                                        <Label text="Nº 1500">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="16.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                        <HBox alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="ALWAYS">
+                                                                           <children>
+                                                                              <FontAwesomeIconView fill="#838383" glyphName="USER" size="25" />
+                                                                              <Label text="Jose Carlos" textFill="#545454">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="13.0" />
+                                                                                 </font>
+                                                                              </Label>
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <HBox alignment="CENTER_LEFT">
+                                                                           <children>
+                                                                              <FontAwesomeIconView fill="#838383" glyphName="PHONE" size="25" />
+                                                                              <Label alignment="TOP_CENTER" text="(34)99999-9999" textFill="#545454">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="13.0" />
+                                                                                 </font>
+                                                                              </Label>
+                                                                           </children>
+                                                                        </HBox>
+                                                                     </children>
+                                                                  </VBox>
+                                                                  <HBox prefHeight="84.0" prefWidth="0.0" spacing="5.0" HBox.hgrow="NEVER">
+                                                                     <children>
+                                                                        <JFXButton contentDisplay="GRAPHIC_ONLY" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" ripplerFill="WHITE" style="-fx-background-color: #00bdaa;" HBox.hgrow="ALWAYS">
+                                                                           <graphic>
+                                                                              <FontAwesomeIconView fill="WHITE" glyphName="CHECK" size="25" />
+                                                                           </graphic>
+                                                                        </JFXButton>
+                                                                        <JFXButton contentDisplay="GRAPHIC_ONLY" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" ripplerFill="WHITE" style="-fx-background-color: #cd4c51;" HBox.hgrow="ALWAYS">
+                                                                           <graphic>
+                                                                              <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="25" />
+                                                                           </graphic>
+                                                                        </JFXButton>
+                                                                        <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="65.0" layoutY="10.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" ripplerFill="WHITE" style="-fx-background-color: #400082;">
+                                                                           <graphic>
+                                                                              <FontAwesomeIconView fill="WHITE" glyphName="INFO" size="25" />
+                                                                           </graphic>
+                                                                        </JFXButton>
+                                                                     </children>
+                                                                  </HBox>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-border-width: 1 0 0 0; -fx-border-color: #ccc;">
+                                                               <children>
+                                                                  <FontAwesomeIconView fill="#838383" glyphName="MAP_MARKER" size="25" />
+                                                                  <Label prefHeight="38.0" prefWidth="350.0" text="AV Fonse Carlos Jose, 260 &#10;Santa Terezinha - Patos de Minas" HBox.hgrow="ALWAYS">
+                                                                     <font>
+                                                                        <Font size="13.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </ScrollPane>
+                                    <AnchorPane prefHeight="116.0" prefWidth="335.0" style="-fx-background-color: #cd4c51;" VBox.vgrow="NEVER">
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Label text="PEDIDOS EM PRODUÇÃO" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <Label text="150" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="System Bold" size="48.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="824.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Label text="AGUARDANDO FINALIZAÇÃO" textFill="#6f6f6f">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <ScrollPane fitToWidth="true" pannable="true" prefHeight="433.0" prefWidth="260.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                                       <content>
+                                          <VBox fx:id="boxAguardandoFinalizacao" prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <HBox minHeight="150.0" prefHeight="100.0" prefWidth="200.0" style="-fx-border-width: 0 0 1 0; -fx-border-color: #ccc;">
+                                                   <children>
+                                                      <VBox HBox.hgrow="ALWAYS">
+                                                         <children>
+                                                            <HBox alignment="CENTER_RIGHT">
+                                                               <children>
+                                                                  <Label text="08:00 Minutos">
+                                                                     <font>
+                                                                        <Font name="System Bold" size="12.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                                                               <children>
+                                                                  <VBox HBox.hgrow="ALWAYS">
+                                                                     <children>
+                                                                        <Label text="Nº 1500">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="16.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                        <HBox alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="ALWAYS">
+                                                                           <children>
+                                                                              <FontAwesomeIconView fill="#838383" glyphName="USER" size="25" />
+                                                                              <Label text="Jose Carlos" textFill="#545454">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="13.0" />
+                                                                                 </font>
+                                                                              </Label>
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <HBox alignment="CENTER_LEFT">
+                                                                           <children>
+                                                                              <FontAwesomeIconView fill="#838383" glyphName="PHONE" size="25" />
+                                                                              <Label text="(34)99999-9999" textFill="#545454">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="13.0" />
+                                                                                 </font>
+                                                                              </Label>
+                                                                           </children>
+                                                                        </HBox>
+                                                                     </children>
+                                                                  </VBox>
+                                                                  <HBox prefHeight="84.0" prefWidth="0.0" spacing="5.0" HBox.hgrow="NEVER">
+                                                                     <children>
+                                                                        <JFXButton contentDisplay="GRAPHIC_ONLY" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" ripplerFill="WHITE" style="-fx-background-color: #00bdaa;" HBox.hgrow="ALWAYS">
+                                                                           <graphic>
+                                                                              <FontAwesomeIconView fill="WHITE" glyphName="CHECK" size="25" />
+                                                                           </graphic>
+                                                                        </JFXButton>
+                                                                        <JFXButton contentDisplay="GRAPHIC_ONLY" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" ripplerFill="WHITE" style="-fx-background-color: #cd4c51;" HBox.hgrow="ALWAYS">
+                                                                           <graphic>
+                                                                              <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="25" />
+                                                                           </graphic>
+                                                                        </JFXButton>
+                                                                        <JFXButton contentDisplay="GRAPHIC_ONLY" layoutX="65.0" layoutY="10.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" ripplerFill="WHITE" style="-fx-background-color: #400082;">
+                                                                           <graphic>
+                                                                              <FontAwesomeIconView fill="WHITE" glyphName="INFO" size="25" />
+                                                                           </graphic>
+                                                                        </JFXButton>
+                                                                     </children>
+                                                                  </HBox>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-border-color: #ccc; -fx-border-width: 1 0 0 0;">
+                                                               <children>
+                                                                  <FontAwesomeIconView fill="#838383" glyphName="MAP_MARKER" size="25" />
+                                                                  <Label prefHeight="38.0" prefWidth="350.0" text="AV Fonse Carlos Jose, 260 &#10;Santa Terezinha - Patos de Minas" HBox.hgrow="ALWAYS">
+                                                                     <font>
+                                                                        <Font size="13.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </ScrollPane>
+                                    <AnchorPane prefHeight="116.0" prefWidth="335.0" style="-fx-background-color: #cd4c51;" VBox.vgrow="NEVER">
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Label text="PEDIDOS AGUARDANDO FINALIZAR" textFill="WHITE">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <Label text="150" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="System Bold" size="48.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

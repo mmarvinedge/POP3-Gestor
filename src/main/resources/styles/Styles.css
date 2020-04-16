@@ -1,0 +1,7 @@
+.jfx-text-field .text{
+    -fx-font-size: 10px;
+    -fx-text-fill: #ccc;
+    -fx-fill: red !important;
+    -fx-padding: 0px;
+    -fx-margin:0px;
+}
