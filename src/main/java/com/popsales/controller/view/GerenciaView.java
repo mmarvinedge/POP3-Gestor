@@ -166,7 +166,7 @@ public class GerenciaView {
                 }
                 System.out.println(phone);
                 try {
-                    wppService.sendMessage(phone, "Pedido confirmado");
+                    wppService.sendMessage(phone, "Seu pedido acabou de ser confirmado, o número dele é " + order.getNum_order());
                 } catch (WhatsappException e) {
                     Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
                 }
@@ -187,6 +187,20 @@ public class GerenciaView {
         bt2.setOnAction((ActionEvent event) -> {
             try {
                 if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
+                    String phone = "";
+                    if (order.getClientInfo().getPhone().length() == 14) {
+                        phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                        phone = "55" + phone;
+                    } else {
+                        phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                        phone = "55" + phone;
+                    }
+                    System.out.println(phone);
+                    try {
+                        wppService.sendMessage(phone, "Seu pedido de número " + order.getNum_order() + " foi cancelado");
+                    } catch (WhatsappException e) {
+                        Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+                    }
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoAceite.getChildren().remove(n);
@@ -261,6 +275,24 @@ public class GerenciaView {
         JFXButton button1 = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
         button1.setOnAction((ActionEvent event) -> {
             try {
+                String phone = "";
+                if (order.getClientInfo().getPhone().length() == 14) {
+                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                    phone = "55" + phone;
+                } else {
+                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                    phone = "55" + phone;
+                }
+                System.out.println(phone);
+                try {
+                    if (order.getDelivery()) {
+                        wppService.sendMessage(phone, "Boa notícia, seu pedido de número " + order.getNum_order() + " acabou de sair para entrega. :)");
+                    } else {
+                        wppService.sendMessage(phone, "Boa notícia, seu pedido de número " + order.getNum_order() + " já está pronto para ser retirado. :)");
+                    }
+                } catch (WhatsappException e) {
+                    Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+                }
                 System.out.println("CLICK");
                 order.setStatus("Finalizando");
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -361,19 +393,10 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-                if (order.getDelivery()) {
-                    try {
-                        wppService.sendMessage(phone, "Boa notícia, seu pedido acabou de sair para entrega.");
-                    } catch (WhatsappException e) {
-                        Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                    }
-
-                } else {
-                    try {
-                        wppService.sendMessage(phone, "Boa notícia, seu pedido está pronto para ser retirado.");
-                    } catch (WhatsappException e) {
-                        Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                    }
+                try {
+                    wppService.sendMessage(phone, "Pedido entregue, agradecemos pela preferência. Até a próxima :)");
+                } catch (WhatsappException e) {
+                    Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
                 }
 
                 order.setStatus("Finalizado");
@@ -392,6 +415,20 @@ public class GerenciaView {
         button2.setOnAction((ActionEvent event) -> {
             try {
                 if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
+                    String phone = "";
+                    if (order.getClientInfo().getPhone().length() == 14) {
+                        phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                        phone = "55" + phone;
+                    } else {
+                        phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                        phone = "55" + phone;
+                    }
+                    System.out.println(phone);
+                    try {
+                        wppService.sendMessage(phone, "Seu pedido de número " + order.getNum_order() + " foi cancelado");
+                    } catch (WhatsappException e) {
+                        Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+                    }
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoFinalizacao.getChildren().remove(n);
