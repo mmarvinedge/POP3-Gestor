@@ -166,9 +166,12 @@ public class GerenciaView {
                 }
                 System.out.println(phone);
                 try {
-                    wppService.sendMessage(phone, "Seu pedido acabou de ser confirmado, o número dele é " + order.getNum_order());
+                    wppService.sendMessage(phone, "Seu pedido acabou de ser confirmado, o número é " + order.getNum_order());
+                    Thread.sleep(3000);
                 } catch (WhatsappException e) {
                     Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 order.setStatus("Produzindo");
@@ -198,8 +201,11 @@ public class GerenciaView {
                     System.out.println(phone);
                     try {
                         wppService.sendMessage(phone, "Seu pedido de número " + order.getNum_order() + " foi cancelado");
+                        Thread.sleep(3000);
                     } catch (WhatsappException e) {
                         Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -286,12 +292,17 @@ public class GerenciaView {
                 System.out.println(phone);
                 try {
                     if (order.getDelivery()) {
-                        wppService.sendMessage(phone, "Boa notícia, seu pedido de número " + order.getNum_order() + " acabou de sair para entrega. :)");
+                        wppService.sendMessage(phone, "Boa notícia, seu pedido de número " + order.getNum_order() + " acabou de sair para entrega no endereço "+ 
+                                order.getAddress().getStreet() + order.getAddress().getSuburb() +" :)");
+                        Thread.sleep(3000);
                     } else {
                         wppService.sendMessage(phone, "Boa notícia, seu pedido de número " + order.getNum_order() + " já está pronto para ser retirado. :)");
+                        Thread.sleep(3000);
                     }
                 } catch (WhatsappException e) {
                     Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 System.out.println("CLICK");
                 order.setStatus("Finalizando");
