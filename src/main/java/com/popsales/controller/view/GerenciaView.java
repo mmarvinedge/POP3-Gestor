@@ -8,6 +8,8 @@ package com.popsales.controller.view;
 import com.jfoenix.controls.JFXButton;
 import com.popsales.Sessao;
 import com.popsales.Utils;
+import com.popsales.components.Mensagem;
+import com.popsales.components.WhatsappException;
 import com.popsales.controller.GerenciaController;
 import com.popsales.controller.InfoController;
 import com.popsales.custom.Impressao;
@@ -163,7 +165,11 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-                wppService.sendMessage(phone, "Pedido confirmado");
+                try {
+                    wppService.sendMessage(phone, "Pedido confirmado");
+                } catch (WhatsappException e) {
+                    Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+                }
 
                 order.setStatus("Produzindo");
                 Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -180,10 +186,12 @@ public class GerenciaView {
         JFXButton bt2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
         bt2.setOnAction((ActionEvent event) -> {
             try {
-                order.setStatus("Cancelado");
-                Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
-                this.view.boxAguardandoAceite.getChildren().remove(n);
-                orderService.update(order);
+                if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
+                    order.setStatus("Cancelado");
+                    Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
+                    this.view.boxAguardandoAceite.getChildren().remove(n);
+                    orderService.update(order);
+                }
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -265,7 +273,7 @@ public class GerenciaView {
             }
         });
         doisdois.getChildren().add(button1);
-        JFXButton button2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
+        JFXButton button2 = createButton(FontAwesomeIcon.ARROW_LEFT, "#cd4c51");
         button2.setOnAction((ActionEvent event) -> {
             try {
                 order.setStatus("Aguardando");
@@ -273,7 +281,7 @@ public class GerenciaView {
                 this.view.boxAguardandoProducao.getChildren().remove(n);
                 this.view.boxAguardandoAceite.getChildren().add(createCardOrderAguardando(order));
                 orderService.update(order);
-                
+
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -354,9 +362,18 @@ public class GerenciaView {
                 }
                 System.out.println(phone);
                 if (order.getDelivery()) {
-                    wppService.sendMessage(phone, "Boa notícia, seu pedido acabou de sair para entrega.");
+                    try {
+                        wppService.sendMessage(phone, "Boa notícia, seu pedido acabou de sair para entrega.");
+                    } catch (WhatsappException e) {
+                        Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+                    }
+
                 } else {
-                    wppService.sendMessage(phone, "Boa notícia, seu pedido está pronto para ser retirado.");
+                    try {
+                        wppService.sendMessage(phone, "Boa notícia, seu pedido está pronto para ser retirado.");
+                    } catch (WhatsappException e) {
+                        Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+                    }
                 }
 
                 order.setStatus("Finalizado");
@@ -374,11 +391,12 @@ public class GerenciaView {
         JFXButton button2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
         button2.setOnAction((ActionEvent event) -> {
             try {
-                order.setStatus("Produzindo");
-                Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
-                this.view.boxAguardandoFinalizacao.getChildren().remove(n);
-                this.view.boxAguardandoProducao.getChildren().add(createCardOrderProduzindo(order));
-                orderService.update(order);
+                if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
+                    order.setStatus("Cancelado");
+                    Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
+                    this.view.boxAguardandoFinalizacao.getChildren().remove(n);
+                    orderService.update(order);
+                }
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }

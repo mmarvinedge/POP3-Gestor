@@ -6,6 +6,7 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.ini4j.Ini;
 
@@ -25,7 +26,8 @@ public class MainApp extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginFXML.fxml"));
         Scene scene = new Scene(root);
-        stage.setTitle("JavaFX and Maven");
+        stage.setTitle("Entrar Pop Sales");
+        stage.getIcons().add(new Image("/img/sales.png"));
         stage.setScene(scene);
         stage.setResizable(false);
         setUserAgentStylesheet(STYLESHEET_MODENA);

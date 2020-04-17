@@ -28,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -111,8 +112,9 @@ public class LoginController implements Initializable {
             stage.setY(bounds.getMinY());
             stage.setWidth(bounds.getWidth());
             stage.setHeight(bounds.getHeight());
+            stage.getIcons().add(new Image("/img/sales.png"));
 
-            stage.setTitle("POP Sales - Nome da Empresa");
+            stage.setTitle("POP Sales");
             stage.setScene(scene);
             stage.setResizable(true);
             stage.setMaximized(true);

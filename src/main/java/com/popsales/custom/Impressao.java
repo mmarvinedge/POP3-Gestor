@@ -31,7 +31,7 @@ public class Impressao {
 
     public static final String LS = "------------------------------------------\n";
     public static final String LD = "==========================================\n";
-    public static final String format = "%1$-8s %2$-20s\n";
+    public static final String format = "%1$-10s %2$-24s\n";
 
     private static PrintService findPrintService(String printerName) {
         PrintService output = null;
@@ -99,7 +99,7 @@ public class Impressao {
 
         sb.append("-----------------ITENS--------------------\n\n");
         for (Item i : or.getProducts()) {
-            sb.append(String.format(format, (i.getQuantity() + " x " + i.getPrice()), i.getName().toUpperCase()));
+            sb.append(String.format(format, (i.getQuantity() + " x " + Utils.formataParaMoeda(i.getPrice())), i.getName().toUpperCase()));
             if (i.getObs().length() > 0) {
                 sb.append(i.getObs()).append("\n");
             }
@@ -122,11 +122,11 @@ public class Impressao {
         }
         if (or.getForma().equalsIgnoreCase("Dinheiro")) {
             if (or.getTroco()) {
-                sb.append("\t\tLEVAR TROCO PARA ").append(Utils.formatToMoney(new BigDecimal(or.getTrocoPara()))).append("\n\n");
+                sb.append("\tLEVAR TROCO PARA ").append(Utils.formatToMoney(new BigDecimal(or.getTrocoPara()))).append("\n\n");
             }
         } else {
-            sb.append("FORMA DE PAGTO: "+or.getForma());
-            sb.append(" \t\t LEVAR MARQUINA DE CARTAO!").append("\n\n");
+            sb.append("FORMA DE PAGTO: " + or.getForma());
+            sb.append(" \t LEVAR MARQUINA DE CARTAO!").append("\n\n");
         }
 
         sb.append("\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
