@@ -7,15 +7,22 @@ package com.popsales.controller;
 
 import com.popsales.Sessao;
 import com.popsales.controller.view.GerenciaView;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 /**
@@ -49,6 +56,7 @@ public class GerenciaController implements Initializable {
                 boxAguardandoAceite.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
                     @Override
                     public void handle(WindowEvent event) {
+                        System.out.println("EVENTO: " + event);
                         Sessao.t.cancel();
                     }
                 });
@@ -60,11 +68,23 @@ public class GerenciaController implements Initializable {
 
     @FXML
     private void toConfig(ActionEvent event) {
+
+        try {
+            Stage stage = new Stage();
+            AnchorPane cena = new FXMLLoader().load(getClass().getResource("/fxml/ConfiguracaoFXML.fxml"));
+            Scene cen = new Scene(cena);
+            stage.setScene(cen);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void toExit(ActionEvent event) {
-        ((Stage) this.boxAguardandoProducao.getScene().getWindow()).close();
+        Sessao.t.cancel();
+        System.exit(0);
     }
 
 }

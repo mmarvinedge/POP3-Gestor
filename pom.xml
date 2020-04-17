@@ -47,6 +47,14 @@
             <artifactId>controlsfx</artifactId>
             <version>8.40.16</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.ini4j/ini4j -->
+        <dependency>
+            <groupId>org.ini4j</groupId>
+            <artifactId>ini4j</artifactId>
+            <version>0.5.1</version>
+        </dependency>
+
 
     </dependencies>
     

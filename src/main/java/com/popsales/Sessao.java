@@ -10,6 +10,9 @@ import com.popsales.model.Company;
 import com.popsales.model.User;
 import java.util.List;
 import java.util.Timer;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import org.ini4j.Ini;
 
 /**
  *
@@ -21,5 +24,9 @@ public class Sessao {
     public static Company company;
     public static Timer t;
     public static List<Impressora> impressoras;
+    public static List<String> impressorasProdutos;
+    public static List<String> impressorasWindows;
+    public static Ini ini;
+    
 
 }

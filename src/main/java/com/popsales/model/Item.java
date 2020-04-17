@@ -17,10 +17,13 @@ public class Item {
     private String id;
     private String sku; //codigo do produto
     private String name;
-    public BigDecimal price;
-    public BigDecimal quantity;
+    public Double price;
+    public Double quantity;
     public String obs;
-    private String printer;
+    public List<Attribute> attributes;
+    public List<AttributeValue> attributesValues;
+    public Product product;
+    public String printer;
 
     public String getId() {
         return id;
@@ -46,22 +49,6 @@ public class Item {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public BigDecimal getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(BigDecimal quantity) {
-        this.quantity = quantity;
-    }
-
     public String getObs() {
         return obs;
     }
@@ -76,6 +63,46 @@ public class Item {
 
     public void setPrinter(String printer) {
         this.printer = printer;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public List<Attribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
+    }
+
+    public List<AttributeValue> getAttributesValues() {
+        return attributesValues;
+    }
+
+    public void setAttributesValues(List<AttributeValue> attributesValues) {
+        this.attributesValues = attributesValues;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
 }
