@@ -12,6 +12,7 @@ import com.popsales.Utils;
 import com.popsales.controller.GerenciaController;
 import com.popsales.model.Order;
 import com.popsales.services.OrderService;
+import com.popsales.services.WhatsAppService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class GerenciaView {
     public static List<Order> ordersAguardandoFinalizar = new ArrayList();
     public int registrosAntes = 0;
 
+    private WhatsAppService wppService = new WhatsAppService();
     private OrderService orderService = new OrderService();
 
     public GerenciaView(GerenciaController view) {
@@ -143,6 +145,16 @@ public class GerenciaView {
         JFXButton bt1 = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
         bt1.setOnAction((ActionEvent event) -> {
             try {
+                String phone = "";
+                if (order.getClientInfo().getPhone().length() == 14) {
+                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                    phone = "55" + phone;
+                } else {
+                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                    phone = "55" + phone;
+                }
+                System.out.println(phone);
+                wppService.sendMessage(phone, "Pedido confirmado");
                 order.setStatus("Produzindo");
                 Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoAceite.getChildren().remove(n);
@@ -157,6 +169,16 @@ public class GerenciaView {
         JFXButton bt2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
         bt2.setOnAction((ActionEvent event) -> {
             try {
+                String phone = "";
+                if (order.getClientInfo().getPhone().length() == 14) {
+                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                    phone = "55" + phone;
+                } else {
+                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                    phone = "55" + phone;
+                }
+                System.out.println(phone);
+                wppService.sendMessage(phone, "Pedido cancelado");
                 order.setStatus("Cancelado");
                 Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoAceite.getChildren().remove(n);
@@ -229,6 +251,20 @@ public class GerenciaView {
         JFXButton button1 = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
         button1.setOnAction((ActionEvent event) -> {
             try {
+                String phone = "";
+                if (order.getClientInfo().getPhone().length() == 14) {
+                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                    phone = "55" + phone;
+                } else {
+                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                    phone = "55" + phone;
+                }
+                System.out.println(phone);
+                if (order.getDelivery()) {
+                    wppService.sendMessage(phone, "Boa notícia, seu pedido acabou de sair para entrega.");
+                } else {
+                    wppService.sendMessage(phone, "Boa notícia, seu pedido está pronto para ser retirado.");
+                }
                 System.out.println("CLICK");
                 order.setStatus("Finalizando");
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
