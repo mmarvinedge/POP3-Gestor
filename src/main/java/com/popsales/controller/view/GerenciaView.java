@@ -130,7 +130,7 @@ public class GerenciaView {
         HBox dois = new HBox();
 
         VBox doisUm = new VBox();
-        doisUm.getChildren().add(createLabel(order.getNum_order()+" - "+Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
+        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
 
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
@@ -230,7 +230,7 @@ public class GerenciaView {
         HBox dois = new HBox();
 
         VBox doisUm = new VBox();
-        doisUm.getChildren().add(createLabel(order.getNum_order()+" - "+Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
+        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
 
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
@@ -259,6 +259,7 @@ public class GerenciaView {
                 this.view.boxAguardandoProducao.getChildren().remove(n);
                 this.view.boxAguardandoFinalizacao.getChildren().add(createCardOrderFinalizando(order));
                 orderService.update(order);
+                Impressao.imprimirOrderEntrega(order);
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -272,6 +273,7 @@ public class GerenciaView {
                 this.view.boxAguardandoProducao.getChildren().remove(n);
                 this.view.boxAguardandoAceite.getChildren().add(createCardOrderAguardando(order));
                 orderService.update(order);
+                
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -318,7 +320,7 @@ public class GerenciaView {
         HBox dois = new HBox();
 
         VBox doisUm = new VBox();
-        doisUm.getChildren().add(createLabel(order.getNum_order()+" - "+Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
+        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
 
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
@@ -361,6 +363,7 @@ public class GerenciaView {
                 Node n = view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoFinalizacao.getChildren().remove(n);
                 orderService.update(order);
+
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }

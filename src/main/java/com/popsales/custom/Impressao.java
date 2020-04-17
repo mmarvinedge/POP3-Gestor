@@ -6,8 +6,10 @@
 package com.popsales.custom;
 
 import com.popsales.Sessao;
+import com.popsales.Utils;
 import com.popsales.model.Item;
 import com.popsales.model.Order;
+import java.math.BigDecimal;
 import java.text.Normalizer;
 import java.util.Collection;
 import java.util.List;
@@ -27,9 +29,9 @@ import javax.print.attribute.PrintRequestAttributeSet;
  */
 public class Impressao {
 
-    public static final String LS = "------------------------------------------";
-    public static final String LD = "==========================================";
-    public static final String format = "%1$-6s %2$-25s\n";
+    public static final String LS = "------------------------------------------\n";
+    public static final String LD = "==========================================\n";
+    public static final String format = "%1$-8s %2$-20s\n";
 
     private static PrintService findPrintService(String printerName) {
         PrintService output = null;
@@ -48,35 +50,87 @@ public class Impressao {
     }
 
     public static void imprimirOrder(Order or) {
-
-        Collection<List<Item>> itensByPrinter = or.getProducts().stream().filter(c -> c.getPrinter() != null && !c.getPrinter().equalsIgnoreCase("nao imprimir")).collect(Collectors.groupingBy(f -> f.getPrinter())).values();
-        for (List<Item> list : itensByPrinter) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("-----------------" + list.get(0).getPrinter() + "---------\n\n");
-            sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
-            sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
-            if (or.getDelivery()) {
-                sb.append("ENDERECO: ").append(or.getAddress().getStreet()).append("\n");
-                if (!or.getAddress().getSuburb().isEmpty()) {
-                    sb.append(or.getAddress().getSuburb()).append("\n");
+        try {
+            System.out.println("IMPRIMINDO PEDIDO");
+            Collection<List<Item>> itensByPrinter = or.getProducts().stream().filter(c -> c.getPrinter() != null && !c.getPrinter().equalsIgnoreCase("nao imprimir")).collect(Collectors.groupingBy(f -> f.getPrinter())).values();
+            for (List<Item> list : itensByPrinter) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("-----------------" + list.get(0).getPrinter() + "---------\n\n");
+                sb.append("PEDIDO : ").append(or.getNum_order()).append("\n");
+                sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
+                sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
+                if (or.getDelivery()) {
+                    sb.append("ENDERECO: ").append(or.getAddress().getStreet()).append("\n");
+                    if (!or.getAddress().getSuburb().isEmpty()) {
+                        sb.append(or.getAddress().getSuburb()).append("\n");
+                    }
+                    sb.append(or.getAddress().getAuto()).append(" - ").append(or.getAddress().getCity()).append("\n");;
+                } else {
+                    sb.append("RETIRADA EM BALCAO").append("\n\n");
                 }
-                sb.append(or.getAddress().getAuto()).append(" - ").append(or.getAddress().getCity());
-            } else {
-                sb.append("RETIRADA EM BALCAO").append("\n\n");
+                sb.append(LS);
+                sb.append("-----------------ITENS--------------------\n\n");
+                list.forEach(pp -> {
+                    sb.append(String.format(format, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
+                    if (pp.getObs().length() > 0) {
+                        sb.append(pp.getObs()).append("\n");
+                    }
+                    sb.append(pp.getAttributesValues().stream().map(m -> "     Adicional: " + m.getName()).collect(Collectors.joining("\n")));
+                });
+
+                sb.append("\n\n\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
+                System.out.println(sb.toString());
+                printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", list.get(0).getPrinter(), String.class));
             }
-            sb.append(LS);
-            sb.append("-----------------ITENS--------------------\n\n");
-            list.forEach(pp -> {
-                sb.append(String.format(format, pp.getQuantity(), pp.getName().toUpperCase()));
-                if (pp.getObs().length() > 0) {
-                    sb.append(pp.getObs()).append("\n");
-                }
-                sb.append(pp.getAttributesValues().stream().map(m -> "     Adicional: " + m.getName()).collect(Collectors.joining("\n")));
-            });
-
-            sb.append("\n\n\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
-            printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", list.get(0).getPrinter(), String.class));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+    }
+
+    public static void imprimirOrderEntrega(Order or) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("-----------------ENTREGADOR---------\n\n");
+        sb.append("PEDIDO : ").append(or.getNum_order()).append("\n");
+        sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
+        sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
+        sb.append(LS);
+
+        sb.append("-----------------ITENS--------------------\n\n");
+        for (Item i : or.getProducts()) {
+            sb.append(String.format(format, (i.getQuantity() + " x " + i.getPrice()), i.getName().toUpperCase()));
+            if (i.getObs().length() > 0) {
+                sb.append(i.getObs()).append("\n");
+            }
+            sb.append(i.getAttributesValues().stream().map(m -> "     Adicional: " + m.getName() + " - " + m.getPrice()).collect(Collectors.joining("\n")));
+        }
+        sb.append(LD);
+        sb.append("PRODUTOS: ").append(Utils.formataParaMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add))).append("\n");
+        sb.append("TAXA ENTREGA: ").append(Utils.formataParaMoeda(or.getDeliveryCost())).append("\n");
+        sb.append("TOTAL: ").append(Utils.formataParaMoeda(or.getTotal())).append("\n");
+
+        sb.append(LD);
+        if (or.getDelivery()) {
+            sb.append("ENDERECO: ").append(or.getAddress().getStreet()).append("\n");
+            if (!or.getAddress().getSuburb().isEmpty()) {
+                sb.append(or.getAddress().getSuburb()).append("\n");
+            }
+            sb.append(or.getAddress().getAuto()).append(" - ").append(or.getAddress().getCity()).append("\n");
+        } else {
+            sb.append("RETIRADA EM BALCAO").append("\n\n\n");
+        }
+        if (or.getForma().equalsIgnoreCase("Dinheiro")) {
+            if (or.getTroco()) {
+                sb.append("\t\tLEVAR TROCO PARA ").append(Utils.formatToMoney(new BigDecimal(or.getTrocoPara()))).append("\n\n");
+            }
+        } else {
+            sb.append("FORMA DE PAGTO: "+or.getForma());
+            sb.append(" \t\t LEVAR MARQUINA DE CARTAO!").append("\n\n");
+        }
+
+        sb.append("\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
+        printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", or.getProducts().get(0).getPrinter(), String.class));
 
     }
 

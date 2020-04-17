@@ -115,4 +115,10 @@ public class GerenciaController implements Initializable {
         System.exit(0);
     }
 
+    @FXML
+    private void atualizar(ActionEvent event) {
+        view.loadComponents();
+        view.loadData();
+    }
+
 }
