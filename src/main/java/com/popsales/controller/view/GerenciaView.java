@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXButton;
 import com.popsales.Sessao;
 import com.popsales.Utils;
 import com.popsales.controller.GerenciaController;
+import com.popsales.controller.InfoController;
 import com.popsales.custom.Impressao;
 import com.popsales.model.Order;
 import com.popsales.services.OrderService;
@@ -17,6 +18,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -27,15 +29,23 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import org.controlsfx.control.Notifications;
 
 /**
@@ -116,7 +126,7 @@ public class GerenciaView {
         saida.setMinHeight(150);
         HBox um = new HBox();
         um.setAlignment(Pos.TOP_RIGHT);
-        um.getChildren().add(createLabel("08:00 Minutos", 12, "#111", Boolean.TRUE));
+        um.getChildren().add(createLabel(order.getDtRegister(), 12, "#111", Boolean.TRUE));
 
         HBox dois = new HBox();
 
@@ -171,7 +181,8 @@ public class GerenciaView {
 
         JFXButton bt3 = createButton(FontAwesomeIcon.INFO, "#400082");
         bt3.setOnAction((ActionEvent event) -> {
-
+            InfoController.order = order;
+            novaJanelaAnchor(getClass().getResource("/fxml/InfoFXML.fxml"), view.boxAguardandoAceite.getScene().getWindow(), view.region);
         });
         doisdois.getChildren().add(bt3);
         doisUm.getChildren().add(doisdois);
@@ -203,7 +214,7 @@ public class GerenciaView {
         saida.setMinHeight(150);
         HBox um = new HBox();
         um.setAlignment(Pos.TOP_RIGHT);
-        um.getChildren().add(createLabel("08:00 Minutos", 12, "#111", Boolean.TRUE));
+        um.getChildren().add(createLabel(order.getDtRegister(), 12, "#111", Boolean.TRUE));
 
         HBox dois = new HBox();
 
@@ -258,7 +269,8 @@ public class GerenciaView {
 
         JFXButton button3 = createButton(FontAwesomeIcon.INFO, "#400082");
         button3.setOnAction((ActionEvent event) -> {
-
+            InfoController.order = order;
+            novaJanelaAnchor(getClass().getResource("/fxml/InfoFXML.fxml"), view.boxAguardandoAceite.getScene().getWindow(), view.region);
         });
         doisdois.getChildren().add(button3);
         doisUm.getChildren().add(doisdois);
@@ -290,7 +302,7 @@ public class GerenciaView {
         saida.setMinHeight(150);
         HBox um = new HBox();
         um.setAlignment(Pos.TOP_RIGHT);
-        um.getChildren().add(createLabel("08:00 Minutos", 12, "#111", Boolean.TRUE));
+        um.getChildren().add(createLabel(order.getDtRegister(), 12, "#111", Boolean.TRUE));
 
         HBox dois = new HBox();
 
@@ -344,6 +356,10 @@ public class GerenciaView {
 
         doisdois.getChildren().add(button2);
         JFXButton button3 = createButton(FontAwesomeIcon.INFO, "#400082");
+        button3.setOnAction((ActionEvent event) -> {
+            InfoController.order = order;
+            novaJanelaAnchor(getClass().getResource("/fxml/InfoFXML.fxml"), view.boxAguardandoAceite.getScene().getWindow(), view.region);
+        });
         doisdois.getChildren().add(button3);
         doisUm.getChildren().add(doisdois);
         dois.setHgrow(doisUm, Priority.ALWAYS);
@@ -389,5 +405,25 @@ public class GerenciaView {
         bt.setPrefSize(50, 50);
         return bt;
 
+    }
+
+    public static void novaJanelaAnchor(URL url, Window s, Region region) {
+        try {
+            Stage stage = new Stage();
+            AnchorPane cena = new FXMLLoader().load(url);
+            Scene cen = new Scene(cena);
+            stage.setScene(cen);
+            stage.setResizable(false);
+            //stage.setAlwaysOnTop(true);
+//            stage.alwaysOnTopProperty();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(s);
+            region.setVisible(true);
+            stage.showAndWait();
+            region.setVisible(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

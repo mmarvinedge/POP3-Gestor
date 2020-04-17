@@ -11,14 +11,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -42,6 +47,18 @@ public class GerenciaController implements Initializable {
     public VBox boxAguardandoProducao;
     @FXML
     public VBox boxAguardandoFinalizacao;
+    @FXML
+    public Region region;
+    @FXML
+    private Label lblQntAguardando;
+    @FXML
+    private Label lblEmProducao;
+    @FXML
+    private Label lblAguardandoFinalizar;
+    @FXML
+    public Text lblNomeEmpresa;
+    @FXML
+    public Text lblUsuario;
 
     /**
      * Initializes the controller class.
@@ -56,14 +73,23 @@ public class GerenciaController implements Initializable {
                 boxAguardandoAceite.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
                     @Override
                     public void handle(WindowEvent event) {
-                        System.out.println("EVENTO: " + event);
                         Sessao.t.cancel();
                     }
                 });
 
             }
         });
-
+        boxAguardandoAceite.getChildren().addListener((ListChangeListener.Change<? extends Node> c) -> {
+            lblQntAguardando.setText(boxAguardandoAceite.getChildren().size() + "");
+        });
+        boxAguardandoProducao.getChildren().addListener((ListChangeListener.Change<? extends Node> c) -> {
+            lblEmProducao.setText(boxAguardandoProducao.getChildren().size() + "");
+        });
+        boxAguardandoFinalizacao.getChildren().addListener((ListChangeListener.Change<? extends Node> c) -> {
+            lblAguardandoFinalizar.setText(boxAguardandoFinalizacao.getChildren().size() + "");
+        });
+        lblNomeEmpresa.setText(Sessao.company.getName());
+        lblUsuario.setText(Sessao.user.getName());
     }
 
     @FXML
@@ -75,7 +101,9 @@ public class GerenciaController implements Initializable {
             Scene cen = new Scene(cena);
             stage.setScene(cen);
             stage.setResizable(false);
+            region.setVisible(true);
             stage.showAndWait();
+            region.setVisible(false);
         } catch (IOException e) {
             e.printStackTrace();
         }

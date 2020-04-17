@@ -10,12 +10,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" minHeight="768.0" minWidth="1024.0" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="com.popsales.controller.GerenciaController">
+<AnchorPane id="AnchorPane" minHeight="768.0" minWidth="1024.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.controller.GerenciaController">
    <children>
       <BorderPane layoutX="96.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -36,7 +36,7 @@
                            <children>
                               <VBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome da Empresa">
+                                    <Text fx:id="lblNomeEmpresa" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome da Empresa">
                                        <font>
                                           <Font size="25.0" />
                                        </font>
@@ -44,7 +44,7 @@
                                     <HBox alignment="CENTER_LEFT" spacing="5.0">
                                        <children>
                                           <FontAwesomeIconView fill="WHITE" glyphName="USER" />
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario" />
+                                          <Text fx:id="lblUsuario" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -102,7 +102,7 @@
                                       <content>
                                           <VBox fx:id="boxAguardandoAceite" prefHeight="200.0" prefWidth="100.0">
                                              <children>
-                                                <HBox minHeight="150.0" prefHeight="100.0" prefWidth="200.0" style="-fx-border-width: 0 0 1 0; -fx-border-color: #ccc;">
+                                                <HBox minHeight="150.0" prefHeight="100.0" prefWidth="200.0" style="-fx-border-width: 0 0 1 0; -fx-border-color: #ccc;" visible="false">
                                                    <children>
                                                       <VBox HBox.hgrow="ALWAYS">
                                                          <children>
@@ -199,7 +199,7 @@
                                                 </Label>
                                                 <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                                                    <children>
-                                                      <Label text="150" textFill="WHITE">
+                                                      <Label fx:id="lblQntAguardando" text="150" textFill="WHITE">
                                                          <font>
                                                             <Font name="System Bold" size="48.0" />
                                                          </font>
@@ -234,7 +234,7 @@
                                        <content>
                                           <VBox fx:id="boxAguardandoProducao" prefHeight="200.0" prefWidth="100.0">
                                              <children>
-                                                <HBox minHeight="150.0" prefHeight="100.0" prefWidth="200.0" style="-fx-border-width: 0 0 1 0; -fx-border-color: #ccc;">
+                                                <HBox minHeight="150.0" prefHeight="100.0" prefWidth="200.0" style="-fx-border-width: 0 0 1 0; -fx-border-color: #ccc;" visible="false">
                                                    <children>
                                                       <VBox HBox.hgrow="ALWAYS">
                                                          <children>
@@ -331,7 +331,7 @@
                                                 </Label>
                                                 <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                                                    <children>
-                                                      <Label text="150" textFill="WHITE">
+                                                      <Label fx:id="lblEmProducao" text="150" textFill="WHITE">
                                                          <font>
                                                             <Font name="System Bold" size="48.0" />
                                                          </font>
@@ -364,7 +364,7 @@
                                     </HBox>
                                     <ScrollPane fitToWidth="true" pannable="true" prefHeight="433.0" prefWidth="260.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                                        <content>
-                                          <VBox fx:id="boxAguardandoFinalizacao" prefHeight="200.0" prefWidth="100.0">
+                                          <VBox fx:id="boxAguardandoFinalizacao" prefHeight="200.0" prefWidth="100.0" visible="false">
                                              <children>
                                                 <HBox minHeight="150.0" prefHeight="100.0" prefWidth="200.0" style="-fx-border-width: 0 0 1 0; -fx-border-color: #ccc;">
                                                    <children>
@@ -463,7 +463,7 @@
                                                 </Label>
                                                 <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                                                    <children>
-                                                      <Label text="150" textFill="WHITE">
+                                                      <Label fx:id="lblAguardandoFinalizar" text="150" textFill="WHITE">
                                                          <font>
                                                             <Font name="System Bold" size="48.0" />
                                                          </font>
@@ -487,5 +487,6 @@
             </AnchorPane>
          </center>
       </BorderPane>
+      <Region fx:id="region" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00000099;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

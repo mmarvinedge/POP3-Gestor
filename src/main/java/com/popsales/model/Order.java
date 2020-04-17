@@ -16,7 +16,7 @@ import java.util.List;
 public class Order {
 
     private String id;
-
+    private String num_order;
     private ClientInfo clientInfo;
     private Boolean delivery;
     private String forma;
@@ -276,6 +276,14 @@ public class Order {
 
     public void setMerchant(Merchant merchant) {
         this.merchant = merchant;
+    }
+
+    public String getNum_order() {
+        return num_order;
+    }
+
+    public void setNum_order(String num_order) {
+        this.num_order = num_order;
     }
 
 }

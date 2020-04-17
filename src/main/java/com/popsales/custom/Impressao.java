@@ -52,18 +52,29 @@ public class Impressao {
         Collection<List<Item>> itensByPrinter = or.getProducts().stream().filter(c -> c.getPrinter() != null && !c.getPrinter().equalsIgnoreCase("nao imprimir")).collect(Collectors.groupingBy(f -> f.getPrinter())).values();
         for (List<Item> list : itensByPrinter) {
             StringBuilder sb = new StringBuilder();
-            sb.append("\n\n\n\n\")");
-            sb.append("-----------------COZINHA-----------------\n\n");
+            sb.append("-----------------" + list.get(0).getPrinter() + "---------\n\n");
             sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
-            sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n\n");
+            sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
+            if (or.getDelivery()) {
+                sb.append("ENDERECO: ").append(or.getAddress().getStreet()).append("\n");
+                if (!or.getAddress().getSuburb().isEmpty()) {
+                    sb.append(or.getAddress().getSuburb()).append("\n");
+                }
+                sb.append(or.getAddress().getAuto()).append(" - ").append(or.getAddress().getCity());
+            } else {
+                sb.append("RETIRADA EM BALCAO").append("\n\n");
+            }
             sb.append(LS);
-            sb.append("-----------------ITENS-----------------\n\n");
+            sb.append("-----------------ITENS--------------------\n\n");
             list.forEach(pp -> {
-                sb.append(String.format(format, pp.getQuantity(), pp.getName()));
+                sb.append(String.format(format, pp.getQuantity(), pp.getName().toUpperCase()));
                 if (pp.getObs().length() > 0) {
                     sb.append(pp.getObs()).append("\n");
                 }
+                sb.append(pp.getAttributesValues().stream().map(m -> "     Adicional: " + m.getName()).collect(Collectors.joining("\n")));
             });
+
+            sb.append("\n\n\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
             printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", list.get(0).getPrinter(), String.class));
         }
 
