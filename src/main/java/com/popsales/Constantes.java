@@ -20,4 +20,5 @@ public class Constantes {
     public static final OkHttpClient httpClient = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS).build();
+    public static final String WURL = "http://localhost:3300/whats";
 }
