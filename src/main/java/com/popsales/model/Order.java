@@ -5,6 +5,7 @@
  */
 package com.popsales.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -32,10 +33,10 @@ public class Order {
     private Merchant merchant;
     private List<Item> products = null;
     private String coupon;
-    private Double discountValue;
-    private Double deliveryCost;
-    private Double subtotal;
-    private Double total;
+    private BigDecimal discountValue;
+    private BigDecimal deliveryCost;
+    private BigDecimal subtotal;
+    private BigDecimal total;
     private String updatedAt;
     private String createdAt;
     private String store;
@@ -167,35 +168,35 @@ public class Order {
         this.coupon = coupon;
     }
 
-    public Double getDiscountValue() {
+    public BigDecimal getDiscountValue() {
         return discountValue;
     }
 
-    public void setDiscountValue(Double discountValue) {
+    public void setDiscountValue(BigDecimal discountValue) {
         this.discountValue = discountValue;
     }
 
-    public Double getDeliveryCost() {
+    public BigDecimal getDeliveryCost() {
         return deliveryCost;
     }
 
-    public void setDeliveryCost(Double deliveryCost) {
+    public void setDeliveryCost(BigDecimal deliveryCost) {
         this.deliveryCost = deliveryCost;
     }
 
-    public Double getSubtotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(Double subtotal) {
+    public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 

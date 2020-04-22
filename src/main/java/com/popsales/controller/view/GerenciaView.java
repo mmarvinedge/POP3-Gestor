@@ -157,7 +157,7 @@ public class GerenciaView {
         HBox dois = new HBox();
 
         VBox doisUm = new VBox();
-        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
+        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(order.getTotal()).toString(), 18, "#545454", Boolean.TRUE));
 
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
@@ -277,7 +277,7 @@ public class GerenciaView {
         HBox dois = new HBox();
 
         VBox doisUm = new VBox();
-        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
+        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(order.getTotal()).toString(), 18, "#545454", Boolean.TRUE));
 
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
@@ -385,7 +385,7 @@ public class GerenciaView {
         HBox dois = new HBox();
 
         VBox doisUm = new VBox();
-        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
+        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(order.getTotal()).toString(), 18, "#545454", Boolean.TRUE));
 
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);

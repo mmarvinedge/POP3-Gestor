@@ -31,6 +31,7 @@ public class Impressao {
 
     public static final String LS = "------------------------------------------\n";
     public static final String LD = "==========================================\n";
+    public static final String formatQntity = "%1$-3s %2$-24s\n";
     public static final String format = "%1$-10s %2$-24s\n";
 
     private static PrintService findPrintService(String printerName) {
@@ -71,11 +72,15 @@ public class Impressao {
                 sb.append(LS);
                 sb.append("-----------------ITENS--------------------\n\n");
                 list.forEach(pp -> {
-                    sb.append(String.format(format, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
-                    if (pp.getObs().length() > 0) {
-                        sb.append(pp.getObs()).append("\n");
+                    sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
+                    if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
+                        sb.append(pp.getFlavors().stream().map(m -> "\t1/" + pp.getFlavors().size() + " x " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
                     }
-                    sb.append(pp.getAttributesValues().stream().map(m -> "     Adicional: " + m.getName()).collect(Collectors.joining("\n")));
+                    if (pp.getObs().length() > 0) {
+                        sb.append("\t").append(pp.getObs());
+                    }
+                    sb.append(pp.getAttributesValues().stream().map(m -> "\n\tAdc: " + m.getName()).collect(Collectors.joining("\n")));
+
                 });
 
                 sb.append("\n\n\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
@@ -100,10 +105,14 @@ public class Impressao {
         sb.append("-----------------ITENS--------------------\n\n");
         for (Item i : or.getProducts()) {
             sb.append(String.format(format, (i.getQuantity() + " x " + Utils.formataParaMoeda(i.getPrice())), i.getName().toUpperCase()));
-            if (i.getObs().length() > 0) {
-                sb.append(i.getObs()).append("\n");
+
+            if (i.getFlavors() != null && i.getFlavors().size() > 0) {
+                sb.append(i.getFlavors().stream().map(m -> "\t1/" + i.getFlavors().size() + " x " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
             }
-            sb.append(i.getAttributesValues().stream().map(m -> "     Adc: "+Utils.formatToMoney(m.getPrice())+" x " + m.getName()).collect(Collectors.joining("\n")));
+            if (i.getObs().length() > 0) {
+                sb.append("\t"+i.getObs()).append("\n");
+            }
+            sb.append(i.getAttributesValues().stream().map(m -> "\tAdc: " + Utils.formatToMoney(m.getPrice()) + " x " + m.getName()).collect(Collectors.joining("\n")));
         }
         sb.append("\n").append(LD);
         sb.append("PRODUTOS: ").append(Utils.formataParaMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add))).append("\n");
@@ -122,11 +131,11 @@ public class Impressao {
         }
         if (or.getForma().equalsIgnoreCase("Dinheiro")) {
             if (or.getTroco()) {
-                sb.append("\tLEVAR TROCO PARA ").append(Utils.formatToMoney(new BigDecimal(or.getTrocoPara()))).append("\n\n");
+                sb.append("\n\tLEVAR TROCO PARA ").append(Utils.formatToMoney(new BigDecimal(or.getTrocoPara()))).append("\n\n");
             }
         } else {
             sb.append("FORMA DE PAGTO: " + or.getForma());
-            sb.append(" \t LEVAR MARQUINA DE CARTAO!").append("\n\n");
+            sb.append("\n\t LEVAR MARQUINA DE CARTAO!").append("\n\n");
         }
 
         sb.append("\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);

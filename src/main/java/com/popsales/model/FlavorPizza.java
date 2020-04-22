@@ -13,10 +13,20 @@ import java.util.Objects;
  * @author Renato
  */
 public class FlavorPizza {
+
+    private String sku;
     private String flavor;
     private BigDecimal price;
 
     public FlavorPizza() {
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getFlavor() {
@@ -64,7 +74,4 @@ public class FlavorPizza {
         return true;
     }
 
-    
-    
-    
 }

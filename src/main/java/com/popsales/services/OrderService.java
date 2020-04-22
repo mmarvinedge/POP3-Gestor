@@ -26,7 +26,7 @@ public class OrderService {
     public String pathOrders = "/order";
 
     public List<Order> getOrders(String status) {
-
+        System.out.println("URL:" + Constantes.URL + pathOrders + "/all/" + Sessao.company.getId() + "/" + status);
         List<Order> saida = new ArrayList();
         Request request = new Request.Builder()
                 .url(Constantes.URL + pathOrders + "/all/" + Sessao.company.getId() + "/" + status)
@@ -38,6 +38,7 @@ public class OrderService {
             }
             // Get response body
             String json = response.body().string();
+            System.out.println("JSON: " + json);
 
             saida = new Gson().fromJson(json, new TypeToken<List<Order>>() {
             }.getType());
