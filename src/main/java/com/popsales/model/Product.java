@@ -22,6 +22,11 @@ public class Product {
     public List<Attribute> attributes;
     private String printer;
 
+    private String sizePizza;
+    private Integer maxPizza;
+    private List<FlavorPizza> flavorsPizza;
+    private String rulePricePizza;
+
     public Product() {
     }
 
@@ -126,6 +131,38 @@ public class Product {
 
     public void setPrinter(String printer) {
         this.printer = printer;
+    }
+
+    public String getSizePizza() {
+        return sizePizza;
+    }
+
+    public void setSizePizza(String sizePizza) {
+        this.sizePizza = sizePizza;
+    }
+
+    public Integer getMaxPizza() {
+        return maxPizza;
+    }
+
+    public void setMaxPizza(Integer maxPizza) {
+        this.maxPizza = maxPizza;
+    }
+
+    public List<FlavorPizza> getFlavorsPizza() {
+        return flavorsPizza;
+    }
+
+    public void setFlavorsPizza(List<FlavorPizza> flavorsPizza) {
+        this.flavorsPizza = flavorsPizza;
+    }
+
+    public String getRulePricePizza() {
+        return rulePricePizza;
+    }
+
+    public void setRulePricePizza(String rulePricePizza) {
+        this.rulePricePizza = rulePricePizza;
     }
 
 }

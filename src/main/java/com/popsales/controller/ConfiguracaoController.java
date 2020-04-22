@@ -72,6 +72,18 @@ public class ConfiguracaoController implements Initializable {
         printers.getChildren().add(pane);
 
         pane.setHgrow(printers, Priority.ALWAYS);
+
+        JFXComboBox<String> printDefault = new JFXComboBox<>();
+        printDefault.setFocusColor(Paint.valueOf("cd4c51"));
+        printDefault.setLabelFloat(true);
+        printDefault.setPromptText("Expedicao");
+        printDefault.setItems(FXCollections.observableList(Sessao.impressorasWindows));
+        if (Sessao.ini != null && Sessao.ini.get("Printers", "Expedicao", String.class) != null) {
+            printDefault.setValue(Sessao.ini.get("Printers", "Expedicao", String.class));
+        }
+        printDefault.setPadding(new Insets(0, 0, 0, 25));
+        printers.getChildren().add(printDefault);
+
         for (String ip : Sessao.impressorasProdutos.stream().filter(p -> !p.equalsIgnoreCase("NAO IMPRIMIR")).collect(Collectors.toList())) {
             JFXComboBox<String> printCb = new JFXComboBox<>();
             printCb.setFocusColor(Paint.valueOf("cd4c51"));
@@ -85,6 +97,18 @@ public class ConfiguracaoController implements Initializable {
             printers.getChildren().add(printCb);
 
         }
+        if(Sessao.ini.get("Printers", "Expedicao", String.class) != null){
+            JFXComboBox<String> printCb = new JFXComboBox<>();
+            printCb.setFocusColor(Paint.valueOf("cd4c51"));
+            printCb.setLabelFloat(true);
+            printCb.setPromptText("Expedicao");
+            printCb.setItems(FXCollections.observableList(Sessao.impressorasWindows));
+            if (Sessao.ini != null && Sessao.ini.get("Printers", "Expedicao", String.class) != null) {
+                printCb.setValue(Sessao.ini.get("Printers", "Expedicao", String.class));
+            }
+            printCb.setPadding(new Insets(0, 0, 0, 25));
+            printers.getChildren().add(printCb);
+        }
 
         JFXButton button = new JFXButton("Salvar");
         button.setStyle("-fx-background-color: #a03e42; -fx-text-fill: white;");
@@ -97,7 +121,7 @@ public class ConfiguracaoController implements Initializable {
                     }
                 });
                 Sessao.ini.store(new File("C:/popsales/config.ini"));
-                
+
                 Mensagem.dialogInformacao("Impressoras salvas com sucesso!", null, null);
             } catch (IOException ex) {
                 Logger.getLogger(ConfiguracaoController.class.getName()).log(Level.SEVERE, null, ex);

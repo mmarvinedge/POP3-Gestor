@@ -103,9 +103,9 @@ public class Impressao {
             if (i.getObs().length() > 0) {
                 sb.append(i.getObs()).append("\n");
             }
-            sb.append(i.getAttributesValues().stream().map(m -> "     Adicional: " + m.getName() + " - " + m.getPrice()).collect(Collectors.joining("\n")));
+            sb.append(i.getAttributesValues().stream().map(m -> "     Adc: "+Utils.formatToMoney(m.getPrice())+" x " + m.getName()).collect(Collectors.joining("\n")));
         }
-        sb.append(LD);
+        sb.append("\n").append(LD);
         sb.append("PRODUTOS: ").append(Utils.formataParaMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add))).append("\n");
         sb.append("TAXA ENTREGA: ").append(Utils.formataParaMoeda(or.getDeliveryCost())).append("\n");
         sb.append("TOTAL: ").append(Utils.formataParaMoeda(or.getTotal())).append("\n");
@@ -130,7 +130,7 @@ public class Impressao {
         }
 
         sb.append("\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
-        printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", or.getProducts().get(0).getPrinter(), String.class));
+        printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", "Expedicao", String.class));
 
     }
 

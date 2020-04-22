@@ -26,6 +26,7 @@ public class Item {
     public List<AttributeValue> attributesValues;
     public Product product;
     public String printer;
+    private List<FlavorPizza> flavors;
 
     public String getId() {
         return id;
@@ -121,6 +122,14 @@ public class Item {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public List<FlavorPizza> getFlavors() {
+        return flavors;
+    }
+
+    public void setFlavors(List<FlavorPizza> flavors) {
+        this.flavors = flavors;
     }
 
 }

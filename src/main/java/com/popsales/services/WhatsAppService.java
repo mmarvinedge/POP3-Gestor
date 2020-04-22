@@ -8,10 +8,8 @@ package com.popsales.services;
 import com.popsales.Constantes;
 import com.popsales.components.WhatsappException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.TimeUnit;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**

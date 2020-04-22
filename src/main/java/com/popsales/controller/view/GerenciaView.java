@@ -8,6 +8,7 @@ package com.popsales.controller.view;
 import com.jfoenix.controls.JFXButton;
 import com.popsales.Sessao;
 import com.popsales.Utils;
+import com.popsales.components.AePlayWave;
 import com.popsales.components.Mensagem;
 import com.popsales.components.WhatsappException;
 import com.popsales.controller.GerenciaController;
@@ -18,10 +19,13 @@ import com.popsales.services.OrderService;
 import com.popsales.services.WhatsAppService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,6 +50,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import org.controlsfx.control.Notifications;
 
 /**
@@ -62,9 +69,11 @@ public class GerenciaView {
     private WhatsAppService wppService = new WhatsAppService();
 
     private OrderService orderService = new OrderService();
+    public Date ultimoUpdate;
 
     public GerenciaView(GerenciaController view) {
         this.view = view;
+
         loadComponents();
         Sessao.t = new Timer();
         Sessao.t.schedule(
@@ -89,12 +98,28 @@ public class GerenciaView {
 
     private void carregarAguardando() {
         ordersAguardando = orderService.getOrders("Aguardando");
-        if (registrosAntes == 0) {
-            registrosAntes = ordersAguardando.size();
-        } else if (registrosAntes != ordersAguardando.size()) {
+        ordersAguardando.forEach(c -> {
+            if (c.getDtRegister() != null) {
+                try {
+                    c.setDtRegistro(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(c.getDtRegister()));
+                } catch (Exception e) {
+                }
+            }
+        });
+        Date ultimaData = ordersAguardando.stream().map(m -> m.getDtRegistro()).max((Date o1, Date o2) -> {
+            return o1.compareTo(o2);
+        }).get();
+        System.out.println("ULTIMA DATA: " + ultimaData);
+        if (ultimoUpdate == null) {
+            ultimoUpdate = ultimaData;
+        } else if (ultimaData.after(ultimoUpdate)) {
             Notifications.create().title("Informação").text("Novo Pedido!").showInformation();
-            registrosAntes = ordersAguardando.size();
+            for (int i = 0; i < 2; i++) {
+                new AePlayWave("C:\\popsales\\button.wav").start();
+            }
+            ((Stage)view.boxAguardandoAceite.getScene().getWindow()).setMaximized(true);
         }
+
         for (Order or : ordersAguardando) {
             this.view.boxAguardandoAceite.getChildren().add(createCardOrderAguardando(or));
         }

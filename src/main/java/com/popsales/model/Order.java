@@ -45,6 +45,7 @@ public class Order {
     private Integer deliveryLimit;
     private String discount;
     private String dtRegister;
+    private Date dtRegistro;
 
     public String getId() {
         return id;
@@ -284,6 +285,14 @@ public class Order {
 
     public void setNum_order(String num_order) {
         this.num_order = num_order;
+    }
+
+    public Date getDtRegistro() {
+        return dtRegistro;
+    }
+
+    public void setDtRegistro(Date dtRegistro) {
+        this.dtRegistro = dtRegistro;
     }
 
 }
