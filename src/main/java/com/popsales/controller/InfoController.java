@@ -7,6 +7,7 @@ package com.popsales.controller;
 
 import com.popsales.Utils;
 import com.popsales.model.AttributeValue;
+import com.popsales.model.FlavorPizza;
 import com.popsales.model.Item;
 import com.popsales.model.Order;
 import java.math.BigDecimal;
@@ -59,8 +60,8 @@ public class InfoController implements Initializable {
         lblTelefone.setText(order.getClientInfo().getPhone());
 
         lblProdutos.setText(Utils.formatToMoney(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add)));
-        lblTaxas.setText(Utils.formatToMoney(new BigDecimal(order.getDeliveryCost())));
-        lblTotal.setText(Utils.formatToMoney(new BigDecimal(order.getTotal())));
+        lblTaxas.setText(Utils.formatToMoney(order.getDeliveryCost()));
+        lblTotal.setText(Utils.formatToMoney(order.getTotal()));
         lblData.setText(order.getDtRegister());
         if (order.getDelivery()) {
             lblEndereço.setWrapText(true);
@@ -89,8 +90,17 @@ public class InfoController implements Initializable {
             if (p.getAttributesValues().size() > 0) {
                 StringBuilder sb = new StringBuilder();
                 for (AttributeValue av : p.getAttributesValues()) {
-                    sb.append(" (").append(av.getName()).append(" - ").append(Utils.formatToMoney(av.getPrice())).append(") ");
+                    sb.append(" (").append(av.getName()).append(" - ").append(Utils.formatToMoney(av.getPrice())).append(")\n");
                 }
+                sb.append(obs.getText());
+                obs.setText(sb.toString());
+            }
+            if (p.getFlavors() != null && p.getFlavors().size() > 0) {
+                StringBuilder sb = new StringBuilder();
+                for (FlavorPizza av : p.getFlavors()) {
+                    sb.append(" (1/" + p.getFlavors().size() + " x ").append(av.getFlavor()).append(")\n");
+                }
+                sb.append(obs.getText());
                 obs.setText(sb.toString());
             }
             boxUm.setAlignment(Pos.CENTER_LEFT);

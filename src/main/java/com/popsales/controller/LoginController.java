@@ -72,12 +72,12 @@ public class LoginController implements Initializable {
         try {
             Sessao.user = loginService.Login(new User(iptUser.getText(), iptSenha.getText()));
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
             Mensagem.dialogAlert(ex.getMessage(), null, iptUser.getScene().getWindow());
             return;
         } catch (Exception e) {
             Mensagem.dialogAlert(e.getMessage(), null, iptUser.getScene().getWindow());
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return;
         }
 

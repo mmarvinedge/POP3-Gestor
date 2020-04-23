@@ -19,6 +19,8 @@ public class AttributeValue {
     private String name;
     private String description;
     private BigDecimal price;
+    private BigDecimal quantity;
+    private BigDecimal total;
 
     public AttributeValue() {
     }
@@ -69,6 +71,22 @@ public class AttributeValue {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 
 }

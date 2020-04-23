@@ -8,6 +8,7 @@ package com.popsales.controller.view;
 import com.jfoenix.controls.JFXButton;
 import com.popsales.Sessao;
 import com.popsales.Utils;
+import com.popsales.components.AePlayWave;
 import com.popsales.components.Mensagem;
 import com.popsales.components.WhatsappException;
 import com.popsales.controller.GerenciaController;
@@ -18,10 +19,13 @@ import com.popsales.services.OrderService;
 import com.popsales.services.WhatsAppService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,6 +50,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import org.controlsfx.control.Notifications;
 
 /**
@@ -62,9 +69,11 @@ public class GerenciaView {
     private WhatsAppService wppService = new WhatsAppService();
 
     private OrderService orderService = new OrderService();
+    public Date ultimoUpdate;
 
     public GerenciaView(GerenciaController view) {
         this.view = view;
+
         loadComponents();
         Sessao.t = new Timer();
         Sessao.t.schedule(
@@ -89,12 +98,30 @@ public class GerenciaView {
 
     private void carregarAguardando() {
         ordersAguardando = orderService.getOrders("Aguardando");
-        if (registrosAntes == 0) {
-            registrosAntes = ordersAguardando.size();
-        } else if (registrosAntes != ordersAguardando.size()) {
-            Notifications.create().title("Informação").text("Novo Pedido!").showInformation();
-            registrosAntes = ordersAguardando.size();
+        ordersAguardando.forEach(c -> {
+            if (c.getDtRegister() != null) {
+                try {
+                    c.setDtRegistro(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(c.getDtRegister()));
+                } catch (Exception e) {
+                }
+            }
+        });
+        if (ordersAguardando.size() > 0) {
+            Date ultimaData = ordersAguardando.stream().map(m -> m.getDtRegistro()).max((Date o1, Date o2) -> {
+                return o1.compareTo(o2);
+            }).get();
+            System.out.println("ULTIMA DATA: " + ultimaData);
+            if (ultimoUpdate == null) {
+                ultimoUpdate = ultimaData;
+            } else if (ultimaData.after(ultimoUpdate)) {
+                Notifications.create().title("Informação").text("Novo Pedido!").showInformation();
+                for (int i = 0; i < 1; i++) {
+                    new AePlayWave("C:\\popsales\\button.wav").start();
+                }
+                ((Stage) view.boxAguardandoAceite.getScene().getWindow()).setMaximized(true);
+            }
         }
+
         for (Order or : ordersAguardando) {
             this.view.boxAguardandoAceite.getChildren().add(createCardOrderAguardando(or));
         }
@@ -132,7 +159,7 @@ public class GerenciaView {
         HBox dois = new HBox();
 
         VBox doisUm = new VBox();
-        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
+        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(order.getTotal()).toString(), 18, "#545454", Boolean.TRUE));
 
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
@@ -217,14 +244,7 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-                    try {
-                        wppService.sendMessage(phone, "Seu pedido de número " + order.getNum_order() + " foi cancelado");
-                        Thread.sleep(3000);
-                    } catch (WhatsappException e) {
-                        Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                   
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoAceite.getChildren().remove(n);
@@ -276,7 +296,7 @@ public class GerenciaView {
         HBox dois = new HBox();
 
         VBox doisUm = new VBox();
-        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
+        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(order.getTotal()).toString(), 18, "#545454", Boolean.TRUE));
 
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
@@ -308,20 +328,7 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-                try {
-                    if (order.getDelivery()) {
-                        wppService.sendMessage(phone, "Boa notícia, seu pedido de número " + order.getNum_order() + " acabou de sair para entrega no endereço "+ 
-                                order.getAddress().getStreet() + order.getAddress().getSuburb() +" :)");
-                        Thread.sleep(3000);
-                    } else {
-                        wppService.sendMessage(phone, "Boa notícia, seu pedido de número " + order.getNum_order() + " já está pronto para ser retirado. :)");
-                        Thread.sleep(3000);
-                    }
-                } catch (WhatsappException e) {
-                    Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-                }
+               
                 System.out.println("CLICK");
                 order.setStatus("Finalizando");
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -389,7 +396,7 @@ public class GerenciaView {
         HBox dois = new HBox();
 
         VBox doisUm = new VBox();
-        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(new BigDecimal(order.getTotal())).toString(), 18, "#545454", Boolean.TRUE));
+        doisUm.getChildren().add(createLabel(order.getNum_order() + " - " + Utils.formatToMoney(order.getTotal()).toString(), 18, "#545454", Boolean.TRUE));
 
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
@@ -422,11 +429,7 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-                try {
-                    wppService.sendMessage(phone, "Pedido entregue, agradecemos pela preferência. Até a próxima :)");
-                } catch (WhatsappException e) {
-                    Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                }
+              
 
                 order.setStatus("Finalizado");
                 Node n = view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -453,11 +456,7 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-                    try {
-                        wppService.sendMessage(phone, "Seu pedido de número " + order.getNum_order() + " foi cancelado");
-                    } catch (WhatsappException e) {
-                        Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                    }
+                   
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoFinalizacao.getChildren().remove(n);
