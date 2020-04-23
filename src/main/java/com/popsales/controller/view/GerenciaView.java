@@ -208,13 +208,16 @@ public class GerenciaView {
                     sb.append("*Número do pedido*: ").append(order.getNum_order());
                     sb.append("-- *Produtos* --");
                     order.getProducts().forEach(p -> {
-                        sb.append("Nome: " + p.getName());
-                        sb.append("Quantidade: ").append(p.getQuantity());
-                        sb.append("Valor: R$ ").append(p.getTotal());
+                        sb.append(p.getQuantity() + "x " + p.getName());
+                        sb.append("Valor: R$ ").append(p.getTotal()).append(" |");
                     });
                     if (order.getDelivery()) {
+                        sb.append("*Taxa de entrega:* R$ ").append(order.getDeliveryCost());
+                    }
+                    sb.append("*Total:* R$ ").append(order.getTotal());
+                    if (order.getDelivery()) {
                         sb.append("*Endereço:* ");
-                        sb.append(order.getAddress().getStreet()).append(", ").append(order.getAddress().getAuto()).append(order.getAddress().getSuburb());
+                        sb.append(order.getAddress().getStreet()).append(", ").append(order.getAddress().getAuto()).append(", ").append(order.getAddress().getSuburb());
                     } else {
                         sb.append("Você optou por retirar no local, para solicitar nosso endereço digite *localização*");
                     }
@@ -254,13 +257,15 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-
+                    wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoAceite.getChildren().remove(n);
                     orderService.update(order);
                 }
             } catch (IOException ex) {
+                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (WhatsappException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -338,7 +343,11 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-
+                if (order.getDelivery()) {
+                    wppService.sendMessage(phone, "Seu pedido acabou de sair para entrega.");
+                } else {
+                    wppService.sendMessage(phone, "Seu pedido está pronto para ser retirado.");
+                }
                 System.out.println("CLICK");
                 order.setStatus("Finalizando");
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -347,6 +356,8 @@ public class GerenciaView {
                 orderService.update(order);
                 Impressao.imprimirOrderEntrega(order);
             } catch (IOException ex) {
+                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (WhatsappException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -439,13 +450,19 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-
+                if (order.getDelivery()) {
+                    wppService.sendMessage(phone, "Pedido entregue, obrigado pela preferência.");
+                } else {
+                    wppService.sendMessage(phone, "Pedido retirado, obrigado pela preferência.");
+                }
                 order.setStatus("Finalizado");
                 Node n = view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoFinalizacao.getChildren().remove(n);
                 orderService.update(order);
 
             } catch (IOException ex) {
+                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (WhatsappException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -465,13 +482,15 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-
+                    wppService.sendMessage(phone, "Seu pedido "+ order.getNum_order() + " foi cancelado.");
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoFinalizacao.getChildren().remove(n);
                     orderService.update(order);
                 }
             } catch (IOException ex) {
+                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (WhatsappException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
