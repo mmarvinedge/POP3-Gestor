@@ -18,6 +18,7 @@ public class Product {
     private String imageType;
     private String imageBase64;
     private BigDecimal price;
+    private BigDecimal priceOriginal;
     private Category categoryMain;
     public List<Attribute> attributes;
     private String printer;
@@ -163,6 +164,14 @@ public class Product {
 
     public void setRulePricePizza(String rulePricePizza) {
         this.rulePricePizza = rulePricePizza;
+    }
+
+    public BigDecimal getPriceOriginal() {
+        return priceOriginal;
+    }
+
+    public void setPriceOriginal(BigDecimal priceOriginal) {
+        this.priceOriginal = priceOriginal;
     }
 
 }

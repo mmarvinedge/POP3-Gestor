@@ -8,6 +8,7 @@ package com.popsales.controller.view;
 import com.jfoenix.controls.JFXButton;
 import com.popsales.Sessao;
 import com.popsales.Utils;
+import static com.popsales.Utils.formataData;
 import com.popsales.components.AePlayWave;
 import com.popsales.components.Mensagem;
 import com.popsales.components.WhatsappException;
@@ -21,7 +22,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -110,20 +110,30 @@ public class GerenciaView {
             Date ultimaData = ordersAguardando.stream().map(m -> m.getDtRegistro()).max((Date o1, Date o2) -> {
                 return o1.compareTo(o2);
             }).get();
-            System.out.println("ULTIMA DATA: " + ultimaData);
+            System.out.println("ULTIMA DATA: " + formataData(ultimaData, "dd/MM/yyyy HH:mm:ss"));
+            System.out.println("ULTIMA ATUAL: " + formataData(ultimoUpdate, "dd/MM/yyyy HH:mm:ss"));
             if (ultimoUpdate == null) {
                 ultimoUpdate = ultimaData;
             } else if (ultimaData.after(ultimoUpdate)) {
                 Notifications.create().title("Informação").text("Novo Pedido!").showInformation();
-                for (int i = 0; i < 1; i++) {
-                    new AePlayWave("C:\\popsales\\button.wav").start();
-                }
+                tocarAudio();
                 ((Stage) view.boxAguardandoAceite.getScene().getWindow()).setMaximized(true);
+                ultimoUpdate = ultimaData;
             }
         }
 
         for (Order or : ordersAguardando) {
             this.view.boxAguardandoAceite.getChildren().add(createCardOrderAguardando(or));
+        }
+    }
+
+    public void tocarAudio() {
+        try {
+            Clip oClip = AudioSystem.getClip();
+            AudioInputStream oStream = AudioSystem.getAudioInputStream(new File("C:\\popsales\\button.wav"));
+            oClip.open(oStream);
+            oClip.loop(0); // Toca uma vez
+        } catch (Exception e) {
         }
     }
 
@@ -202,7 +212,7 @@ public class GerenciaView {
                         sb.append("Quantidade: ").append(p.getQuantity());
                         sb.append("Valor: R$ ").append(p.getTotal());
                     });
-                    if(order.getDelivery()){
+                    if (order.getDelivery()) {
                         sb.append("*Endereço:* ");
                         sb.append(order.getAddress().getStreet()).append(", ").append(order.getAddress().getAuto()).append(order.getAddress().getSuburb());
                     } else {
@@ -244,7 +254,7 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-                   
+
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoAceite.getChildren().remove(n);
@@ -328,7 +338,7 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-               
+
                 System.out.println("CLICK");
                 order.setStatus("Finalizando");
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -429,7 +439,6 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-              
 
                 order.setStatus("Finalizado");
                 Node n = view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -456,7 +465,7 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-                   
+
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoFinalizacao.getChildren().remove(n);

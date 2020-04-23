@@ -7,6 +7,8 @@ package com.popsales.custom;
 
 import com.popsales.Sessao;
 import com.popsales.Utils;
+import com.popsales.model.Attribute;
+import com.popsales.model.AttributeValue;
 import com.popsales.model.Item;
 import com.popsales.model.Order;
 import java.math.BigDecimal;
@@ -74,13 +76,21 @@ public class Impressao {
                 list.forEach(pp -> {
                     sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
                     if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
-                        sb.append(pp.getFlavors().stream().map(m -> "\t1/" + pp.getFlavors().size() + " x " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
+                        sb.append(pp.getFlavors().stream().map(m -> "\t1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
+                    }
+
+                    if (pp.getAttributes() != null) {
+                        for (Attribute at : pp.getAttributes()) {
+                            sb.append("\t").append(at.getDescription());
+                            for (AttributeValue va : at.getValues()) {
+                                sb.append("\n\t").append(va.getQuantity()).append(" x ").append(va.getName());
+                            }
+                            sb.append("\n");
+                        }
                     }
                     if (pp.getObs().length() > 0) {
                         sb.append("\t").append(pp.getObs());
                     }
-                    sb.append(pp.getAttributesValues().stream().map(m -> "\n\tAdc: " + m.getName()).collect(Collectors.joining("\n")));
-
                 });
 
                 sb.append("\n\n\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
@@ -107,12 +117,21 @@ public class Impressao {
             sb.append(String.format(format, (i.getQuantity() + " x " + Utils.formataParaMoeda(i.getPrice())), i.getName().toUpperCase()));
 
             if (i.getFlavors() != null && i.getFlavors().size() > 0) {
-                sb.append(i.getFlavors().stream().map(m -> "\t1/" + i.getFlavors().size() + " x " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
+                sb.append(i.getFlavors().stream().map(m -> "\t1/" + i.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
+            }
+            if (i.getAttributes() != null) {
+                for (Attribute at : i.getAttributes()) {
+                    sb.append("\t").append(at.getDescription());
+                    for (AttributeValue va : at.getValues()) {
+                        sb.append("\n\t").append(va.getQuantity()).append(" x ").append(Utils.formatToMoney(va.getPrice())).append(" ").append(va.getName())
+                                .append((va.getTotal() != null && va.getTotal().doubleValue() > 0) ? (" = ("+Utils.formatToMoney(va.getTotal())+")") :"");
+                    }
+                    sb.append("\n"+LS+"\n");
+                }
             }
             if (i.getObs().length() > 0) {
-                sb.append("\t"+i.getObs()).append("\n");
+                sb.append("\t").append(i.getObs());
             }
-            sb.append(i.getAttributesValues().stream().map(m -> "\tAdc: " + Utils.formatToMoney(m.getPrice()) + " x " + m.getName()).collect(Collectors.joining("\n")));
         }
         sb.append("\n").append(LD);
         sb.append("PRODUTOS: ").append(Utils.formataParaMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add))).append("\n");

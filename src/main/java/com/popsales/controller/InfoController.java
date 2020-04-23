@@ -6,6 +6,7 @@
 package com.popsales.controller;
 
 import com.popsales.Utils;
+import com.popsales.model.Attribute;
 import com.popsales.model.AttributeValue;
 import com.popsales.model.FlavorPizza;
 import com.popsales.model.Item;
@@ -87,10 +88,13 @@ public class InfoController implements Initializable {
             if (!p.getObs().isEmpty()) {
                 obs.setText("(" + p.getObs() + ")\n");
             }
-            if (p.getAttributesValues().size() > 0) {
+            if (p.getAttributes().size() > 0) {
                 StringBuilder sb = new StringBuilder();
-                for (AttributeValue av : p.getAttributesValues()) {
-                    sb.append(" (").append(av.getName()).append(" - ").append(Utils.formatToMoney(av.getPrice())).append(")\n");
+                for (Attribute at : p.getAttributes()) {
+                    sb.append("\t"+at.getDescription()+"\n");
+                    for (AttributeValue v : at.getValues()) {
+                        sb.append("\t\t"+v.getQuantity()+" x "+Utils.formataParaMoeda(v.getPrice())+" "+v.getName()).append("\n");
+                    }
                 }
                 sb.append(obs.getText());
                 obs.setText(sb.toString());

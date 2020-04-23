@@ -5,13 +5,14 @@
  */
 package com.popsales.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  *
  * @author Tadeu-PC
  */
-public class AttributeValue {
+public class AttributeValue implements Serializable {
 
     private String id;
     private String sku;
