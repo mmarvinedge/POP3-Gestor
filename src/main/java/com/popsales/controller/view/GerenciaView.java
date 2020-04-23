@@ -155,8 +155,8 @@ public class GerenciaView {
         JFXButton bt1 = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
         bt1.setOnAction((ActionEvent event) -> {
             try {
-
                 String phone = "";
+                System.out.println(order.getClientInfo().getPhone().length());
                 if (order.getClientInfo().getPhone().length() == 14) {
                     phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
                     phone = "55" + phone;
@@ -166,7 +166,24 @@ public class GerenciaView {
                 }
                 System.out.println(phone);
                 try {
-                    wppService.sendMessage(phone, "Seu pedido acabou de ser confirmado, o número é " + order.getNum_order());
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Seu pedido acabou de ser confirmado.");
+                    sb.append("*Número do pedido*: ").append(order.getNum_order());
+                    sb.append("-- *Produtos* --");
+                    order.getProducts().forEach(p -> {
+                        sb.append("Nome: " + p.getName());
+                        sb.append("Quantidade: ").append(p.getQuantity());
+                        sb.append("Valor: R$ ").append(p.getTotal());
+                    });
+                    if(order.getDelivery()){
+                        sb.append("*Endereço:* ");
+                        sb.append(order.getAddress().getStreet()).append(", ").append(order.getAddress().getAuto()).append(order.getAddress().getSuburb());
+                    } else {
+                        sb.append("Você optou por retirar no local, para solicitar nosso endereço digite *localização*");
+                    }
+                    String msg = sb.toString();
+                    System.out.println(msg);
+                    wppService.sendMessage(phone, msg);
                     Thread.sleep(3000);
                 } catch (WhatsappException e) {
                     Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
@@ -191,6 +208,7 @@ public class GerenciaView {
             try {
                 if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
                     String phone = "";
+                    System.out.println(order.getClientInfo().getPhone().length());
                     if (order.getClientInfo().getPhone().length() == 14) {
                         phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
                         phone = "55" + phone;

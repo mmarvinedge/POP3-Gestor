@@ -10,9 +10,11 @@ import com.popsales.components.WhatsappException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.ByteString;
 
 /**
  *
@@ -21,14 +23,16 @@ import okhttp3.Response;
 public class WhatsAppService {
 
     public void sendMessage(String num, String msg) throws WhatsappException {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), "{\"number\" : \""+ num +"\", \"message\": \""+ msg +"\"}");
         Request request = new Request.Builder()
-                .url(Constantes.WURL + "/" + num + "/" + msg)
-                .get()
+                .url(Constantes.WURL)
+                .post(body)
                 .build();
         Response response;
         try {
             response = Constantes.httpClient.newCall(request).execute();
             String resposta = response.body().string();
+            System.out.println(resposta);
         } catch (IOException ex) {
             throw new WhatsappException("Não conectado com whatsapp!");
         }
