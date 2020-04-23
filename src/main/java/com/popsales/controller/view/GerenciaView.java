@@ -106,18 +106,20 @@ public class GerenciaView {
                 }
             }
         });
-        Date ultimaData = ordersAguardando.stream().map(m -> m.getDtRegistro()).max((Date o1, Date o2) -> {
-            return o1.compareTo(o2);
-        }).get();
-        System.out.println("ULTIMA DATA: " + ultimaData);
-        if (ultimoUpdate == null) {
-            ultimoUpdate = ultimaData;
-        } else if (ultimaData.after(ultimoUpdate)) {
-            Notifications.create().title("Informação").text("Novo Pedido!").showInformation();
-            for (int i = 0; i < 2; i++) {
-                new AePlayWave("C:\\popsales\\button.wav").start();
+        if (ordersAguardando.size() > 0) {
+            Date ultimaData = ordersAguardando.stream().map(m -> m.getDtRegistro()).max((Date o1, Date o2) -> {
+                return o1.compareTo(o2);
+            }).get();
+            System.out.println("ULTIMA DATA: " + ultimaData);
+            if (ultimoUpdate == null) {
+                ultimoUpdate = ultimaData;
+            } else if (ultimaData.after(ultimoUpdate)) {
+                Notifications.create().title("Informação").text("Novo Pedido!").showInformation();
+                for (int i = 0; i < 1; i++) {
+                    new AePlayWave("C:\\popsales\\button.wav").start();
+                }
+                ((Stage) view.boxAguardandoAceite.getScene().getWindow()).setMaximized(true);
             }
-            ((Stage)view.boxAguardandoAceite.getScene().getWindow()).setMaximized(true);
         }
 
         for (Order or : ordersAguardando) {
@@ -190,14 +192,7 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-                try {
-                    wppService.sendMessage(phone, "Seu pedido acabou de ser confirmado, o número é " + order.getNum_order());
-                    Thread.sleep(3000);
-                } catch (WhatsappException e) {
-                    Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-                }
+              
 
                 order.setStatus("Produzindo");
                 Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -224,14 +219,7 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-                    try {
-                        wppService.sendMessage(phone, "Seu pedido de número " + order.getNum_order() + " foi cancelado");
-                        Thread.sleep(3000);
-                    } catch (WhatsappException e) {
-                        Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                   
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoAceite.getChildren().remove(n);
@@ -315,20 +303,7 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-                try {
-                    if (order.getDelivery()) {
-                        wppService.sendMessage(phone, "Boa notícia, seu pedido de número " + order.getNum_order() + " acabou de sair para entrega no endereço "+ 
-                                order.getAddress().getStreet() + order.getAddress().getSuburb() +" :)");
-                        Thread.sleep(3000);
-                    } else {
-                        wppService.sendMessage(phone, "Boa notícia, seu pedido de número " + order.getNum_order() + " já está pronto para ser retirado. :)");
-                        Thread.sleep(3000);
-                    }
-                } catch (WhatsappException e) {
-                    Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-                }
+               
                 System.out.println("CLICK");
                 order.setStatus("Finalizando");
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -429,11 +404,7 @@ public class GerenciaView {
                     phone = "55" + phone;
                 }
                 System.out.println(phone);
-                try {
-                    wppService.sendMessage(phone, "Pedido entregue, agradecemos pela preferência. Até a próxima :)");
-                } catch (WhatsappException e) {
-                    Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                }
+              
 
                 order.setStatus("Finalizado");
                 Node n = view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -460,11 +431,7 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-                    try {
-                        wppService.sendMessage(phone, "Seu pedido de número " + order.getNum_order() + " foi cancelado");
-                    } catch (WhatsappException e) {
-                        Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                    }
+                   
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoFinalizacao.getChildren().remove(n);

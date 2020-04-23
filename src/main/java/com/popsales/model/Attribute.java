@@ -8,10 +8,10 @@ public class Attribute {
     private String id;
     private String sku;
     private String name;
-    private String description;
-    private String type;
+    private String description = "";
+    private String type = "";
     private Boolean highestPrice;
-    private String quantityType;
+    private String quantityType = "";
     private Integer quantity;
     private String companyId;
     private List<AttributeValue> values;
