@@ -114,6 +114,8 @@ public class GerenciaView {
             System.out.println("ULTIMA ATUAL: " + formataData(ultimoUpdate, "dd/MM/yyyy HH:mm:ss"));
             if (ultimoUpdate == null) {
                 ultimoUpdate = ultimaData;
+                Notifications.create().title("Informação").text("Novo Pedido!").showInformation();
+                tocarAudio();
             } else if (ultimaData.after(ultimoUpdate)) {
                 Notifications.create().title("Informação").text("Novo Pedido!").showInformation();
                 tocarAudio();
@@ -482,7 +484,7 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-                    wppService.sendMessage(phone, "Seu pedido "+ order.getNum_order() + " foi cancelado.");
+                    wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
                     order.setStatus("Cancelado");
                     Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoFinalizacao.getChildren().remove(n);
