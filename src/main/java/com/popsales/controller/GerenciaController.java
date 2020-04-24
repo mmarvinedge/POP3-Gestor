@@ -59,6 +59,7 @@ public class GerenciaController implements Initializable {
     @FXML
     public Text lblUsuario;
     Process p = null;
+    Thread t = null;
 
     /**
      * Initializes the controller class.
@@ -76,6 +77,9 @@ public class GerenciaController implements Initializable {
                         Sessao.t.cancel();
                         if (p != null && p.isAlive()) {
                             p.destroy();
+                        }
+                        if (t != null && t.isAlive()) {
+                           t.resume();
                         }
                     }
                 });
@@ -126,21 +130,42 @@ public class GerenciaController implements Initializable {
 
     @FXML
     private void executarWhatsapp(ActionEvent event) {
-
-        
         try {
-           Runtime.getRuntime().exec("taskkill /F /IM node.exe");
-            ProcessBuilder builder = new ProcessBuilder(
-                    "cmd.exe", "/c", "cd \"C:\\popsales\\whatsapp\" && npm run start");
-            builder.redirectErrorStream(true);
-            p = builder.start();
-
-            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-           
-
+            Runtime.getRuntime().exec("taskkill /F /IM node.exe");
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        if (t != null && t.isAlive()) {
+            t.resume();
+        }
+        t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    ProcessBuilder builder = new ProcessBuilder(
+                            "cmd.exe", "/c", "cd \"C:\\popsales\\whatsapp\" && npm run start");
+                    builder.redirectErrorStream(true);
+                    p = builder.start();
+
+                    BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                    String line;
+                    while (true) {
+                        line = r.readLine();
+                        if (line == null) {
+                            break;
+                        }
+                        System.out.println(line);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.setDaemon(true);
+        t.start();
 
     }
 
