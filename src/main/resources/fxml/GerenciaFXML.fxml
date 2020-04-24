@@ -53,6 +53,16 @@
                         </HBox>
                         <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
                            <children>
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="10.0" layoutY="10.0" minWidth="104.0" onAction="#executarWhatsapp" prefHeight="68.0" prefWidth="104.0" ripplerFill="WHITE">
+                                 <graphic>
+                                    <VBox alignment="CENTER">
+                                       <children>
+                                          <FontAwesomeIconView fill="WHITE" glyphName="WHATSAPP" size="35" />
+                                          <Label text="Executar" textFill="WHITE" />
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </JFXButton>
                               <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="10.0" layoutY="10.0" minWidth="104.0" onAction="#atualizar" prefHeight="68.0" prefWidth="104.0" ripplerFill="WHITE">
                                  <graphic>
                                     <VBox alignment="CENTER">

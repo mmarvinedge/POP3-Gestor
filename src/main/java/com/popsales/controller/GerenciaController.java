@@ -7,7 +7,9 @@ package com.popsales.controller;
 
 import com.popsales.Sessao;
 import com.popsales.controller.view.GerenciaView;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -24,10 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 /**
@@ -59,6 +58,7 @@ public class GerenciaController implements Initializable {
     public Text lblNomeEmpresa;
     @FXML
     public Text lblUsuario;
+    Process p = null;
 
     /**
      * Initializes the controller class.
@@ -74,6 +74,9 @@ public class GerenciaController implements Initializable {
                     @Override
                     public void handle(WindowEvent event) {
                         Sessao.t.cancel();
+                        if (p != null && p.isAlive()) {
+                            p.destroy();
+                        }
                     }
                 });
 
@@ -119,6 +122,26 @@ public class GerenciaController implements Initializable {
     private void atualizar(ActionEvent event) {
         view.loadComponents();
         view.loadData();
+    }
+
+    @FXML
+    private void executarWhatsapp(ActionEvent event) {
+
+        
+        try {
+           Runtime.getRuntime().exec("taskkill /F /IM node.exe");
+            ProcessBuilder builder = new ProcessBuilder(
+                    "cmd.exe", "/c", "cd \"C:\\popsales\\whatsapp\" && npm run start");
+            builder.redirectErrorStream(true);
+            p = builder.start();
+
+            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+           
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
