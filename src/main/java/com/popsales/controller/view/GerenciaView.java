@@ -226,7 +226,7 @@ public class GerenciaView {
                     String msg = sb.toString();
                     System.out.println(msg);
                     wppService.sendMessage(phone, msg);
-                    Thread.sleep(3000);
+                    Thread.sleep(2000);
                 } catch (WhatsappException e) {
                     Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
                 } catch (InterruptedException ex) {
@@ -262,6 +262,7 @@ public class GerenciaView {
                     System.out.println(phone);
                     wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
                     order.setStatus("Cancelado");
+                    Thread.sleep(2000);
                     Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoAceite.getChildren().remove(n);
                     orderService.update(order);
@@ -269,6 +270,8 @@ public class GerenciaView {
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             } catch (WhatsappException ex) {
+                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -353,6 +356,7 @@ public class GerenciaView {
                 }
                 System.out.println("CLICK");
                 order.setStatus("Finalizando");
+                Thread.sleep(2000);
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoProducao.getChildren().remove(n);
                 this.view.boxAguardandoFinalizacao.getChildren().add(createCardOrderFinalizando(order));
@@ -361,6 +365,8 @@ public class GerenciaView {
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             } catch (WhatsappException ex) {
+                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -459,6 +465,7 @@ public class GerenciaView {
                     wppService.sendMessage(phone, "Pedido retirado, obrigado pela preferência.");
                 }
                 order.setStatus("Finalizado");
+                Thread.sleep(2000);
                 Node n = view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoFinalizacao.getChildren().remove(n);
                 orderService.update(order);
@@ -466,6 +473,8 @@ public class GerenciaView {
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             } catch (WhatsappException ex) {
+                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -487,6 +496,7 @@ public class GerenciaView {
                     System.out.println(phone);
                     wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
                     order.setStatus("Cancelado");
+                    Thread.sleep(2000);
                     Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                     this.view.boxAguardandoFinalizacao.getChildren().remove(n);
                     orderService.update(order);
@@ -494,6 +504,8 @@ public class GerenciaView {
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             } catch (WhatsappException ex) {
+                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
