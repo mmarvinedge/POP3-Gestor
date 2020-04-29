@@ -143,9 +143,7 @@ public class GerenciaController implements Initializable {
             @Override
             public void run() {
                 try {
-
-                    ProcessBuilder builder = new ProcessBuilder(
-                            "cmd.exe", "/c", "cd \"C:\\popsales\\whatsapp\" && npm run start");
+                    ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\popsales\\whatsapp\" && npm run start");
                     builder.redirectErrorStream(true);
                     p = builder.start();
 
@@ -156,7 +154,7 @@ public class GerenciaController implements Initializable {
                         if (line == null) {
                             break;
                         }
-                        System.out.println(line);
+                      System.out.println(line);
                     }
 
                 } catch (Exception e) {

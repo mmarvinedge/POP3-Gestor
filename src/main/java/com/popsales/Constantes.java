@@ -15,13 +15,13 @@ import okhttp3.OkHttpClient;
  */
 public class Constantes {
 
-   // public static final String URL = "http://localhost:4000";
-    public static final String URL = "http://metresistemas.ddns.net:4000";
+    public static final String URL = "http://localhost:4000";
+    //public static final String URL = "http://metresistemas.ddns.net:4000";
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(4, TimeUnit.SECONDS)
             .writeTimeout(4, TimeUnit.SECONDS)
             .readTimeout(4, TimeUnit.SECONDS).build();
-    
+
     public static final String WURL = "http://localhost:3300/whats";
 }

@@ -195,7 +195,7 @@ public class GerenciaView {
         bt1.setOnAction((ActionEvent event) -> {
             try {
                 String phone = "";
-                System.out.println(order.getClientInfo().getPhone().length());
+               // System.out.println(order.getClientInfo().getPhone().length());
                 if (order.getClientInfo().getPhone().length() == 14) {
                     phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
                     phone = "55" + phone;
@@ -239,6 +239,7 @@ public class GerenciaView {
                 this.view.boxAguardandoProducao.getChildren().add(createCardOrderProduzindo(order));
                 orderService.update(order);
                 Impressao.imprimirOrder(order);
+                Impressao.imprimirOrderControle(order);
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
