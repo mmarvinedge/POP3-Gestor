@@ -64,7 +64,7 @@ public class Impressao {
                 sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
                 sb.append("DATA HORA: ").append(or.getDtRegister()).append("\n");
                 if (or.getDelivery()) {
-                    sb.append("ENDERECO: ").append(or.getAddress().getStreet()).append("\n");
+                    sb.append("ENDERECO: ").append(or.getAddress().getStreet()+" - "+or.getAddress().getStreetNumber()).append("\n");
                     if (!or.getAddress().getSuburb().isEmpty()) {
                         sb.append(or.getAddress().getSuburb()).append("\n");
                     }
@@ -142,7 +142,7 @@ public class Impressao {
 
         sb.append(LD);
         if (or.getDelivery()) {
-            sb.append("ENDERECO: ").append(or.getAddress().getStreet()).append("\n");
+            sb.append("ENDERECO: ").append(or.getAddress().getStreet()+" - "+or.getAddress().getStreetNumber()).append("\n");
             if (!or.getAddress().getSuburb().isEmpty()) {
                 sb.append(or.getAddress().getSuburb()).append("\n");
             }
@@ -201,7 +201,7 @@ public class Impressao {
 
         sb.append(LD);
         if (or.getDelivery()) {
-            sb.append("ENDERECO: ").append(or.getAddress().getStreet()).append("\n");
+            sb.append("ENDERECO: ").append(or.getAddress().getStreet()+" - "+or.getAddress().getStreetNumber()).append("\n");
             if (!or.getAddress().getSuburb().isEmpty()) {
                 sb.append(or.getAddress().getSuburb()).append("\n");
             }

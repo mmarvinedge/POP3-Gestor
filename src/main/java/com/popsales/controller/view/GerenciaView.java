@@ -195,7 +195,7 @@ public class GerenciaView {
         bt1.setOnAction((ActionEvent event) -> {
             try {
                 String phone = "";
-               // System.out.println(order.getClientInfo().getPhone().length());
+                // System.out.println(order.getClientInfo().getPhone().length());
                 if (order.getClientInfo().getPhone().length() == 14) {
                     phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
                     phone = "55" + phone;
@@ -219,7 +219,7 @@ public class GerenciaView {
                     sb.append("*Total:* R$ ").append(order.getTotal());
                     if (order.getDelivery()) {
                         sb.append("*Endereço:* ");
-                        sb.append(order.getAddress().getStreet()).append(", ").append(order.getAddress().getAuto()).append(", ").append(order.getAddress().getSuburb());
+                        sb.append(order.getAddress().getStreet()).append("- ").append(order.getAddress().getStreetNumber()).append(", ").append(order.getAddress().getAuto()).append(", ").append(order.getAddress().getSuburb());
                     } else {
                         sb.append("Você optou por retirar no local, para solicitar nosso endereço digite *localização*");
                     }
@@ -293,7 +293,7 @@ public class GerenciaView {
         tres.setSpacing(5.0);
         if (order.getDelivery()) {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.MAP_MARKER, "25", "#838383"));
-            tres.getChildren().add(createLabel(order.getAddress().getStreet() + "\n"
+            tres.getChildren().add(createLabel(order.getAddress().getStreet()+" - "+order.getAddress().getStreetNumber() + "\n"
                     + order.getAddress().getSuburb() + " - " + order.getAddress().getAuto(), 13, "#545454", Boolean.FALSE));
         } else {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.TABLE, "25", "#838383"));
@@ -402,7 +402,7 @@ public class GerenciaView {
         tres.setSpacing(5.0);
         if (order.getDelivery()) {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.MAP_MARKER, "25", "#838383"));
-            tres.getChildren().add(createLabel(order.getAddress().getStreet() + "\n"
+            tres.getChildren().add(createLabel(order.getAddress().getStreet()+" - "+order.getAddress().getStreetNumber() + "\n"
                     + order.getAddress().getSuburb() + " - " + order.getAddress().getAuto(), 13, "#545454", Boolean.FALSE));
         } else {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.TABLE, "25", "#838383"));
@@ -527,7 +527,7 @@ public class GerenciaView {
         tres.setSpacing(5.0);
         if (order.getDelivery()) {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.MAP_MARKER, "25", "#838383"));
-            tres.getChildren().add(createLabel(order.getAddress().getStreet() + "\n"
+            tres.getChildren().add(createLabel(order.getAddress().getStreet()+" - "+order.getAddress().getStreetNumber() + "\n"
                     + order.getAddress().getSuburb() + " - " + order.getAddress().getAuto(), 13, "#545454", Boolean.FALSE));
         } else {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.TABLE, "25", "#838383"));
