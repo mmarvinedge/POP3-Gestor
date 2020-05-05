@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -98,12 +99,20 @@ public class GerenciaView {
 
     private void carregarAguardando() {
         ordersAguardando = orderService.getOrders("Aguardando");
+
         ordersAguardando.forEach(c -> {
-            if (c.getDtRegister() != null) {
-                try {
-                    c.setDtRegistro(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(c.getDtRegister()));
-                } catch (Exception e) {
+            try {
+
+                if (c.getDtRegister() != null) {
+                    try {
+                        c.setDtRegistro(new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", new Locale("pt_BR")).parse(c.getDtRegister()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (Exception e) {
+                System.out.println("ERRO AO CONVERTER: ");
+                e.printStackTrace();
             }
         });
         if (ordersAguardando.size() > 0) {
@@ -141,6 +150,22 @@ public class GerenciaView {
 
     private void carregarProduzindo() {
         ordersProducao = orderService.getOrders("Produzindo");
+
+        ordersProducao.forEach(c -> {
+            try {
+                if (c.getDtRegister() != null) {
+                    try {
+                        c.setDtRegistro(new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", new Locale("pt_BR")).parse(c.getDtRegister()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("ERRO AO CONVERTER: ");
+                e.printStackTrace();
+            }
+        });
+
         for (Order or : ordersProducao) {
             this.view.boxAguardandoProducao.getChildren().add(createCardOrderProduzindo(or));
         }
@@ -148,6 +173,22 @@ public class GerenciaView {
 
     private void carregarFinalizando() {
         ordersAguardandoFinalizar = orderService.getOrders("Finalizando");
+
+        ordersAguardandoFinalizar.forEach(c -> {
+            try {
+                if (c.getDtRegister() != null) {
+                    try {
+                        c.setDtRegistro(new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", new Locale("pt_BR")).parse(c.getDtRegister()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("ERRO AO CONVERTER: ");
+                e.printStackTrace();
+            }
+        });
+
         for (Order or : ordersAguardandoFinalizar) {
             this.view.boxAguardandoFinalizacao.getChildren().add(createCardOrderFinalizando(or));
         }
@@ -166,7 +207,7 @@ public class GerenciaView {
         saida.setMinHeight(150);
         HBox um = new HBox();
         um.setAlignment(Pos.TOP_RIGHT);
-        um.getChildren().add(createLabel(order.getDtRegister(), 12, "#111", Boolean.TRUE));
+        um.getChildren().add(createLabel(Utils.formataData(order.getDtRegistro(), "dd/MM/yyyy HH:mm:sss"), 12, "#111", Boolean.TRUE));
 
         HBox dois = new HBox();
 
@@ -293,7 +334,7 @@ public class GerenciaView {
         tres.setSpacing(5.0);
         if (order.getDelivery()) {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.MAP_MARKER, "25", "#838383"));
-            tres.getChildren().add(createLabel(order.getAddress().getStreet()+" - "+order.getAddress().getStreetNumber() + "\n"
+            tres.getChildren().add(createLabel(order.getAddress().getStreet() + " - " + order.getAddress().getStreetNumber() + "\n"
                     + order.getAddress().getSuburb() + " - " + order.getAddress().getAuto(), 13, "#545454", Boolean.FALSE));
         } else {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.TABLE, "25", "#838383"));
@@ -312,7 +353,7 @@ public class GerenciaView {
         saida.setMinHeight(150);
         HBox um = new HBox();
         um.setAlignment(Pos.TOP_RIGHT);
-        um.getChildren().add(createLabel(order.getDtRegister(), 12, "#111", Boolean.TRUE));
+        um.getChildren().add(createLabel(Utils.formataData(order.getDtRegistro(), "dd/MM/yyyy HH:mm:sss"), 12, "#111", Boolean.TRUE));
 
         HBox dois = new HBox();
 
@@ -402,7 +443,7 @@ public class GerenciaView {
         tres.setSpacing(5.0);
         if (order.getDelivery()) {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.MAP_MARKER, "25", "#838383"));
-            tres.getChildren().add(createLabel(order.getAddress().getStreet()+" - "+order.getAddress().getStreetNumber() + "\n"
+            tres.getChildren().add(createLabel(order.getAddress().getStreet() + " - " + order.getAddress().getStreetNumber() + "\n"
                     + order.getAddress().getSuburb() + " - " + order.getAddress().getAuto(), 13, "#545454", Boolean.FALSE));
         } else {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.TABLE, "25", "#838383"));
@@ -421,7 +462,7 @@ public class GerenciaView {
         saida.setMinHeight(150);
         HBox um = new HBox();
         um.setAlignment(Pos.TOP_RIGHT);
-        um.getChildren().add(createLabel(order.getDtRegister(), 12, "#111", Boolean.TRUE));
+        um.getChildren().add(createLabel(Utils.formataData(order.getDtRegistro(), "dd/MM/yyyy HH:mm:sss"), 12, "#111", Boolean.TRUE));
 
         HBox dois = new HBox();
 
@@ -527,7 +568,7 @@ public class GerenciaView {
         tres.setSpacing(5.0);
         if (order.getDelivery()) {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.MAP_MARKER, "25", "#838383"));
-            tres.getChildren().add(createLabel(order.getAddress().getStreet()+" - "+order.getAddress().getStreetNumber() + "\n"
+            tres.getChildren().add(createLabel(order.getAddress().getStreet() + " - " + order.getAddress().getStreetNumber() + "\n"
                     + order.getAddress().getSuburb() + " - " + order.getAddress().getAuto(), 13, "#545454", Boolean.FALSE));
         } else {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.TABLE, "25", "#838383"));

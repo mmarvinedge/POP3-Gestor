@@ -64,7 +64,7 @@ public class Impressao {
                 sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
                 sb.append("DATA HORA: ").append(or.getDtRegister()).append("\n");
                 if (or.getDelivery()) {
-                    sb.append("ENDERECO: ").append(or.getAddress().getStreet()+" - "+or.getAddress().getStreetNumber()).append("\n");
+                    sb.append("ENDERECO: ").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append("\n");
                     if (!or.getAddress().getSuburb().isEmpty()) {
                         sb.append(or.getAddress().getSuburb()).append("\n");
                     }
@@ -95,7 +95,7 @@ public class Impressao {
                 });
 
                 sb.append("\n\n\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
-               // System.out.println(sb.toString());
+                // System.out.println(sb.toString());
                 printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", list.get(0).getPrinter(), String.class));
             }
         } catch (Exception e) {
@@ -115,24 +115,24 @@ public class Impressao {
         sb.append(LS);
 
         sb.append("-----------------ITENS--------------------\n\n");
-        for (Item i : or.getProducts()) {
-            sb.append(String.format(format, (i.getQuantity() + " x " + Utils.formataParaMoeda(i.getPrice())), i.getName().toUpperCase()));
+        for (Item pp : or.getProducts()) {
+            sb.append(String.format(format, (pp.getQuantity() + " x " + Utils.formataParaMoeda(pp.getPrice())), pp.getName().toUpperCase()));
 
-            if (i.getFlavors() != null && i.getFlavors().size() > 0) {
-                sb.append(i.getFlavors().stream().map(m -> "\t1/" + i.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
+            if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
+                sb.append(pp.getFlavors().stream().map(m -> "\t1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
             }
-            if (i.getAttributes() != null) {
-                for (Attribute at : i.getAttributes()) {
+
+            if (pp.getAttributes() != null) {
+                for (Attribute at : pp.getAttributes()) {
                     sb.append("\t").append(at.getDescription());
                     for (AttributeValue va : at.getValues()) {
-                        sb.append("\n\t").append(va.getQuantity()).append(" x ").append(Utils.formatToMoney(va.getPrice())).append(" ").append(va.getName())
-                                .append((va.getTotal() != null && va.getTotal().doubleValue() > 0) ? (" = ("+Utils.formatToMoney(va.getTotal())+")") :"");
+                        sb.append("\n\t").append(va.getQuantity()).append(" x ").append(va.getName());
                     }
-                    sb.append("\n"+LS+"\n");
+                    sb.append("\n");
                 }
             }
-            if (i.getObs().length() > 0) {
-                sb.append("\t").append(i.getObs());
+            if (pp.getObs().length() > 0) {
+                sb.append("\t").append(pp.getObs());
             }
         }
         sb.append("\n").append(LD);
@@ -142,7 +142,7 @@ public class Impressao {
 
         sb.append(LD);
         if (or.getDelivery()) {
-            sb.append("ENDERECO: ").append(or.getAddress().getStreet()+" - "+or.getAddress().getStreetNumber()).append("\n");
+            sb.append("ENDERECO: ").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append("\n");
             if (!or.getAddress().getSuburb().isEmpty()) {
                 sb.append(or.getAddress().getSuburb()).append("\n");
             }
@@ -163,6 +163,7 @@ public class Impressao {
         printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", "Expedicao", String.class));
 
     }
+
     public static void imprimirOrderEntrega(Order or) {
 
         StringBuilder sb = new StringBuilder();
@@ -185,9 +186,9 @@ public class Impressao {
                     sb.append("\t").append(at.getDescription());
                     for (AttributeValue va : at.getValues()) {
                         sb.append("\n\t").append(va.getQuantity()).append(" x ").append(Utils.formatToMoney(va.getPrice())).append(" ").append(va.getName())
-                                .append((va.getTotal() != null && va.getTotal().doubleValue() > 0) ? (" = ("+Utils.formatToMoney(va.getTotal())+")") :"");
+                                .append((va.getTotal() != null && va.getTotal().doubleValue() > 0) ? (" = (" + Utils.formatToMoney(va.getTotal()) + ")") : "");
                     }
-                    sb.append("\n"+LS+"\n");
+                    sb.append("\n" + LS + "\n");
                 }
             }
             if (i.getObs().length() > 0) {
@@ -201,7 +202,7 @@ public class Impressao {
 
         sb.append(LD);
         if (or.getDelivery()) {
-            sb.append("ENDERECO: ").append(or.getAddress().getStreet()+" - "+or.getAddress().getStreetNumber()).append("\n");
+            sb.append("ENDERECO: ").append(or.getAddress().getStreet() + " - " + or.getAddress().getStreetNumber()).append("\n");
             if (!or.getAddress().getSuburb().isEmpty()) {
                 sb.append(or.getAddress().getSuburb()).append("\n");
             }
