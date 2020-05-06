@@ -102,10 +102,9 @@ public class GerenciaView {
 
         ordersAguardando.forEach(c -> {
             try {
-
                 if (c.getDtRegister() != null) {
                     try {
-                        c.setDtRegistro(new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", new Locale("pt_BR")).parse(c.getDtRegister()));
+                        c.setDtRegistro(new SimpleDateFormat("yyyy-MM-ddd hh:mm:ss", new Locale("pt_BR")).parse(c.getDtRegister()));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -116,7 +115,7 @@ public class GerenciaView {
             }
         });
         if (ordersAguardando.size() > 0) {
-            Date ultimaData = ordersAguardando.stream().map(m -> m.getDtRegistro()).max((Date o1, Date o2) -> {
+            Date ultimaData = ordersAguardando.stream().filter(p -> p.getDtRegistro()!= null).map(m -> m.getDtRegistro()).max((Date o1, Date o2) -> {
                 return o1.compareTo(o2);
             }).get();
             System.out.println("ULTIMA DATA: " + formataData(ultimaData, "dd/MM/yyyy HH:mm:ss"));
@@ -155,7 +154,7 @@ public class GerenciaView {
             try {
                 if (c.getDtRegister() != null) {
                     try {
-                        c.setDtRegistro(new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", new Locale("pt_BR")).parse(c.getDtRegister()));
+                        c.setDtRegistro(new SimpleDateFormat("yyyy-MM-ddd hh:mm:ss", new Locale("pt_BR")).parse(c.getDtRegister()));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -178,7 +177,7 @@ public class GerenciaView {
             try {
                 if (c.getDtRegister() != null) {
                     try {
-                        c.setDtRegistro(new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", new Locale("pt_BR")).parse(c.getDtRegister()));
+                        c.setDtRegistro(new SimpleDateFormat("yyyy-MM-ddd hh:mm:ss", new Locale("pt_BR")).parse(c.getDtRegister()));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
