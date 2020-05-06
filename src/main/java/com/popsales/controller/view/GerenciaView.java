@@ -216,13 +216,13 @@ public class GerenciaView {
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
         hboxNome.getChildren().add(creatIcon(FontAwesomeIcon.USER, "25", "#838383"));
-        hboxNome.getChildren().add(createLabel(order.getClientInfo().getName(), 16, "#545454", Boolean.TRUE));
+        hboxNome.getChildren().add(createLabel(order.getClientInfo().getName(), 14, "#545454", Boolean.TRUE));
         doisUm.getChildren().add(hboxNome);
 
         HBox hboxTelefone = new HBox();
         hboxTelefone.setSpacing(5.0);
         hboxTelefone.getChildren().add(creatIcon(FontAwesomeIcon.PHONE, "25", "#838383"));
-        hboxTelefone.getChildren().add(createLabel(order.getClientInfo().getPhone(), 16, "#545454", Boolean.TRUE));
+        hboxTelefone.getChildren().add(createLabel(order.getClientInfo().getPhone(), 14, "#545454", Boolean.TRUE));
         doisUm.getChildren().add(hboxTelefone);
 
         HBox doisdois = new HBox();
@@ -362,13 +362,13 @@ public class GerenciaView {
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
         hboxNome.getChildren().add(creatIcon(FontAwesomeIcon.USER, "25", "#838383"));
-        hboxNome.getChildren().add(createLabel(order.getClientInfo().getName(), 16, "#545454", Boolean.TRUE));
+        hboxNome.getChildren().add(createLabel(order.getClientInfo().getName(), 14, "#545454", Boolean.TRUE));
         doisUm.getChildren().add(hboxNome);
 
         HBox hboxTelefone = new HBox();
         hboxTelefone.setSpacing(5.0);
         hboxTelefone.getChildren().add(creatIcon(FontAwesomeIcon.PHONE, "25", "#838383"));
-        hboxTelefone.getChildren().add(createLabel(order.getClientInfo().getPhone(), 16, "#545454", Boolean.TRUE));
+        hboxTelefone.getChildren().add(createLabel(order.getClientInfo().getPhone(), 14, "#545454", Boolean.TRUE));
         doisUm.getChildren().add(hboxTelefone);
 
         HBox doisdois = new HBox();
@@ -471,13 +471,13 @@ public class GerenciaView {
         HBox hboxNome = new HBox();
         hboxNome.setSpacing(5.0);
         hboxNome.getChildren().add(creatIcon(FontAwesomeIcon.USER, "25", "#838383"));
-        hboxNome.getChildren().add(createLabel(order.getClientInfo().getName(), 16, "#545454", Boolean.TRUE));
+        hboxNome.getChildren().add(createLabel(order.getClientInfo().getName(), 14, "#545454", Boolean.TRUE));
         doisUm.getChildren().add(hboxNome);
 
         HBox hboxTelefone = new HBox();
         hboxTelefone.setSpacing(5.0);
         hboxTelefone.getChildren().add(creatIcon(FontAwesomeIcon.PHONE, "25", "#838383"));
-        hboxTelefone.getChildren().add(createLabel(order.getClientInfo().getPhone(), 16, "#545454", Boolean.TRUE));
+        hboxTelefone.getChildren().add(createLabel(order.getClientInfo().getPhone(), 14, "#545454", Boolean.TRUE));
         doisUm.getChildren().add(hboxTelefone);
 
         HBox doisdois = new HBox();
