@@ -50,6 +50,8 @@ public class InfoController implements Initializable {
     private Label lblTotal;
     @FXML
     private VBox vBoxTable;
+    @FXML
+    private Label lblObs;
 
     /**
      * Initializes the controller class.
@@ -59,6 +61,7 @@ public class InfoController implements Initializable {
         vBoxTable.getChildren().clear();
         lblNome.setText(order.getClientInfo().getName());
         lblTelefone.setText(order.getClientInfo().getPhone());
+        lblObs.setText(order.getObservations() == null ? "Sem obs" : order.getObservations());
 
         lblProdutos.setText(Utils.formatToMoney(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add)));
         lblTaxas.setText(Utils.formatToMoney(order.getDeliveryCost()));
