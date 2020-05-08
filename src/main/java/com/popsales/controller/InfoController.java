@@ -6,14 +6,23 @@
 package com.popsales.controller;
 
 import com.popsales.Utils;
+import com.popsales.components.Mensagem;
+import com.popsales.components.WhatsappException;
+import com.popsales.controller.view.GerenciaView;
 import com.popsales.model.Attribute;
 import com.popsales.model.AttributeValue;
 import com.popsales.model.FlavorPizza;
 import com.popsales.model.Item;
 import com.popsales.model.Order;
+import com.popsales.services.WhatsAppService;
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +32,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.controlsfx.control.Notifications;
 
 /**
  * FXML Controller class
@@ -52,6 +62,8 @@ public class InfoController implements Initializable {
     private VBox vBoxTable;
     @FXML
     private Label lblObs;
+    private WhatsAppService wppService = new WhatsAppService();
+    public static GerenciaController gerenciaController;
 
     /**
      * Initializes the controller class.
@@ -94,9 +106,9 @@ public class InfoController implements Initializable {
             if (p.getAttributes().size() > 0) {
                 StringBuilder sb = new StringBuilder();
                 for (Attribute at : p.getAttributes()) {
-                    sb.append("\t"+at.getDescription()+"\n");
+                    sb.append("\t" + at.getDescription() + "\n");
                     for (AttributeValue v : at.getValues()) {
-                        sb.append("\t\t"+v.getQuantity()+" x "+Utils.formataParaMoeda(v.getPrice())+" "+v.getName()).append("\n");
+                        sb.append("\t\t" + v.getQuantity() + " x " + Utils.formataParaMoeda(v.getPrice()) + " " + v.getName()).append("\n");
                     }
                 }
                 sb.append(obs.getText());
@@ -133,6 +145,39 @@ public class InfoController implements Initializable {
     @FXML
     private void sair(ActionEvent event) {
         ((Stage) vBoxTable.getScene().getWindow()).close();
+    }
+
+    @FXML
+    private void enviarMensagem(ActionEvent event) {
+        try {
+            String phone = "";
+            // System.out.println(order.getClientInfo().getPhone().length());
+            if (order.getClientInfo().getPhone().length() == 14) {
+                phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                phone = "55" + phone;
+            } else {
+                phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                phone = "55" + phone;
+            }
+            System.out.println(phone);
+            String msg = Mensagem.dialogText("Digita a mensagem", "Digita a mensagem", null);
+            StringBuilder sb = new StringBuilder();
+            String[] lines = msg.split("\n");
+            sb.append(Utils.removeAcentos(Arrays.asList(lines).stream().collect(Collectors.joining(" "))));
+
+            if (sb.toString() != null && !sb.toString().isEmpty()) {
+                if (gerenciaController.p == null) {
+                    Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                } else {
+                    wppService.sendMessage(phone, msg.toString());
+                    Notifications.create().title("Atençao!").text("Mensagem enviada!").showInformation();
+                }
+
+            }
+        } catch (WhatsappException e) {
+            Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+        }
+
     }
 
 }

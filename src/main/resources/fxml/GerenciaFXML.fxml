@@ -217,7 +217,7 @@
                                                       <Font size="15.0" />
                                                    </font>
                                                 </Label>
-                                                <HBox alignment="BOTTOM_RIGHT" style="-fx-border-width: 0 0 1 0; -fx-border-color: blue;" VBox.vgrow="ALWAYS">
+                                                <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                                                    <children>
                                                       <Label fx:id="lblQntAguardando" text="150" textFill="WHITE">
                                                          <font>

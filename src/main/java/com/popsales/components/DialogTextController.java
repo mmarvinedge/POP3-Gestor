@@ -62,14 +62,18 @@ public class DialogTextController implements Initializable {
     private void sair(ActionEvent event) {
         output = "";
         dialogStage.close();
-        region.setVisible(false);
+        if (region != null) {
+            region.setVisible(false);
+        }
     }
 
     @FXML
     private void confirmar(ActionEvent event) {
         output = textPut.getText();
         dialogStage.close();
-        region.setVisible(false);
+        if (region != null) {
+            region.setVisible(false);
+        }
     }
 
     public void setTitulo(String titulo) {
@@ -102,7 +106,7 @@ public class DialogTextController implements Initializable {
 
     @FXML
     private void abrirTeclado(ActionEvent event) {
-       
+
     }
 
 }

@@ -58,7 +58,7 @@ public class GerenciaController implements Initializable {
     public Text lblNomeEmpresa;
     @FXML
     public Text lblUsuario;
-    Process p = null;
+    public Process p = null;
     Thread t = null;
 
     /**
@@ -146,7 +146,6 @@ public class GerenciaController implements Initializable {
                     ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\popsales\\bin\" && npm run start");
                     builder.redirectErrorStream(true);
                     p = builder.start();
-
                     BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
                     String line;
                     while (true) {

@@ -7,6 +7,7 @@ package com.popsales;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,5 +58,15 @@ public class Utils {
 
     public static String formataParaMoeda(Integer total) {
         return new java.text.DecimalFormat("¤ #,##0.00").format(total);
+    }
+    
+    
+    public static String removeAcentos(String str) {
+        CharSequence cs = new StringBuilder(str == null ? "" : str);
+        return Normalizer
+                .normalize(cs, Normalizer.Form.NFKD)
+                .replace("&", "e")
+                .replace("ç", "c")
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }
 }

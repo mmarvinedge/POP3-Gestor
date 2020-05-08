@@ -115,7 +115,7 @@ public class GerenciaView {
             }
         });
         if (ordersAguardando.size() > 0) {
-            Date ultimaData = ordersAguardando.stream().filter(p -> p.getDtRegistro()!= null).map(m -> m.getDtRegistro()).max((Date o1, Date o2) -> {
+            Date ultimaData = ordersAguardando.stream().filter(p -> p.getDtRegistro() != null).map(m -> m.getDtRegistro()).max((Date o1, Date o2) -> {
                 return o1.compareTo(o2);
             }).get();
             System.out.println("ULTIMA DATA: " + formataData(ultimaData, "dd/MM/yyyy HH:mm:ss"));
@@ -265,7 +265,12 @@ public class GerenciaView {
                     }
                     String msg = sb.toString();
                     System.out.println(msg);
-                    wppService.sendMessage(phone, msg);
+                    if (view.p != null) {
+                        wppService.sendMessage(phone, msg);
+                    } else {
+                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+
+                    }
                     Thread.sleep(2000);
                 } catch (WhatsappException e) {
                     Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
@@ -300,7 +305,12 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-                    wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
+                    if (view.p != null) {
+                        wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
+                    } else {
+                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                    }
+
                     order.setStatus("Cancelado");
                     Thread.sleep(2000);
                     Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -320,6 +330,7 @@ public class GerenciaView {
         JFXButton bt3 = createButton(FontAwesomeIcon.INFO, "#400082");
         bt3.setOnAction((ActionEvent event) -> {
             InfoController.order = order;
+            InfoController.gerenciaController = view;
             novaJanelaAnchor(getClass().getResource("/fxml/InfoFXML.fxml"), view.boxAguardandoAceite.getScene().getWindow(), view.region);
         });
         doisdois.getChildren().add(bt3);
@@ -390,9 +401,17 @@ public class GerenciaView {
                 }
                 System.out.println(phone);
                 if (order.getDelivery()) {
-                    wppService.sendMessage(phone, "Seu pedido acabou de sair para entrega.");
+                    if (view.p != null) {
+                        wppService.sendMessage(phone, "Seu pedido acabou de sair para entrega.");
+                    } else {
+                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                    }
                 } else {
-                    wppService.sendMessage(phone, "Seu pedido está pronto para ser retirado.");
+                    if (view.p != null) {
+                        wppService.sendMessage(phone, "Seu pedido está pronto para ser retirado.");
+                    } else {
+                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                    }
                 }
                 System.out.println("CLICK");
                 order.setStatus("Finalizando");
@@ -429,6 +448,7 @@ public class GerenciaView {
         JFXButton button3 = createButton(FontAwesomeIcon.INFO, "#400082");
         button3.setOnAction((ActionEvent event) -> {
             InfoController.order = order;
+             InfoController.gerenciaController = view;
             novaJanelaAnchor(getClass().getResource("/fxml/InfoFXML.fxml"), view.boxAguardandoAceite.getScene().getWindow(), view.region);
         });
         doisdois.getChildren().add(button3);
@@ -500,9 +520,17 @@ public class GerenciaView {
                 }
                 System.out.println(phone);
                 if (order.getDelivery()) {
-                    wppService.sendMessage(phone, "Pedido entregue, obrigado pela preferência.");
+                    if (view.p != null) {
+                        wppService.sendMessage(phone, "Pedido entregue, obrigado pela preferência.");
+                    } else {
+                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                    }
                 } else {
-                    wppService.sendMessage(phone, "Pedido retirado, obrigado pela preferência.");
+                    if (view.p != null) {
+                        wppService.sendMessage(phone, "Pedido retirado, obrigado pela preferência.");
+                    } else {
+                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                    }
                 }
                 order.setStatus("Finalizado");
                 Thread.sleep(2000);
@@ -534,7 +562,11 @@ public class GerenciaView {
                         phone = "55" + phone;
                     }
                     System.out.println(phone);
-                    wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
+                    if (view.p != null) {
+                        wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
+                    } else {
+                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                    }
                     order.setStatus("Cancelado");
                     Thread.sleep(2000);
                     Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -554,6 +586,7 @@ public class GerenciaView {
         JFXButton button3 = createButton(FontAwesomeIcon.INFO, "#400082");
         button3.setOnAction((ActionEvent event) -> {
             InfoController.order = order;
+             InfoController.gerenciaController = view;
             novaJanelaAnchor(getClass().getResource("/fxml/InfoFXML.fxml"), view.boxAguardandoAceite.getScene().getWindow(), view.region);
         });
         doisdois.getChildren().add(button3);

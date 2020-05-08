@@ -217,14 +217,27 @@
                <children>
                   <VBox layoutX="25.0" layoutY="25.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <HBox>
                            <children>
-                              <FontAwesomeIconView glyphName="DOLLAR" size="35" />
-                              <Label text="Totais">
-                                 <font>
-                                    <Font name="System Bold" size="19.0" />
-                                 </font>
-                              </Label>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <FontAwesomeIconView glyphName="DOLLAR" size="35" />
+                                    <Label text="Totais">
+                                       <font>
+                                          <Font name="System Bold" size="19.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <JFXButton onAction="#enviarMensagem" prefHeight="43.0" prefWidth="136.0" style="-fx-background-color: #25d366;" text="Enviar Mensagem" textFill="WHITE">
+                                       <graphic>
+                                          <FontAwesomeIconView fill="WHITE" glyphName="WHATSAPP" size="25" />
+                                       </graphic>
+                                    </JFXButton>
+                                 </children>
+                              </HBox>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="10.0">
