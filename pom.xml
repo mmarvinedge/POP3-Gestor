@@ -60,6 +60,12 @@
             <version>2.6</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>com.github.junrar</groupId>
+            <artifactId>junrar</artifactId>
+            <version>0.7</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     
     

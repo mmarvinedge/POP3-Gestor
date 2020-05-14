@@ -5,22 +5,32 @@
  */
 package com.popsales.controller;
 
+import com.github.junrar.extract.ExtractArchive;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.popsales.Constantes;
 import com.popsales.Sessao;
 import com.popsales.components.Mensagem;
 import com.popsales.model.User;
 import com.popsales.services.CompanyServices;
 import com.popsales.services.LoginService;
 import com.popsales.services.ProductService;
+import com.popsales.services.VersaoService;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +44,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
+import javax.swing.SwingUtilities;
 
 /**
  * FXML Controller class
@@ -58,7 +69,97 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        VersaoService v = new VersaoService();
+        verificarDiretorios();
+        Platform.runLater(() -> {
+            if (Constantes.versao < v.getVersao()) {
+                Mensagem.dialogAlert("Identificamos uma atualização!\n\n"
+                        + "Versão Corrente: " + Constantes.versao + "\n"
+                        + "Versão Disponível: " + v.getVersao(), null, btnLogin.getScene().getWindow());
+                if (new File("C:\\popsales\\update.jar").exists()) {
+                    executarUpdate();
+                    System.exit(0);
+                } else {
+                    downloadUpdate();
+                    executarUpdate();
+                    System.exit(0);
+                }
+
+            }
+        });
+    }
+
+    public void verificarDiretorios() {
+        if (!new File("C:\\popsales").exists()) {
+            new File("C:\\popsales").mkdirs();
+        }
+        if (!new File("C:\\popsales\\update").exists()) {
+            new File("C:\\popsales\\update").mkdirs();
+        }
+    }
+
+    public void executarUpdate() {
+        try {
+            ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\popsales\" && java -jar update.jar");
+            builder.redirectErrorStream(true);
+            Process p = builder.start();
+            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while (true) {
+                line = r.readLine();
+                if (line == null) {
+                    break;
+                }
+                System.out.println(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void downloadUpdate() {
+        try {
+            URL url = new URL("http://metresistemas.com.br/update.jar");
+            HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
+            long completeFileSize = httpConnection.getContentLength();
+
+            java.io.BufferedInputStream in = new java.io.BufferedInputStream(httpConnection.getInputStream());
+            java.io.FileOutputStream fos = new java.io.FileOutputStream("C:\\popsales\\update.jar");
+            java.io.BufferedOutputStream bout = new BufferedOutputStream(
+                    fos, 1024);
+            byte[] data = new byte[1024];
+            long downloadedFileSize = 0;
+            int x = 0;
+            while ((x = in.read(data, 0, 1024)) >= 0) {
+                downloadedFileSize += x;
+
+                // calculate progress
+                final int currentProgress = (int) ((((double) downloadedFileSize) / ((double) completeFileSize)) * 100000d);
+
+                // update progress bar
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println("PROGRESS: " + ((currentProgress / 1000) / 100f));
+                            }
+                        });
+
+                    }
+                });
+
+                bout.write(data, 0, x);
+            }
+            bout.close();
+            in.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

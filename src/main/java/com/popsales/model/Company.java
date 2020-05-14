@@ -23,6 +23,8 @@ public class Company {
     private String owner;
     private Address address;
 
+    private String aproxTime;
+
     public Company() {
     }
 
@@ -104,6 +106,14 @@ public class Company {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getAproxTime() {
+        return aproxTime;
+    }
+
+    public void setAproxTime(String aproxTime) {
+        this.aproxTime = aproxTime;
     }
 
 }

@@ -24,4 +24,6 @@ public class Constantes {
             .readTimeout(4, TimeUnit.SECONDS).build();
 
     public static final String WURL = "http://localhost:3300/whats";
+
+    public static Integer versao = 2;
 }
