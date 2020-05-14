@@ -73,7 +73,9 @@ public class LoginController implements Initializable {
         verificarDiretorios();
         Platform.runLater(() -> {
             if (Constantes.versao < v.getVersao()) {
-                Mensagem.dialogAlert("Identificamos uma atualização!", null, btnLogin.getScene().getWindow());
+                Mensagem.dialogAlert("Identificamos uma atualização!\n\n"
+                        + "Versão Corrente: " + Constantes.versao + "\n"
+                        + "Versão Disponível: " + v.getVersao(), null, btnLogin.getScene().getWindow());
                 if (new File("C:\\popsales\\update.jar").exists()) {
                     executarUpdate();
                     System.exit(0);
