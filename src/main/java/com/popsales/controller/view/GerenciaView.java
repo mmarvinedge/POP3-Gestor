@@ -268,8 +268,7 @@ public class GerenciaView {
                     if (view.p != null) {
                         wppService.sendMessage(phone, msg);
                     } else {
-                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
-
+                        Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                     }
                     Thread.sleep(2000);
                 } catch (WhatsappException e) {
@@ -308,7 +307,7 @@ public class GerenciaView {
                     if (view.p != null) {
                         wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
                     } else {
-                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                        Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                     }
 
                     order.setStatus("Cancelado");
@@ -404,13 +403,13 @@ public class GerenciaView {
                     if (view.p != null) {
                         wppService.sendMessage(phone, "Seu pedido acabou de sair para entrega.");
                     } else {
-                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                        Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                     }
                 } else {
                     if (view.p != null) {
                         wppService.sendMessage(phone, "Seu pedido está pronto para ser retirado.");
                     } else {
-                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                        Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                     }
                 }
                 System.out.println("CLICK");
