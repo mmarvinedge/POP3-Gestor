@@ -25,5 +25,5 @@ public class Constantes {
 
     public static final String WURL = "http://localhost:3300/whats";
 
-    public static Integer versao = 1;
+    public static Integer versao = 2;
 }
