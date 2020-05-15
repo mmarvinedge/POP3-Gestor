@@ -86,6 +86,8 @@ public class LoginController implements Initializable {
                 }
 
             }
+
+            downloadExample();
         });
     }
 
@@ -147,10 +149,51 @@ public class LoginController implements Initializable {
                                 System.out.println("PROGRESS: " + ((currentProgress / 1000) / 100f));
                             }
                         });
-
                     }
                 });
+                bout.write(data, 0, x);
+            }
+            bout.close();
+            in.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void downloadExample() {
+        try {
+            URL url = new URL("http://metresistemas.com.br/example.js");
+            HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
+            long completeFileSize = httpConnection.getContentLength();
+
+            java.io.BufferedInputStream in = new java.io.BufferedInputStream(httpConnection.getInputStream());
+            java.io.FileOutputStream fos = new java.io.FileOutputStream("C:\\popsales\\bin\\example.js");
+            java.io.BufferedOutputStream bout = new BufferedOutputStream(
+                    fos, 1024);
+            byte[] data = new byte[1024];
+            long downloadedFileSize = 0;
+            int x = 0;
+            while ((x = in.read(data, 0, 1024)) >= 0) {
+                downloadedFileSize += x;
+
+                // calculate progress
+                final int currentProgress = (int) ((((double) downloadedFileSize) / ((double) completeFileSize)) * 100000d);
+
+                // update progress bar
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println("PROGRESS: " + ((currentProgress / 1000) / 100f));
+                            }
+                        });
+                    }
+                });
                 bout.write(data, 0, x);
             }
             bout.close();
