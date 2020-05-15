@@ -78,7 +78,7 @@ public class InfoController implements Initializable {
         lblProdutos.setText(Utils.formatToMoney(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add)));
         lblTaxas.setText(Utils.formatToMoney(order.getDeliveryCost()));
         lblTotal.setText(Utils.formatToMoney(order.getTotal()));
-        lblData.setText(order.getDtRegister());
+        lblData.setText(Utils.formataData(order.getDtRegistro(), "dd/MM/yyyy HH:mm:sss"));
         if (order.getDelivery()) {
             lblEndereço.setWrapText(true);
             lblEndereço.setText(order.getAddress().getStreet() + " - " + (order.getAddress().getSuburb().isEmpty() ? "S/C" : order.getAddress().getSuburb()) + "\n"
@@ -164,12 +164,13 @@ public class InfoController implements Initializable {
             StringBuilder sb = new StringBuilder();
             String[] lines = msg.split("\n");
             sb.append(Utils.removeAcentos(Arrays.asList(lines).stream().collect(Collectors.joining(" "))));
+            System.out.println(sb.toString());
 
             if (sb.toString() != null && !sb.toString().isEmpty()) {
                 if (gerenciaController.p == null) {
                     Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
                 } else {
-                    wppService.sendMessage(phone, msg.toString());
+                    wppService.sendMessage(phone, sb.toString());
                     Notifications.create().title("Atençao!").text("Mensagem enviada!").showInformation();
                 }
 

@@ -15,6 +15,9 @@ import com.popsales.components.WhatsappException;
 import com.popsales.controller.GerenciaController;
 import com.popsales.controller.InfoController;
 import com.popsales.custom.Impressao;
+import com.popsales.model.Attribute;
+import com.popsales.model.AttributeValue;
+import com.popsales.model.FlavorPizza;
 import com.popsales.model.Order;
 import com.popsales.services.OrderService;
 import com.popsales.services.WhatsAppService;
@@ -246,22 +249,45 @@ public class GerenciaView {
                 System.out.println(phone);
                 try {
                     StringBuilder sb = new StringBuilder();
-                    sb.append("Seu pedido acabou de ser confirmado.");
-                    sb.append("*Número do pedido*: ").append(order.getNum_order());
-                    sb.append("-- *Produtos* --");
+                    sb.append("#*SEU PEDIDO FOI CONFIRMADO.*");
+                    sb.append("|_Acompanhe abaixo o seu pedido_||");
+                    sb.append("]*Nº PEDIDO*: ").append(order.getNum_order()).append("||");
                     order.getProducts().forEach(p -> {
-                        sb.append(p.getQuantity() + "x " + p.getName());
-                        sb.append("Valor: R$ ").append(p.getTotal()).append(" |");
+                        sb.append("/ *Produto*: ").append(p.getName().toUpperCase()).append("|");
+                        sb.append("/ *Quantidade*: ").append(p.getQuantity().intValue()).append("|");
+                        sb.append("/ *Valor*: R$ ").append(p.getTotal()).append("|");
+                        if (p.getAttributes() != null && p.getAttributes().size() > 0) {
+                            System.out.println("sizeeeeeeeeeeeeeeeeeeeee " + p.getAttributes().size());
+                            sb.append("= *ADICIONAIS*|");
+                            for (Attribute a : p.getAttributes()) {
+                                for (AttributeValue v : a.getValues()) {
+                                    sb.append("¬ *").append(v.getQuantity()).append("x* ").append(v.getName().toUpperCase()).append("|");
+                                }
+                            }
+                        } else if (p.getFlavors() != null) {
+                            for (FlavorPizza f : p.getFlavors()) {
+                                sb.append("¬ *SABORES*: ").append(f.getFlavor().toUpperCase()).append("|");
+                            }
+                        }
+                        sb.append("|");
                     });
+                    sb.append("----------------|");
                     if (order.getDelivery()) {
-                        sb.append("*Taxa de entrega:* R$ ").append(order.getDeliveryCost());
+                        sb.append("|*Taxa de Entrega:* R$ ").append(order.getDeliveryCost());
                     }
-                    sb.append("*Total:* R$ ").append(order.getTotal());
+                    sb.append("|*Total:* R$ ").append(order.getTotal());
+                    sb.append("||! ").append(order.getClientInfo().getName());
+                    sb.append("|% ").append(order.getClientInfo().getPhone());
+                    sb.append("|[ ").append(order.getForma());
+                    if (order.getTroco() != null) {
+                        if (order.getTroco()) {
+                            sb.append("|¨ Troco para ").append(order.getTrocoPara().floatValue());
+                        }
+                    }
                     if (order.getDelivery()) {
-                        sb.append("*Endereço:* ");
-                        sb.append(order.getAddress().getStreet()).append("- ").append(order.getAddress().getStreetNumber()).append(", ").append(order.getAddress().getAuto()).append(", ").append(order.getAddress().getSuburb());
+                        sb.append("|{ ").append(order.getAddress().getStreet()).append("- ").append(order.getAddress().getStreetNumber()).append(", ").append(order.getAddress().getAuto()).append(", ").append(order.getAddress().getSuburb());
                     } else {
-                        sb.append("Você optou por retirar no local, para solicitar nosso endereço digite *localização*");
+                        sb.append("|@ Você optou por retirar no local, para solicitar nosso endereço digite *localização*");
                     }
                     String msg = sb.toString();
                     System.out.println(msg);
@@ -401,7 +427,7 @@ public class GerenciaView {
                 System.out.println(phone);
                 if (order.getDelivery()) {
                     if (view.p != null) {
-                        wppService.sendMessage(phone, "Seu pedido acabou de sair para entrega.");
+                        wppService.sendMessage(phone, "Seu pedido acabou de sair para entrega ¢³");
                     } else {
                         Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                     }
@@ -447,7 +473,7 @@ public class GerenciaView {
         JFXButton button3 = createButton(FontAwesomeIcon.INFO, "#400082");
         button3.setOnAction((ActionEvent event) -> {
             InfoController.order = order;
-             InfoController.gerenciaController = view;
+            InfoController.gerenciaController = view;
             novaJanelaAnchor(getClass().getResource("/fxml/InfoFXML.fxml"), view.boxAguardandoAceite.getScene().getWindow(), view.region);
         });
         doisdois.getChildren().add(button3);
@@ -585,7 +611,7 @@ public class GerenciaView {
         JFXButton button3 = createButton(FontAwesomeIcon.INFO, "#400082");
         button3.setOnAction((ActionEvent event) -> {
             InfoController.order = order;
-             InfoController.gerenciaController = view;
+            InfoController.gerenciaController = view;
             novaJanelaAnchor(getClass().getResource("/fxml/InfoFXML.fxml"), view.boxAguardandoAceite.getScene().getWindow(), view.region);
         });
         doisdois.getChildren().add(button3);
