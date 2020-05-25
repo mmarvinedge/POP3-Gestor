@@ -97,11 +97,11 @@ public class GerenciaController implements Initializable {
         });
         lblNomeEmpresa.setText(Sessao.company.getName());
         lblUsuario.setText(Sessao.user.getName());
+        runWhatsApp();
     }
 
     @FXML
     private void toConfig(ActionEvent event) {
-
         try {
             Stage stage = new Stage();
             AnchorPane cena = new FXMLLoader().load(getClass().getResource("/fxml/ConfiguracaoFXML.fxml"));
@@ -130,6 +130,10 @@ public class GerenciaController implements Initializable {
 
     @FXML
     private void executarWhatsapp(ActionEvent event) {
+        runWhatsApp();
+    }
+
+    private void runWhatsApp() {
         try {
             Runtime.getRuntime().exec("taskkill /F /IM node.exe");
         } catch (Exception e) {
@@ -153,7 +157,7 @@ public class GerenciaController implements Initializable {
                         if (line == null) {
                             break;
                         }
-                      System.out.println(line);
+                        System.out.println(line);
                     }
 
                 } catch (Exception e) {
@@ -163,7 +167,6 @@ public class GerenciaController implements Initializable {
         });
         t.setDaemon(true);
         t.start();
-
     }
 
 }
