@@ -6,6 +6,7 @@
 package com.popsales.controller;
 
 import com.popsales.Sessao;
+import com.popsales.components.Mensagem;
 import com.popsales.controller.view.GerenciaView;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -159,9 +160,11 @@ public class GerenciaController implements Initializable {
                         }
                         System.out.println(line);
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Platform.runLater(()->{
+                        Mensagem.dialogException(e, region, stage);
+                    });
                 }
             }
         });
