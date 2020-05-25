@@ -17,6 +17,7 @@ import com.popsales.services.CompanyServices;
 import com.popsales.services.LoginService;
 import com.popsales.services.ProductService;
 import com.popsales.services.VersaoService;
+import java.awt.Event;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,6 +40,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -207,24 +210,27 @@ public class LoginController implements Initializable {
 
     @FXML
     private void entrar(ActionEvent event) {
+        if (login()) return;
+    }
+
+    private boolean login() {
         if (iptUser.getText().isEmpty()) {
-            return;
+            return true;
         }
         if (iptSenha.getText().isEmpty()) {
-            return;
+            return true;
         }
         try {
             Sessao.user = loginService.Login(new User(iptUser.getText(), iptSenha.getText()));
         } catch (IOException ex) {
             ex.printStackTrace();
             Mensagem.dialogAlert(ex.getMessage(), null, iptUser.getScene().getWindow());
-            return;
+            return true;
         } catch (Exception e) {
             Mensagem.dialogAlert(e.getMessage(), null, iptUser.getScene().getWindow());
             e.printStackTrace();
-            return;
+            return true;
         }
-
         if (Sessao.user.getId() != null) {
             Sessao.company = companyServices.loadCompany(Sessao.user.getCompanyId());
             List<String> printers = productServices.getPrinters();
@@ -241,6 +247,7 @@ public class LoginController implements Initializable {
         } else {
             System.out.println("USUARIO NAO ENCONTRADO!");
         }
+        return false;
     }
 
     private void abreJanela() {
@@ -266,6 +273,13 @@ public class LoginController implements Initializable {
             ((Stage) btnLogin.getScene().getWindow()).close();
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void onEnter(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER){
+            login();
         }
     }
 
