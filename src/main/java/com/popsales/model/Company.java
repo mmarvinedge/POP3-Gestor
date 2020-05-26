@@ -26,6 +26,7 @@ public class Company {
     private String aproxTime;
     private Boolean trial;
     private String trialDate;
+    private Boolean turnos;
 
     public Company() {
     }
@@ -119,7 +120,11 @@ public class Company {
     }
 
     public Boolean getTrial() {
-        return trial;
+        if (trial == null) {
+            return Boolean.FALSE;
+        } else {
+            return trial;
+        }
     }
 
     public void setTrial(Boolean trial) {
@@ -133,5 +138,17 @@ public class Company {
     public void setTrialDate(String trialDate) {
         this.trialDate = trialDate;
     }
-    
+
+    public Boolean getTurnos() {
+        if (turnos == null) {
+            return Boolean.FALSE;
+        } else {
+            return turnos;
+        }
+    }
+
+    public void setTurnos(Boolean turnos) {
+        this.turnos = turnos;
+    }
+
 }
