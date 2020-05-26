@@ -59,8 +59,7 @@ public class Utils {
     public static String formataParaMoeda(Integer total) {
         return new java.text.DecimalFormat("¤ #,##0.00").format(total);
     }
-    
-    
+
     public static String removeAcentos(String str) {
         CharSequence cs = new StringBuilder(str == null ? "" : str);
         return Normalizer
@@ -68,5 +67,16 @@ public class Utils {
                 .replace("&", "e")
                 .replace("ç", "c")
                 .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+    }
+
+    public static Date getDataByTexto(String data, String formato) {
+        try {
+            Date date = null;
+            DateFormat formatter = new SimpleDateFormat(formato);
+            date = (java.util.Date) formatter.parse(data);
+            return date;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

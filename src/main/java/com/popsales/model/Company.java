@@ -24,6 +24,8 @@ public class Company {
     private Address address;
 
     private String aproxTime;
+    private Boolean trial;
+    private String trialDate;
 
     public Company() {
     }
@@ -116,4 +118,20 @@ public class Company {
         this.aproxTime = aproxTime;
     }
 
+    public Boolean getTrial() {
+        return trial;
+    }
+
+    public void setTrial(Boolean trial) {
+        this.trial = trial;
+    }
+
+    public String getTrialDate() {
+        return trialDate;
+    }
+
+    public void setTrialDate(String trialDate) {
+        this.trialDate = trialDate;
+    }
+    
 }
