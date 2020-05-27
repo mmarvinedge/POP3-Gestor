@@ -264,8 +264,8 @@ public class LoginController implements Initializable {
                 today = Utils.getDataByTexto(temp, "yyyy-MM-dd");
                 System.out.println("difff "+ DateUtil.diferencaEntreDatas("yyyy-MM-dd", trial, today));
             }
-            if (Sessao.company.getTrial() && DateUtil.diferencaEntreDatas("yyyy-MM-dd", trial, today) > 7) {
-                Mensagem.dialogAlert("Seu período teste de 7 dias encerraram, para continuar utilizando entre em contato com seu agente de vendas!", btnLogin, btnLogin.getScene().getWindow());
+            if (Sessao.company.getTrial() && DateUtil.diferencaEntreDatas("yyyy-MM-dd", trial, today) > 15) {
+                Mensagem.dialogAlert("Seu período teste de 15 dias encerraram, para continuar utilizando entre em contato com seu agente de vendas!", btnLogin, btnLogin.getScene().getWindow());
             } else {
                 abreJanela();
             }
