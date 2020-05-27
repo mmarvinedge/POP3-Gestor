@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="323.0" prefWidth="484.0" style="-fx-border-color: #555; -fx-border-width: 2px;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.components.DialogAlertController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="323.0" prefWidth="484.0" style="-fx-border-color: #555; -fx-border-width: 2px;" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.components.DialogAlertController">
    <children>
       <BorderPane layoutX="114.0" layoutY="24.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -18,7 +18,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="418.0" layoutY="4.0" onAction="#sair" prefHeight="45.0" prefWidth="52.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">
+                  <JFXButton alignment="CENTER" contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="418.0" layoutY="4.0" onAction="#sair" prefHeight="45.0" prefWidth="52.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">
                      <graphic>
                         <FontAwesomeIconView fill="#ff9800" glyphName="WARNING" size="45" wrappingWidth="42.0" />
                      </graphic>
@@ -29,7 +29,7 @@
          <bottom>
             <AnchorPane prefHeight="102.0" prefWidth="484.0" style="-fx-border-color: #FF9800; -fx-border-width: 1px 0 0 0;" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton fx:id="btnConfirmar" layoutX="245.0" layoutY="17.0" onAction="#confirmar" onKeyPressed="#onEnterConfirm" prefHeight="71.0" prefWidth="302.0" style="-fx-background-color: #FF9800;" text="OK, eu entendi!" textFill="WHITE" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="16.0">
+                  <JFXButton fx:id="btnConfirmar" layoutX="245.0" layoutY="17.0" onAction="#confirmar" onKeyPressed="#onEnterConfirm" prefHeight="71.0" prefWidth="302.0" styleClass="green" text="OK, eu entendi!" textFill="WHITE" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="16.0">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -38,9 +38,9 @@
             </AnchorPane>
          </bottom>
          <center>
-            <AnchorPane prefHeight="133.0" prefWidth="484.0" style="-fx-background-color: #e8e8e8;" BorderPane.alignment="CENTER">
+            <AnchorPane style="-fx-background-color: #e8e8e8;" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="lblMessagem" alignment="TOP_LEFT" focusTraversable="false" layoutX="14.0" layoutY="14.0" prefHeight="21.0" prefWidth="453.0" text="Label" textFill="#757373" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">
+                  <Label fx:id="lblMessagem" alignment="TOP_LEFT" focusTraversable="false" layoutX="14.0" layoutY="14.0" text="texto" textFill="#757373" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">
                      <font>
                         <Font size="15.0" />
                      </font>

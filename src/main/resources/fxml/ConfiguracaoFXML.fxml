@@ -10,17 +10,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.controller.ConfiguracaoController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.controller.ConfiguracaoController">
    <children>
       <BorderPane layoutX="229.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
-            <AnchorPane prefHeight="600.0" prefWidth="277.0" style="-fx-background-color: #cd4c51;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="600.0" prefWidth="277.0" styleClass="lemon" BorderPane.alignment="CENTER">
                <children>
                   <VBox fx:id="vboxButtons" layoutX="86.0" layoutY="148.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <AnchorPane prefHeight="133.0" prefWidth="277.0">
+                        <AnchorPane prefHeight="133.0" prefWidth="277.0" styleClass="green">
                            <children>
-                              <VBox alignment="CENTER" layoutX="47.0" layoutY="-54.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: a03e42;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox alignment="CENTER" layoutX="47.0" layoutY="-54.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <FontAwesomeIconView fill="WHITE" glyphName="COG" size="55" />
                                     <Label text="Configurações" textFill="WHITE">

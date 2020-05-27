@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.ini4j.Ini;
 
@@ -31,6 +32,7 @@ public class MainApp extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         setUserAgentStylesheet(STYLESHEET_MODENA);
+        Font.loadFont(MainApp.class.getResourceAsStream("styles/FUTURAXK.TTF"), 10);
         stage.show();
     }
 

@@ -7,8 +7,10 @@ package com.popsales.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.popsales.Constantes;
 import com.popsales.Sessao;
 import com.popsales.components.Mensagem;
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -62,7 +64,7 @@ public class ConfiguracaoController implements Initializable {
         VBox printers = new VBox();
         printers.setSpacing(35);
         HBox pane = new HBox();
-        pane.setStyle("-fx-background-color:  #cd4c51");
+        pane.setStyle("-fx-background-color:  "+Constantes.lemon);
         Label label = new Label("Impressoras");
 
         label.setStyle("-fx-font-size: 18px; -fx-text-fill: white");;
@@ -74,7 +76,7 @@ public class ConfiguracaoController implements Initializable {
         pane.setHgrow(printers, Priority.ALWAYS);
 
         JFXComboBox<String> printDefault = new JFXComboBox<>();
-        printDefault.setFocusColor(Paint.valueOf("cd4c51"));
+        printDefault.setFocusColor(Paint.valueOf("95c70d"));
         printDefault.setLabelFloat(true);
         printDefault.setPromptText("Expedicao");
         printDefault.setItems(FXCollections.observableList(Sessao.impressorasWindows));
@@ -86,7 +88,7 @@ public class ConfiguracaoController implements Initializable {
 
         for (String ip : Sessao.impressorasProdutos.stream().filter(p -> !p.equalsIgnoreCase("NAO IMPRIMIR")).collect(Collectors.toList())) {
             JFXComboBox<String> printCb = new JFXComboBox<>();
-            printCb.setFocusColor(Paint.valueOf("cd4c51"));
+            printCb.setFocusColor(Paint.valueOf("95c70d"));
             printCb.setLabelFloat(true);
             printCb.setPromptText(ip);
             printCb.setItems(FXCollections.observableList(Sessao.impressorasWindows));
@@ -99,7 +101,7 @@ public class ConfiguracaoController implements Initializable {
         }
         if(Sessao.ini.get("Printers", "Expedicao", String.class) != null){
             JFXComboBox<String> printCb = new JFXComboBox<>();
-            printCb.setFocusColor(Paint.valueOf("cd4c51"));
+            printCb.setFocusColor(Paint.valueOf("95c70d"));
             printCb.setLabelFloat(true);
             printCb.setPromptText("Expedicao");
             printCb.setItems(FXCollections.observableList(Sessao.impressorasWindows));
@@ -111,7 +113,8 @@ public class ConfiguracaoController implements Initializable {
         }
 
         JFXButton button = new JFXButton("Salvar");
-        button.setStyle("-fx-background-color: #a03e42; -fx-text-fill: white;");
+        button.setStyle("-fx-background-color:  "+Constantes.green+"; -fx-text-fill: white;");
+        
         button.setOnAction((ActionEvent event1) -> {
             try {
                 printers.getChildren().forEach(c -> {
@@ -151,12 +154,12 @@ public class ConfiguracaoController implements Initializable {
         for (Node n : vboxButtons.getChildren()) {
             if (n instanceof JFXButton) {
                 JFXButton b = (JFXButton) n;
-                b.setStyle("-fx-background-color:  #cd4c51");
+                b.setStyle("-fx-background-color: "+Constantes.lemon);
             }
         }
         if (action.equals("printer")) {
             JFXButton bn = (JFXButton) vboxButtons.getChildren().stream().filter(p -> p instanceof JFXButton).collect(Collectors.toList()).get(0);
-            bn.setStyle("-fx-background-color: #a03e42;");
+            bn.setStyle("-fx-background-color: "+Constantes.green);
         }
     }
 

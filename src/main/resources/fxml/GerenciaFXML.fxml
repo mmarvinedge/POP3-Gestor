@@ -15,19 +15,19 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" minHeight="768.0" minWidth="1024.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.controller.GerenciaController">
+<AnchorPane id="AnchorPane" minHeight="768.0" minWidth="1024.0" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.controller.GerenciaController">
    <children>
       <BorderPane layoutX="96.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <AnchorPane prefHeight="68.0" prefWidth="800.0" style="-fx-background-color: #cd4c51;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="68.0" prefWidth="800.0" styleClass="green" BorderPane.alignment="CENTER">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="68.0" prefWidth="105.0">
+                        <HBox alignment="CENTER" prefHeight="68.0" prefWidth="67.0">
                            <children>
-                              <ImageView fitHeight="68.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="68.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                                  <image>
-                                    <Image url="@../img/sales.png" />
+                                    <Image url="@../img/pop-branco-transparent.png" />
                                  </image>
                               </ImageView>
                            </children>
@@ -51,9 +51,19 @@
                               </VBox>
                            </children>
                         </HBox>
-                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="10.0" layoutY="10.0" minWidth="104.0" onAction="#atualizar" prefHeight="68.0" prefWidth="104.0" ripplerFill="WHITE">
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="10.0" layoutY="10.0" minWidth="100.0" onAction="#abrirLink" prefHeight="68.0" prefWidth="80.0" ripplerFill="WHITE">
+                                 <graphic>
+                                    <VBox alignment="CENTER">
+                                       <children>
+                                          <FontAwesomeIconView fill="WHITE" glyphName="EXTERNAL_LINK" size="35" />
+                                          <Label text="Link Cardápio" textFill="WHITE" />
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="10.0" layoutY="10.0" minWidth="100.0" onAction="#atualizar" prefHeight="68.0" prefWidth="80.0" ripplerFill="WHITE">
                                  <graphic>
                                     <VBox alignment="CENTER">
                                        <children>
@@ -63,17 +73,17 @@
                                     </VBox>
                                  </graphic>
                               </JFXButton>
-                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="10.0" layoutY="10.0" minWidth="104.0" onAction="#executarWhatsapp" prefHeight="68.0" prefWidth="104.0" ripplerFill="WHITE">
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="10.0" layoutY="10.0" minWidth="100.0" onAction="#executarWhatsapp" prefHeight="68.0" prefWidth="80.0" ripplerFill="WHITE">
                                  <graphic>
                                     <VBox alignment="CENTER">
                                        <children>
-                                          <FontAwesomeIconView fill="#25d366" glyphName="WHATSAPP" size="35" />
+                                          <FontAwesomeIconView fill="WHITE" glyphName="WHATSAPP" size="35" />
                                           <Label text="Executar" textFill="WHITE" />
                                        </children>
                                     </VBox>
                                  </graphic>
                               </JFXButton>
-                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" minWidth="104.0" onAction="#toConfig" prefHeight="68.0" prefWidth="104.0" ripplerFill="WHITE">
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" minWidth="100.0" onAction="#toConfig" prefHeight="68.0" prefWidth="80.0" ripplerFill="WHITE">
                                  <graphic>
                                     <VBox alignment="CENTER">
                                        <children>
@@ -83,7 +93,7 @@
                                     </VBox>
                                  </graphic>
                               </JFXButton>
-                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" minWidth="104.0" onAction="#toExit" prefHeight="68.0" prefWidth="104.0" ripplerFill="WHITE">
+                              <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" minWidth="100.0" onAction="#toExit" prefHeight="68.0" prefWidth="80.0" ripplerFill="WHITE">
                                  <graphic>
                                     <VBox alignment="CENTER">
                                        <children>
@@ -111,14 +121,14 @@
                                  <children>
                                     <HBox alignment="CENTER">
                                        <children>
-                                          <Label text="AGUARDANDO ACEITE" textFill="#6f6f6f">
+                                          <Label styleClass="color-green" text="AGUARDANDO ACEITE" textFill="#308e38">
                                              <font>
                                                 <Font name="System Bold" size="15.0" />
                                              </font>
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <ScrollPane fitToWidth="true" pannable="true" prefHeight="433.0" prefWidth="260.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                                    <ScrollPane fitToWidth="true" focusTraversable="false" pannable="true" prefHeight="433.0" prefWidth="260.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                                       <content>
                                           <VBox fx:id="boxAguardandoAceite" prefHeight="200.0" prefWidth="100.0">
                                              <children>
@@ -208,7 +218,7 @@
                                           </VBox>
                                       </content>
                                     </ScrollPane>
-                                    <AnchorPane prefHeight="116.0" prefWidth="335.0" style="-fx-background-color: #cd4c51;" VBox.vgrow="NEVER">
+                                    <AnchorPane prefHeight="116.0" prefWidth="335.0" styleClass="lemon" VBox.vgrow="NEVER">
                                        <children>
                                           <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
@@ -219,7 +229,7 @@
                                                 </Label>
                                                 <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                                                    <children>
-                                                      <Label fx:id="lblQntAguardando" text="150" textFill="WHITE">
+                                                      <Label fx:id="lblQntAguardando" text="0" textFill="WHITE">
                                                          <font>
                                                             <Font name="System Bold" size="48.0" />
                                                          </font>
@@ -243,14 +253,14 @@
                                  <children>
                                     <HBox alignment="CENTER">
                                        <children>
-                                          <Label text="AGUARDANDO PRODUÇÃO" textFill="#6f6f6f">
+                                          <Label styleClass="color-green" text="AGUARDANDO PRODUÇÃO" textFill="#308e38">
                                              <font>
                                                 <Font name="System Bold" size="15.0" />
                                              </font>
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <ScrollPane fitToWidth="true" pannable="true" prefHeight="433.0" prefWidth="260.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                                    <ScrollPane fitToWidth="true" focusTraversable="false" pannable="true" prefHeight="433.0" prefWidth="260.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                                        <content>
                                           <VBox fx:id="boxAguardandoProducao" prefHeight="200.0" prefWidth="100.0">
                                              <children>
@@ -340,7 +350,7 @@
                                           </VBox>
                                        </content>
                                     </ScrollPane>
-                                    <AnchorPane prefHeight="116.0" prefWidth="335.0" style="-fx-background-color: #cd4c51;" VBox.vgrow="NEVER">
+                                    <AnchorPane prefHeight="116.0" prefWidth="335.0" styleClass="lemon" VBox.vgrow="NEVER">
                                        <children>
                                           <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
@@ -351,7 +361,7 @@
                                                 </Label>
                                                 <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                                                    <children>
-                                                      <Label fx:id="lblEmProducao" text="150" textFill="WHITE">
+                                                      <Label fx:id="lblEmProducao" text="0" textFill="WHITE">
                                                          <font>
                                                             <Font name="System Bold" size="48.0" />
                                                          </font>
@@ -375,14 +385,14 @@
                                  <children>
                                     <HBox alignment="CENTER">
                                        <children>
-                                          <Label text="AGUARDANDO FINALIZAÇÃO" textFill="#6f6f6f">
+                                          <Label styleClass="color-green" text="AGUARDANDO FINALIZAÇÃO" textFill="#308e38">
                                              <font>
                                                 <Font name="System Bold" size="15.0" />
                                              </font>
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <ScrollPane fitToWidth="true" pannable="true" prefHeight="433.0" prefWidth="260.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                                    <ScrollPane fitToWidth="true" focusTraversable="false" pannable="true" prefHeight="433.0" prefWidth="260.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                                        <content>
                                           <VBox fx:id="boxAguardandoFinalizacao" prefHeight="200.0" prefWidth="100.0">
                                              <children>
@@ -472,7 +482,7 @@
                                           </VBox>
                                        </content>
                                     </ScrollPane>
-                                    <AnchorPane prefHeight="116.0" prefWidth="335.0" style="-fx-background-color: #cd4c51;" VBox.vgrow="NEVER">
+                                    <AnchorPane prefHeight="116.0" prefWidth="335.0" styleClass="lemon" VBox.vgrow="NEVER">
                                        <children>
                                           <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
@@ -483,7 +493,7 @@
                                                 </Label>
                                                 <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                                                    <children>
-                                                      <Label fx:id="lblAguardandoFinalizar" text="150" textFill="WHITE">
+                                                      <Label fx:id="lblAguardandoFinalizar" text="0" textFill="WHITE">
                                                          <font>
                                                             <Font name="System Bold" size="48.0" />
                                                          </font>

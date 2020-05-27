@@ -8,9 +8,11 @@ package com.popsales.controller;
 import com.popsales.Sessao;
 import com.popsales.components.Mensagem;
 import com.popsales.controller.view.GerenciaView;
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -80,7 +82,7 @@ public class GerenciaController implements Initializable {
                             p.destroy();
                         }
                         if (t != null && t.isAlive()) {
-                           t.resume();
+                            t.resume();
                         }
                     }
                 });
@@ -162,7 +164,7 @@ public class GerenciaController implements Initializable {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Platform.runLater(()->{
+                    Platform.runLater(() -> {
                         Mensagem.dialogException(e, region, stage);
                     });
                 }
@@ -170,6 +172,28 @@ public class GerenciaController implements Initializable {
         });
         t.setDaemon(true);
         t.start();
+    }
+
+    @FXML
+    private void abrirLink(ActionEvent event) {
+        String url = "";
+        if (Sessao.company.getNameUrl() == null || Sessao.company.getNameUrl().isEmpty()) {
+            url = "http://food.popsales.com.br/popsales/" + Sessao.company.getId();
+        } else {
+            url = "http://food.popsales.com.br/popsales/rest/" + Sessao.company.getNameUrl();
+        }
+
+        try {
+            URI uri = new URI(url);
+
+            Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+            if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                desktop.browse(uri);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

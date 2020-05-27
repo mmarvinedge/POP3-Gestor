@@ -27,6 +27,7 @@ public class Company {
     private Boolean trial;
     private String trialDate;
     private Boolean turnos;
+    private String nameUrl;
 
     public Company() {
     }
@@ -149,6 +150,14 @@ public class Company {
 
     public void setTurnos(Boolean turnos) {
         this.turnos = turnos;
+    }
+
+    public String getNameUrl() {
+        return nameUrl;
+    }
+
+    public void setNameUrl(String nameUrl) {
+        this.nameUrl = nameUrl;
     }
 
 }

@@ -26,6 +26,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -88,10 +89,8 @@ public class GerenciaView {
                     loadComponents();
                     loadData();
                 });
-
             }
         }, 0, 60000);
-
     }
 
     public void loadData() {
@@ -102,27 +101,12 @@ public class GerenciaView {
 
     private void carregarAguardando() {
         ordersAguardando = orderService.getOrders("Aguardando");
+        processarData(ordersAguardando);
 
-        ordersAguardando.forEach(c -> {
-            try {
-                if (c.getDtRegister() != null) {
-                    try {
-                        c.setDtRegistro(new SimpleDateFormat("yyyy-MM-ddd hh:mm:ss", new Locale("pt_BR")).parse(c.getDtRegister()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("ERRO AO CONVERTER: ");
-                e.printStackTrace();
-            }
-        });
         if (ordersAguardando.size() > 0) {
             Date ultimaData = ordersAguardando.stream().filter(p -> p.getDtRegistro() != null).map(m -> m.getDtRegistro()).max((Date o1, Date o2) -> {
                 return o1.compareTo(o2);
             }).get();
-            System.out.println("ULTIMA DATA: " + formataData(ultimaData, "dd/MM/yyyy HH:mm:ss"));
-            System.out.println("ULTIMA ATUAL: " + formataData(ultimoUpdate, "dd/MM/yyyy HH:mm:ss"));
             if (ultimoUpdate == null) {
                 ultimoUpdate = ultimaData;
                 Notifications.create().title("Informação").text("Novo Pedido!").showInformation();
@@ -152,21 +136,7 @@ public class GerenciaView {
 
     private void carregarProduzindo() {
         ordersProducao = orderService.getOrders("Produzindo");
-
-        ordersProducao.forEach(c -> {
-            try {
-                if (c.getDtRegister() != null) {
-                    try {
-                        c.setDtRegistro(new SimpleDateFormat("yyyy-MM-ddd hh:mm:ss", new Locale("pt_BR")).parse(c.getDtRegister()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("ERRO AO CONVERTER: ");
-                e.printStackTrace();
-            }
-        });
+        processarData(ordersProducao);
 
         for (Order or : ordersProducao) {
             this.view.boxAguardandoProducao.getChildren().add(createCardOrderProduzindo(or));
@@ -175,25 +145,15 @@ public class GerenciaView {
 
     private void carregarFinalizando() {
         ordersAguardandoFinalizar = orderService.getOrders("Finalizando");
-
-        ordersAguardandoFinalizar.forEach(c -> {
-            try {
-                if (c.getDtRegister() != null) {
-                    try {
-                        c.setDtRegistro(new SimpleDateFormat("yyyy-MM-ddd hh:mm:ss", new Locale("pt_BR")).parse(c.getDtRegister()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("ERRO AO CONVERTER: ");
-                e.printStackTrace();
-            }
-        });
+        processarData(ordersAguardandoFinalizar);
 
         for (Order or : ordersAguardandoFinalizar) {
             this.view.boxAguardandoFinalizacao.getChildren().add(createCardOrderFinalizando(or));
         }
+    }
+
+    public static Date converterData(Order c) throws ParseException {
+        return new SimpleDateFormat("yyyy-MM-ddd hh:mm:ss", new Locale("pt_BR")).parse(c.getDtRegister());
     }
 
     public void loadComponents() {
@@ -237,72 +197,8 @@ public class GerenciaView {
         JFXButton bt1 = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
         bt1.setOnAction((ActionEvent event) -> {
             try {
-                String phone = "";
-                // System.out.println(order.getClientInfo().getPhone().length());
-                if (order.getClientInfo().getPhone().length() == 14) {
-                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
-                    phone = "55" + phone;
-                } else {
-                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
-                    phone = "55" + phone;
-                }
-                System.out.println(phone);
-                try {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("#*SEU PEDIDO FOI CONFIRMADO.*");
-                    sb.append("|_Acompanhe abaixo o seu pedido_||");
-                    sb.append("]*Nº PEDIDO*: ").append(order.getNum_order()).append("||");
-                    order.getProducts().forEach(p -> {
-                        sb.append("/ *Produto*: ").append(p.getName().toUpperCase()).append("|");
-                        sb.append("/ *Quantidade*: ").append(p.getQuantity().intValue()).append("|");
-                        sb.append("/ *Valor*: R$ ").append(p.getTotal()).append("|");
-                        if (p.getAttributes() != null && p.getAttributes().size() > 0) {
-                            System.out.println("sizeeeeeeeeeeeeeeeeeeeee " + p.getAttributes().size());
-                            sb.append("= *ADICIONAIS*|");
-                            for (Attribute a : p.getAttributes()) {
-                                for (AttributeValue v : a.getValues()) {
-                                    sb.append("¬ *").append(v.getQuantity()).append("x* ").append(v.getName().toUpperCase()).append("|");
-                                }
-                            }
-                        } else if (p.getFlavors() != null) {
-                            for (FlavorPizza f : p.getFlavors()) {
-                                sb.append("¬ *SABORES*: ").append(f.getFlavor().toUpperCase()).append("|");
-                            }
-                        }
-                        sb.append("|");
-                    });
-                    sb.append("----------------|");
-                    if (order.getDelivery()) {
-                        sb.append("|*Taxa de Entrega:* R$ ").append(order.getDeliveryCost());
-                    }
-                    sb.append("|*Total:* R$ ").append(order.getTotal());
-                    sb.append("||! ").append(order.getClientInfo().getName());
-                    sb.append("|% ").append(order.getClientInfo().getPhone());
-                    sb.append("|[ ").append(order.getForma());
-                    if (order.getTroco() != null) {
-                        if (order.getTroco()) {
-                            sb.append("|¨ Troco para ").append(order.getTrocoPara().floatValue());
-                        }
-                    }
-                    if (order.getDelivery()) {
-                        sb.append("|{ ").append(order.getAddress().getStreet()).append("- ").append(order.getAddress().getStreetNumber()).append(", ").append(order.getAddress().getAuto()).append(", ").append(order.getAddress().getSuburb());
-                    } else {
-                        sb.append("|@ Você optou por retirar no local, para solicitar nosso endereço digite *localização*");
-                    }
-                    String msg = sb.toString();
-                    System.out.println(msg);
-                    if (view.p != null) {
-                        wppService.sendMessage(phone, msg);
-                    } else {
-                        Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
-                    }
-                    Thread.sleep(2000);
-                } catch (WhatsappException e) {
-                    Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
+                enviarMensagemConfirmacao(order);
                 order.setStatus("Produzindo");
                 Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoAceite.getChildren().remove(n);
@@ -318,36 +214,13 @@ public class GerenciaView {
 
         JFXButton bt2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
         bt2.setOnAction((ActionEvent event) -> {
+            enviarMensagemCancelamento(order);
             try {
-                if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
-                    String phone = "";
-                    System.out.println(order.getClientInfo().getPhone().length());
-                    if (order.getClientInfo().getPhone().length() == 14) {
-                        phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
-                        phone = "55" + phone;
-                    } else {
-                        phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
-                        phone = "55" + phone;
-                    }
-                    System.out.println(phone);
-                    if (view.p != null) {
-                        wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
-                    } else {
-                        Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
-                    }
-
-                    order.setStatus("Cancelado");
-                    Thread.sleep(2000);
-                    Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
-                    this.view.boxAguardandoAceite.getChildren().remove(n);
-                    orderService.update(order);
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (WhatsappException ex) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+                Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
+                this.view.boxAguardandoAceite.getChildren().remove(n);
+                orderService.update(order);
+            } catch (IOException e) {
+                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, e);
             }
         });
         doisdois.getChildren().add(bt2);
@@ -378,6 +251,8 @@ public class GerenciaView {
         saida.getChildren().add(um);
         saida.getChildren().add(dois);
         saida.getChildren().add(tres);
+        
+        saida.setStyle("-fx-border-width:  0 0 1 0; -fx-border-color:  #ccc");
         return saida;
     }
 
@@ -415,42 +290,15 @@ public class GerenciaView {
         doisdois.setAlignment(Pos.CENTER_RIGHT);
         JFXButton button1 = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
         button1.setOnAction((ActionEvent event) -> {
+            enviarMensagemSaiuParaEntrega(order);
             try {
-                String phone = "";
-                if (order.getClientInfo().getPhone().length() == 14) {
-                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
-                    phone = "55" + phone;
-                } else {
-                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
-                    phone = "55" + phone;
-                }
-                System.out.println(phone);
-                if (order.getDelivery()) {
-                    if (view.p != null) {
-                        wppService.sendMessage(phone, "Seu pedido acabou de sair para entrega ¢³");
-                    } else {
-                        Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
-                    }
-                } else {
-                    if (view.p != null) {
-                        wppService.sendMessage(phone, "Seu pedido está pronto para ser retirado.");
-                    } else {
-                        Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
-                    }
-                }
-                System.out.println("CLICK");
-                order.setStatus("Finalizando");
-                Thread.sleep(2000);
+
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoProducao.getChildren().remove(n);
                 this.view.boxAguardandoFinalizacao.getChildren().add(createCardOrderFinalizando(order));
                 orderService.update(order);
                 Impressao.imprimirOrderEntrega(order);
             } catch (IOException ex) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (WhatsappException ex) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -533,41 +381,12 @@ public class GerenciaView {
         doisdois.setAlignment(Pos.CENTER_RIGHT);
         JFXButton button1 = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
         button1.setOnAction((ActionEvent event) -> {
+            enviarMensagemEntregue(order);
             try {
-
-                String phone = "";
-                if (order.getClientInfo().getPhone().length() == 14) {
-                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
-                    phone = "55" + phone;
-                } else {
-                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
-                    phone = "55" + phone;
-                }
-                System.out.println(phone);
-                if (order.getDelivery()) {
-                    if (view.p != null) {
-                        wppService.sendMessage(phone, "Pedido entregue, obrigado pela preferência.");
-                    } else {
-                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
-                    }
-                } else {
-                    if (view.p != null) {
-                        wppService.sendMessage(phone, "Pedido retirado, obrigado pela preferência.");
-                    } else {
-                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
-                    }
-                }
-                order.setStatus("Finalizado");
-                Thread.sleep(2000);
                 Node n = view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoFinalizacao.getChildren().remove(n);
                 orderService.update(order);
-
             } catch (IOException ex) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (WhatsappException ex) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -576,33 +395,12 @@ public class GerenciaView {
 
         JFXButton button2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
         button2.setOnAction((ActionEvent event) -> {
+            enviarMensagemCancelamento(order);
             try {
-                if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
-                    String phone = "";
-                    if (order.getClientInfo().getPhone().length() == 14) {
-                        phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
-                        phone = "55" + phone;
-                    } else {
-                        phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
-                        phone = "55" + phone;
-                    }
-                    System.out.println(phone);
-                    if (view.p != null) {
-                        wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
-                    } else {
-                        Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
-                    }
-                    order.setStatus("Cancelado");
-                    Thread.sleep(2000);
-                    Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
-                    this.view.boxAguardandoFinalizacao.getChildren().remove(n);
-                    orderService.update(order);
-                }
+                Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
+                this.view.boxAguardandoFinalizacao.getChildren().remove(n);
+                orderService.update(order);
             } catch (IOException ex) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (WhatsappException ex) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -637,6 +435,41 @@ public class GerenciaView {
         return saida;
     }
 
+    public void enviarMensagemEntregue(Order order) {
+        try {
+
+            String phone = "";
+            if (order.getClientInfo().getPhone().length() == 14) {
+                phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                phone = "55" + phone;
+            } else {
+                phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                phone = "55" + phone;
+            }
+            System.out.println(phone);
+            if (order.getDelivery()) {
+                if (view.p != null) {
+                    wppService.sendMessage(phone, "Pedido entregue, obrigado pela preferência.");
+                } else {
+                    Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                }
+            } else {
+                if (view.p != null) {
+                    wppService.sendMessage(phone, "Pedido retirado, obrigado pela preferência.");
+                } else {
+                    Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
+                }
+            }
+            order.setStatus("Finalizado");
+            Thread.sleep(2000);
+
+        } catch (WhatsappException ex) {
+            Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private FontAwesomeIconView creatIcon(FontAwesomeIcon fi, String size, String color) {
         FontAwesomeIconView i = new FontAwesomeIconView(fi);
         i.setSize(size);
@@ -661,6 +494,23 @@ public class GerenciaView {
 
     }
 
+    private void processarData(List<Order> lista) {
+        lista.forEach(c -> {
+            try {
+                if (c.getDtRegister() != null) {
+                    try {
+                        c.setDtRegistro(converterData(c));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("ERRO AO CONVERTER: ");
+                e.printStackTrace();
+            }
+        });
+    }
+
     public static void novaJanelaAnchor(URL url, Window s, Region region) {
         try {
             Stage stage = new Stage();
@@ -678,6 +528,140 @@ public class GerenciaView {
             region.setVisible(false);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void enviarMensagemCancelamento(Order order) {
+        try {
+            if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
+                String phone = "";
+                System.out.println(order.getClientInfo().getPhone().length());
+                if (order.getClientInfo().getPhone().length() == 14) {
+                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                    phone = "55" + phone;
+                } else {
+                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                    phone = "55" + phone;
+                }
+                System.out.println(phone);
+                if (view.p != null) {
+                    wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
+                } else {
+                    Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
+                }
+
+                order.setStatus("Cancelado");
+                Thread.sleep(2000);
+
+            }
+
+        } catch (WhatsappException ex) {
+            Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void enviarMensagemConfirmacao(Order order) {
+        try {
+            String phone = "";
+            // System.out.println(order.getClientInfo().getPhone().length());
+            if (order.getClientInfo().getPhone().length() == 14) {
+                phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                phone = "55" + phone;
+            } else {
+                phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                phone = "55" + phone;
+            }
+            System.out.println(phone);
+            StringBuilder sb = new StringBuilder();
+            sb.append("#*SEU PEDIDO FOI CONFIRMADO.*");
+            sb.append("|_Acompanhe abaixo o seu pedido_||");
+            sb.append("]*Nº PEDIDO*: ").append(order.getNum_order()).append("||");
+            order.getProducts().forEach(p -> {
+                sb.append("/ *Produto*: ").append(p.getName().toUpperCase()).append("|");
+                sb.append("/ *Quantidade*: ").append(p.getQuantity().intValue()).append("|");
+                sb.append("/ *Valor*: R$ ").append(p.getTotal()).append("|");
+                if (p.getAttributes() != null && p.getAttributes().size() > 0) {
+                    System.out.println("sizeeeeeeeeeeeeeeeeeeeee " + p.getAttributes().size());
+                    sb.append("= *ADICIONAIS*|");
+                    for (Attribute a : p.getAttributes()) {
+                        for (AttributeValue v : a.getValues()) {
+                            sb.append("¬ *").append(v.getQuantity()).append("x* ").append(v.getName().toUpperCase()).append("|");
+                        }
+                    }
+                } else if (p.getFlavors() != null) {
+                    for (FlavorPizza f : p.getFlavors()) {
+                        sb.append("¬ *SABORES*: ").append(f.getFlavor().toUpperCase()).append("|");
+                    }
+                }
+                sb.append("|");
+            });
+            sb.append("----------------|");
+            if (order.getDelivery()) {
+                sb.append("|*Taxa de Entrega:* R$ ").append(order.getDeliveryCost());
+            }
+            sb.append("|*Total:* R$ ").append(order.getTotal());
+            sb.append("||! ").append(order.getClientInfo().getName());
+            sb.append("|% ").append(order.getClientInfo().getPhone());
+            sb.append("|[ ").append(order.getForma());
+            if (order.getTroco() != null) {
+                if (order.getTroco()) {
+                    sb.append("|¨ Troco para ").append(order.getTrocoPara().floatValue());
+                }
+            }
+            if (order.getDelivery()) {
+                sb.append("|{ ").append(order.getAddress().getStreet()).append("- ").append(order.getAddress().getStreetNumber()).append(", ").append(order.getAddress().getAuto()).append(", ").append(order.getAddress().getSuburb());
+            } else {
+                sb.append("|@ Você optou por retirar no local, para solicitar nosso endereço digite *localização*");
+            }
+            String msg = sb.toString();
+            System.out.println(msg);
+            if (view.p != null) {
+                wppService.sendMessage(phone, msg);
+            } else {
+                Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
+            }
+            Thread.sleep(2000);
+        } catch (WhatsappException e) {
+            Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void enviarMensagemSaiuParaEntrega(Order order) {
+        try {
+            String phone = "";
+            if (order.getClientInfo().getPhone().length() == 14) {
+                phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
+                phone = "55" + phone;
+            } else {
+                phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                phone = "55" + phone;
+            }
+            System.out.println(phone);
+            if (order.getDelivery()) {
+                if (view.p != null) {
+                    wppService.sendMessage(phone, "Seu pedido acabou de sair para entrega ¢³");
+                } else {
+                    Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
+                }
+            } else {
+                if (view.p != null) {
+                    wppService.sendMessage(phone, "Seu pedido está pronto para ser retirado.");
+                } else {
+                    Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
+                }
+            }
+            System.out.println("CLICK");
+            order.setStatus("Finalizando");
+            Thread.sleep(2000);
+
+        } catch (WhatsappException ex) {
+            Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

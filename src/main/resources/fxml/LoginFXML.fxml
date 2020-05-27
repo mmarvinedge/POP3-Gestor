@@ -12,15 +12,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" minHeight="512.0" minWidth="414.0" prefHeight="512.0" prefWidth="414.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.controller.LoginController">
+<AnchorPane id="AnchorPane" minHeight="512.0" minWidth="414.0" prefHeight="512.0" prefWidth="414.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.controller.LoginController">
    <children>
       <BorderPane layoutX="137.0" layoutY="61.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="113.0" fitWidth="117.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="113.0" fitWidth="117.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                      <image>
-                        <Image url="@../img/sales.png" />
+                        <Image url="@../img/logo-verde-transparent.png" />
                      </image>
                   </ImageView>
                   <Label text="PORTAL DE PEDIDOS">
@@ -30,17 +30,23 @@
                   </Label>
                   <VBox spacing="35.0">
                      <children>
-                        <JFXTextField fx:id="iptUser" focusColor="#cd4c51" labelFloat="true" prefHeight="45.0" promptText="Usuario/Email">
+                        <JFXTextField fx:id="iptUser" focusColor="#95c70d" labelFloat="true" prefHeight="45.0" promptText="Usuario/Email">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
+                           <padding>
+                              <Insets top="15.0" />
+                           </padding>
                         </JFXTextField>
-                        <JFXPasswordField fx:id="iptSenha" focusColor="#cd4c51" labelFloat="true" onKeyPressed="#onEnter" prefHeight="45.0" promptText="Senha">
+                        <JFXPasswordField fx:id="iptSenha" focusColor="#95c70d" labelFloat="true" onKeyPressed="#onEnter" prefHeight="45.0" promptText="Senha">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
+                           <padding>
+                              <Insets top="15.0" />
+                           </padding>
                         </JFXPasswordField>
-                        <JFXButton fx:id="btnLogin" onAction="#entrar" prefHeight="61.0" prefWidth="420.0" style="-fx-background-color: cd4c51; -fx-text-fill: white;" text="ENTRAR" />
+                        <JFXButton fx:id="btnLogin" onAction="#entrar" prefHeight="61.0" prefWidth="420.0" style="-fx-text-fill: white;" styleClass="green" text="ENTRAR" />
                      </children>
                      <VBox.margin>
                         <Insets left="15.0" right="15.0" top="45.0" />
