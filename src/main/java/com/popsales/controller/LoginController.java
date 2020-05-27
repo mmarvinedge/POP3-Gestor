@@ -10,12 +10,16 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.popsales.Constantes;
 import com.popsales.Sessao;
+import com.popsales.Utils;
 import com.popsales.components.Mensagem;
+import com.popsales.model.Company;
 import com.popsales.model.User;
 import com.popsales.services.CompanyServices;
 import com.popsales.services.LoginService;
 import com.popsales.services.ProductService;
 import com.popsales.services.VersaoService;
+import java.awt.Event;
+import com.popsales.util.DateUtil;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,12 +29,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -89,6 +95,12 @@ public class LoginController implements Initializable {
             }
 
             downloadExample();
+            
+            iptSenha.setOnKeyPressed((KeyEvent event) -> {
+                if(event.getCode() == KeyCode.ENTER) {
+                    entrar(new ActionEvent());
+                }
+            });
         });
     }
 
@@ -220,6 +232,7 @@ public class LoginController implements Initializable {
         }
         try {
             Sessao.user = loginService.Login(new User(iptUser.getText(), iptSenha.getText()));
+
         } catch (IOException ex) {
             ex.printStackTrace();
             Mensagem.dialogAlert(ex.getMessage(), null, iptUser.getScene().getWindow());
@@ -241,7 +254,20 @@ public class LoginController implements Initializable {
             for (PrintService ps : printServices) {
                 Sessao.impressorasWindows.add(ps.getName());
             }
-            abreJanela();
+
+            // VALIDA SE ESTÁ EM TRIAL
+            Date trial = null, today = null;
+            if (Sessao.company.getTrial()) {
+                trial = Utils.getDataByTexto(Sessao.company.getTrialDate(), "yyyy-MM-dd");
+                String temp = Utils.formataData(new Date(), "yyyy-MM-dd");
+                today = Utils.getDataByTexto(temp, "yyyy-MM-dd");
+                System.out.println("difff "+ DateUtil.diferencaEntreDatas("yyyy-MM-dd", trial, today));
+            }
+            if (Sessao.company.getTrial() && DateUtil.diferencaEntreDatas("yyyy-MM-dd", trial, today) > 7) {
+                Mensagem.dialogAlert("Seu período teste de 7 dias encerraram, para continuar utilizando entre em contato com seu agente de vendas!", btnLogin, btnLogin.getScene().getWindow());
+            } else {
+                abreJanela();
+            }
         } else {
             System.out.println("USUARIO NAO ENCONTRADO!");
         }

@@ -26,7 +26,7 @@ public class MainApp extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginFXML.fxml"));
         Scene scene = new Scene(root);
-        stage.setTitle("Entrar Pop Sales");
+        stage.setTitle("Entrar POP3");
         stage.getIcons().add(new Image("/img/sales.png"));
         stage.setScene(scene);
         stage.setResizable(false);
