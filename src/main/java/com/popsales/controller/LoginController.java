@@ -234,7 +234,6 @@ public class LoginController implements Initializable {
         }
         try {
             Sessao.user = loginService.Login(new User(iptUser.getText(), iptSenha.getText()));
-
         } catch (IOException ex) {
             ex.printStackTrace();
             Mensagem.dialogAlert(ex.getMessage(), null, iptUser.getScene().getWindow());
@@ -244,10 +243,10 @@ public class LoginController implements Initializable {
             e.printStackTrace();
             return true;
         }
-        System.out.println(Sessao.user);
+        System.out.println(Sessao.user.getName());
         if (Sessao.user.getName() != null) {
             if (Sessao.user.getName().equalsIgnoreCase("trialexpired")) {
-                Mensagem.dialogAlert("Seu período teste de 15 dias encerraram, para continuar utilizando entre em contato com seu agente de vendas!", btnLogin, btnLogin.getScene().getWindow());
+                Mensagem.dialogAlert("Seu período teste de 15 dias se encerraram, para continuar utilizando entre em contato com seu agente de vendas!", btnLogin, btnLogin.getScene().getWindow());
             } else {
                 Sessao.company = companyServices.loadCompany(Sessao.user.getCompanyId());
                 List<String> printers = productServices.getPrinters();

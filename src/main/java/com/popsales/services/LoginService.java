@@ -33,17 +33,8 @@ public class LoginService {
                     .post(body)
                     .build();
             Response response = Constantes.httpClient.newCall(request).execute();
-            System.out.println("RETORNO 1: " + response.message());
-            System.out.println("RETORNO 2: " + response.body());
-            System.out.println("RETORNO 3: " + response.body().toString());
             if (response.code() == 401) {
                 throw new IOException("Usuário ou senha inválida!");
-            }
-            if (response.code() == 407) {
-                System.out.println("entrei no ifffff");
-                User uu = new User();
-                uu.setName("trialexpired");
-                return uu;
             }
             if (response.code() == 500) {
                 return u;
@@ -54,9 +45,11 @@ public class LoginService {
             u = new Gson().fromJson(response.body().string(), User.class);
             return u;
         } catch (ProtocolException pe) {
+            System.out.println("entrei no catch");
             User uu = new User();
             uu.setName("trialexpired");
             return uu;
         }
+
     }
 }
