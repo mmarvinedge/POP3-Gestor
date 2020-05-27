@@ -96,9 +96,9 @@ public class LoginController implements Initializable {
             }
 
             downloadExample();
-            
+
             iptSenha.setOnKeyPressed((KeyEvent event) -> {
-                if(event.getCode() == KeyCode.ENTER) {
+                if (event.getCode() == KeyCode.ENTER) {
                     entrar(new ActionEvent());
                 }
             });
@@ -221,7 +221,9 @@ public class LoginController implements Initializable {
 
     @FXML
     private void entrar(ActionEvent event) {
-        if (login()) return;
+        if (login()) {
+            return;
+        }
     }
 
     private boolean login() {
@@ -243,33 +245,26 @@ public class LoginController implements Initializable {
             e.printStackTrace();
             return true;
         }
-        if (Sessao.user.getId() != null) {
-            Sessao.company = companyServices.loadCompany(Sessao.user.getCompanyId());
-            List<String> printers = productServices.getPrinters();
-            Sessao.impressorasProdutos = new ArrayList();
-            Sessao.impressorasWindows = new ArrayList();
-            printers.forEach(c -> {
-                Sessao.impressorasProdutos.add(c);
-            });
-            PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-            for (PrintService ps : printServices) {
-                Sessao.impressorasWindows.add(ps.getName());
-            }
-
-            // VALIDA SE ESTÁ EM TRIAL
-            Date trial = null, today = null;
-            if (Sessao.company.getTrial()) {
-                trial = Utils.getDataByTexto(Sessao.company.getTrialDate(), "yyyy-MM-dd");
-                String temp = Utils.formataData(new Date(), "yyyy-MM-dd");
-                today = Utils.getDataByTexto(temp, "yyyy-MM-dd");
-                System.out.println("difff "+ DateUtil.diferencaEntreDatas("yyyy-MM-dd", trial, today));
-            }
-            if (Sessao.company.getTrial() && DateUtil.diferencaEntreDatas("yyyy-MM-dd", trial, today) > 15) {
+        System.out.println(Sessao.user);
+        if (Sessao.user.getName() != null) {
+            if (Sessao.user.getName().equalsIgnoreCase("trialexpired")) {
                 Mensagem.dialogAlert("Seu período teste de 15 dias encerraram, para continuar utilizando entre em contato com seu agente de vendas!", btnLogin, btnLogin.getScene().getWindow());
             } else {
+                Sessao.company = companyServices.loadCompany(Sessao.user.getCompanyId());
+                List<String> printers = productServices.getPrinters();
+                Sessao.impressorasProdutos = new ArrayList();
+                Sessao.impressorasWindows = new ArrayList();
+                printers.forEach(c -> {
+                    Sessao.impressorasProdutos.add(c);
+                });
+                PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+                for (PrintService ps : printServices) {
+                    Sessao.impressorasWindows.add(ps.getName());
+                }
                 abreJanela();
             }
         } else {
+            Mensagem.dialogAlert("Usuário ou senha inválidos, tente novamente.", btnLogin, btnLogin.getScene().getWindow());
             System.out.println("USUARIO NAO ENCONTRADO!");
         }
         return false;
@@ -303,7 +298,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private void onEnter(KeyEvent event) {
-        if(event.getCode() == KeyCode.ENTER){
+        if (event.getCode() == KeyCode.ENTER) {
             login();
         }
     }
