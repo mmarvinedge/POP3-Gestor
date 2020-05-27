@@ -5,7 +5,6 @@
  */
 package com.popsales.controller;
 
-import com.github.junrar.extract.ExtractArchive;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;

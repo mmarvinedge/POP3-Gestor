@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="300.0" prefWidth="436.0" style="-fx-background-color: #fff; -fx-border-color: #555; -fx-border-width: 2px;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.components.DialogComboBoxController">
+   <children>
+      <BorderPane layoutX="47.0" layoutY="62.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <AnchorPane maxHeight="70.0" prefHeight="68.0" prefWidth="305.0" style="-fx-border-color: #ccc; -fx-border-width: 0px 0 1px 0;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="lblTitle" focusTraversable="false" layoutX="14.0" layoutY="27.0" text="TITLE" textFill="#727070" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="20.0">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="401.0" layoutY="19.0" onMouseClicked="#sair" text="X" textFill="#727070">
+                     <font>
+                        <Font name="Arial Bold" size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </top>
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="btnConfirmar" layoutY="167.0" mnemonicParsing="false" onAction="#confirmar" onKeyPressed="#confirmEnter" prefHeight="60.0" prefWidth="432.0" style="-fx-background-color: #00a0f5;" text="Entrar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <ComboBox fx:id="cbItens" layoutY="23.0" prefHeight="50.0" prefWidth="432.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

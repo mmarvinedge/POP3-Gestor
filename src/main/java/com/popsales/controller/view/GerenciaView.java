@@ -5,11 +5,12 @@
  */
 package com.popsales.controller.view;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXButton;
 import com.popsales.Sessao;
 import com.popsales.Utils;
 import static com.popsales.Utils.formataData;
-import com.popsales.components.AePlayWave;
 import com.popsales.components.Mensagem;
 import com.popsales.components.WhatsappException;
 import com.popsales.controller.GerenciaController;
@@ -19,6 +20,7 @@ import com.popsales.model.Attribute;
 import com.popsales.model.AttributeValue;
 import com.popsales.model.FlavorPizza;
 import com.popsales.model.Order;
+import com.popsales.pojo.MotivoCancelamento;
 import com.popsales.services.OrderService;
 import com.popsales.services.WhatsAppService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -35,6 +37,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -75,9 +78,10 @@ public class GerenciaView {
     private OrderService orderService = new OrderService();
     public Date ultimoUpdate;
 
+    private List<MotivoCancelamento> motivosCancelamento;
+
     public GerenciaView(GerenciaController view) {
         this.view = view;
-
         loadComponents();
         Sessao.t = new Timer();
         Sessao.t.schedule(
@@ -91,7 +95,7 @@ public class GerenciaView {
 
             }
         }, 0, 60000);
-
+        carregaMotivosCancelamentoJSON();
     }
 
     public void loadData() {
@@ -102,7 +106,6 @@ public class GerenciaView {
 
     private void carregarAguardando() {
         ordersAguardando = orderService.getOrders("Aguardando");
-
         ordersAguardando.forEach(c -> {
             try {
                 if (c.getDtRegister() != null) {
@@ -319,8 +322,19 @@ public class GerenciaView {
         JFXButton bt2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
         bt2.setOnAction((ActionEvent event) -> {
             try {
-                if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
+                motivosCancelamento = motivosCancelamento.stream()
+                        .filter(m -> Integer.parseInt(m.getCodigo()) < 800)
+                        .collect(Collectors.toList());
+                motivosCancelamento.sort((c1, c2) -> c1.getMotivo().compareTo(c2.getMotivo()));
+                if (Mensagem.dialogConfirm("Atenção!", "Deseja cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
                     String phone = "";
+                    String json = Mensagem.dialogComboBox("Cancelar Pedido!!!", motivosCancelamento);
+                    if (json == null) {
+                        return;
+                    }else{
+                        MotivoCancelamento motivo = new Gson().fromJson(json, MotivoCancelamento.class);
+                        order.setCancelmentReason(motivo.getMotivo());
+                    }
                     System.out.println(order.getClientInfo().getPhone().length());
                     if (order.getClientInfo().getPhone().length() == 14) {
                         phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
@@ -331,11 +345,10 @@ public class GerenciaView {
                     }
                     System.out.println(phone);
                     if (view.p != null) {
-                        wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
+                        wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.|Motivo: " + order.getCancelmentReason());
                     } else {
                         Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                     }
-
                     order.setStatus("Cancelado");
                     Thread.sleep(2000);
                     Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -577,8 +590,19 @@ public class GerenciaView {
         JFXButton button2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
         button2.setOnAction((ActionEvent event) -> {
             try {
-                if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
+                motivosCancelamento = motivosCancelamento.stream()
+                        .filter(m -> Integer.parseInt(m.getCodigo()) > 800)
+                        .collect(Collectors.toList());
+                motivosCancelamento.sort((c1, c2) -> c1.getMotivo().compareTo(c2.getMotivo()));
+                if (Mensagem.dialogConfirm("Atenção!", "Deseja cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
                     String phone = "";
+                    String json = Mensagem.dialogComboBox("Cancelar Pedido!!!", motivosCancelamento);
+                    if (json == null) {
+                        return;
+                    }else{
+                        MotivoCancelamento motivo = new Gson().fromJson(json, MotivoCancelamento.class);
+                        order.setCancelmentReason(motivo.getMotivo());
+                    }
                     if (order.getClientInfo().getPhone().length() == 14) {
                         phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
                         phone = "55" + phone;
@@ -588,7 +612,7 @@ public class GerenciaView {
                     }
                     System.out.println(phone);
                     if (view.p != null) {
-                        wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
+                        wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.|Motivo: " + order.getCancelmentReason());
                     } else {
                         Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
                     }
@@ -679,5 +703,101 @@ public class GerenciaView {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void carregaMotivosCancelamentoJSON() {
+        String json = "[\n"
+                + "  {\n"
+                + "    \"codigo\": 501,\n"
+                + "    \"motivo\": \"PROBLEMAS DE SISTEMA\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 502,\n"
+                + "    \"motivo\": \"PEDIDO EM DUPLICIDADE\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 503,\n"
+                + "    \"motivo\": \"ITEM INDISPONÍVEL\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 504,\n"
+                + "    \"motivo\": \"RESTAURANTE SEM MOTOBOY\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 505,\n"
+                + "    \"motivo\": \"CARDÁPIO DESATUALIZADO\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 506,\n"
+                + "    \"motivo\": \"PEDIDO FORA DA ÁREA DE ENTREGA\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 507,\n"
+                + "    \"motivo\": \"CLIENTE GOLPISTA / TROTE\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 508,\n"
+                + "    \"motivo\": \"FORA DO HORÁRIO DO DELIVERY\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 509,\n"
+                + "    \"motivo\": \"DIFICULDADES INTERNAS DO RESTAURANTE\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 511,\n"
+                + "    \"motivo\": \"ÁREA DE RISCO\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 512,\n"
+                + "    \"motivo\": \"RESTAURANTE ABRIRÁ MAIS TARDE\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 513,\n"
+                + "    \"motivo\": \"RESTAURANTE FECHOU MAIS CEDO\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 803,\n"
+                + "    \"motivo\": \"ITEM INDISPONÍVEL\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 805,\n"
+                + "    \"motivo\": \"RESTAURANTE SEM MOTOBOY\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 801,\n"
+                + "    \"motivo\": \"OUTROS (OBRIGATÖRIO INFORMAR DESCRIÇÃO)\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 804,\n"
+                + "    \"motivo\": \"CADASTRO DO CLIENTE INCOMPLETO - CLIENTE NÃO ATENDE\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 807,\n"
+                + "    \"motivo\": \"PEDIDO FORA DA ÁREA DE ENTREGA\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 808,\n"
+                + "    \"motivo\": \"CLIENTE GOLPISTA / TROTE\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 809,\n"
+                + "    \"motivo\": \"FORA DO HORÁRIO DO DELIVERY\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 815,\n"
+                + "    \"motivo\": \"DIFICULDADES INTERNAS DO RESTAURANTE\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 818,\n"
+                + "    \"motivo\": \"TAXA DE ENTREGA INCONSISTENTE\"\n"
+                + "  },\n"
+                + "  {\n"
+                + "    \"codigo\": 820,\n"
+                + "    \"motivo\": \"ÁREA DE RISCO\"\n"
+                + "  }\n"
+                + "]";
+
+        motivosCancelamento = new Gson().fromJson(json, new TypeToken<List<MotivoCancelamento>>() {
+        }.getType());
     }
 }
