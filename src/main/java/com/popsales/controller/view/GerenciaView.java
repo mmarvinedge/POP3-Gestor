@@ -345,7 +345,6 @@ public class GerenciaView {
                     }
                     System.out.println(phone);
                     if (view.p != null) {
-                        
                         wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.|Motivo: " + order.getCancelmentReason());
                     } else {
                         Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
@@ -600,6 +599,9 @@ public class GerenciaView {
                     String json = Mensagem.dialogComboBox("Cancelar Pedido!!!", motivosCancelamento);
                     if (json == null) {
                         return;
+                    }else{
+                        MotivoCancelamento motivo = new Gson().fromJson(json, MotivoCancelamento.class);
+                        order.setCancelmentReason(motivo.getMotivo());
                     }
                     if (order.getClientInfo().getPhone().length() == 14) {
                         phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
@@ -610,7 +612,7 @@ public class GerenciaView {
                     }
                     System.out.println(phone);
                     if (view.p != null) {
-                        wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
+                        wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.|Motivo: " + order.getCancelmentReason());
                     } else {
                         Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
                     }
