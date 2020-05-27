@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.popsales.Constantes;
 import com.popsales.model.User;
 import java.io.IOException;
+import java.net.ProtocolException;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,25 +24,39 @@ public class LoginService {
 
     public String pathLogin = "/user/login";
 
-    public User Login(User user) throws IOException  {
-        User u = new User();
-        RequestBody body = RequestBody.create(new Gson().toJson(user), Constantes.JSON); // new
-        Request request = new Request.Builder()
-                .url(Constantes.URL + pathLogin)
-                .post(body)
-                .build();
-        Response response = Constantes.httpClient.newCall(request).execute();
-        System.out.println("RETORNO 1: " + response.message());
-        System.out.println("RETORNO 2: " + response.body());
-        System.out.println("RETORNO 3: " + response.body().toString());
-        if (response.code() == 401) {
-            throw new IOException("Usuário ou senha inválida!");
+    public User Login(User user) throws IOException {
+        try {
+            User u = new User();
+            RequestBody body = RequestBody.create(new Gson().toJson(user), Constantes.JSON); // new
+            Request request = new Request.Builder()
+                    .url(Constantes.URL + pathLogin)
+                    .post(body)
+                    .build();
+            Response response = Constantes.httpClient.newCall(request).execute();
+            System.out.println("RETORNO 1: " + response.message());
+            System.out.println("RETORNO 2: " + response.body());
+            System.out.println("RETORNO 3: " + response.body().toString());
+            if (response.code() == 401) {
+                throw new IOException("Usuário ou senha inválida!");
+            }
+            if (response.code() == 407) {
+                System.out.println("entrei no ifffff");
+                User uu = new User();
+                uu.setName("trialexpired");
+                return uu;
+            }
+            if (response.code() == 500) {
+                return u;
+            }
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            u = new Gson().fromJson(response.body().string(), User.class);
+            return u;
+        } catch (ProtocolException pe) {
+            User uu = new User();
+            uu.setName("trialexpired");
+            return uu;
         }
-        if (!response.isSuccessful()) {
-            throw new IOException("Unexpected code " + response);
-        }
-        u = new Gson().fromJson(response.body().string(), User.class);
-        return u;
-
     }
 }

@@ -8,8 +8,6 @@ package com.popsales.controller.view;
 import com.jfoenix.controls.JFXButton;
 import com.popsales.Sessao;
 import com.popsales.Utils;
-import static com.popsales.Utils.formataData;
-import com.popsales.components.AePlayWave;
 import com.popsales.components.Mensagem;
 import com.popsales.components.WhatsappException;
 import com.popsales.controller.GerenciaController;
@@ -248,10 +246,11 @@ public class GerenciaView {
             tres.getChildren().add(creatIcon(FontAwesomeIcon.TABLE, "25", "#838383"));
             tres.getChildren().add(createLabel("Retirada Local", 13, "#545454", Boolean.FALSE));
         }
+        tres.setStyle("-fx-border-width:  1 0 0 0; -fx-border-color:  #ccc");
         saida.getChildren().add(um);
         saida.getChildren().add(dois);
         saida.getChildren().add(tres);
-        
+
         saida.setStyle("-fx-border-width:  0 0 1 0; -fx-border-color:  #ccc");
         return saida;
     }
