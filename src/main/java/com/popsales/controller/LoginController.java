@@ -5,7 +5,6 @@
  */
 package com.popsales.controller;
 
-import com.github.junrar.extract.ExtractArchive;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -17,7 +16,6 @@ import com.popsales.services.CompanyServices;
 import com.popsales.services.LoginService;
 import com.popsales.services.ProductService;
 import com.popsales.services.VersaoService;
-import java.awt.Event;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;

@@ -6,7 +6,6 @@
 package com.popsales.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +46,7 @@ public class Order {
     private String discount;
     private String dtRegister;
     private Date dtRegistro;
+    private String cancelmentReason;
 
     public String getId() {
         return id;
@@ -294,6 +294,14 @@ public class Order {
 
     public void setDtRegistro(Date dtRegistro) {
         this.dtRegistro = dtRegistro;
+    }
+
+    public String getCancelmentReason() {
+        return cancelmentReason;
+    }
+
+    public void setCancelmentReason(String cancelmentReason) {
+        this.cancelmentReason = cancelmentReason;
     }
 
 }

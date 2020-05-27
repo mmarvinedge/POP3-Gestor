@@ -9,6 +9,7 @@ import com.popsales.MainApp;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -466,6 +467,36 @@ public class Mensagem {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+    
+    public static String dialogComboBox(String title, List assunto) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("/fxml/DialogComboBox.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initStyle(StageStyle.UNDECORATED);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            DialogComboBoxController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setItensCombo(assunto);
+            dialogStage.showAndWait();
+
+            if (controller.isClosed()) {
+                return null;
+            }
+            
+            if (controller.getOutput() != null && !controller.getOutput().isEmpty()) {
+                return controller.getOutput().trim();
+            } else {
+                return "";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 }
