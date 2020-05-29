@@ -544,7 +544,7 @@ public class GerenciaView {
                 }
                 System.out.println(phone);
                 if (view.p != null) {
-                    wppService.sendMessage(phone, "Seu pedido " + order.getNum_order() + " foi cancelado.");
+                    wppService.sendMessage(phone, ".[[ Seu pedido " + order.getNum_order() + " foi cancelado.");
                 } else {
                     Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                 }
@@ -601,7 +601,7 @@ public class GerenciaView {
                 sb.append("|*Taxa de Entrega:* R$ ").append(order.getDeliveryCost());
             }
             sb.append("|*Total:* R$ ").append(order.getTotal());
-            sb.append("||! ").append(order.getClientInfo().getName());
+            sb.append("||;; ").append(order.getClientInfo().getName());
             sb.append("|% ").append(order.getClientInfo().getPhone());
             sb.append("|[ ").append(order.getForma());
             if (order.getTroco() != null) {
@@ -648,7 +648,7 @@ public class GerenciaView {
                 }
             } else {
                 if (view.p != null) {
-                    wppService.sendMessage(phone, "Seu pedido está pronto para ser retirado.");
+                    wppService.sendMessage(phone, ".]] Seu pedido está pronto para ser retirado.");
                 } else {
                     Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                 }
