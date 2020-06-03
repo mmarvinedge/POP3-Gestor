@@ -448,13 +448,13 @@ public class GerenciaView {
             System.out.println(phone);
             if (order.getDelivery()) {
                 if (view.p != null) {
-                    wppService.sendMessage(phone, "Pedido entregue, obrigado pela preferência.");
+                    wppService.sendMessage(phone, "Pedido entregue, obrigado pela preferência. 😊");
                 } else {
                     Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
                 }
             } else {
                 if (view.p != null) {
-                    wppService.sendMessage(phone, "Pedido retirado, obrigado pela preferência.");
+                    wppService.sendMessage(phone, "Pedido retirado, obrigado pela preferência. 😊");
                 } else {
                     Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
                 }
@@ -544,7 +544,7 @@ public class GerenciaView {
                 }
                 System.out.println(phone);
                 if (view.p != null) {
-                    wppService.sendMessage(phone, ".[[ Seu pedido " + order.getNum_order() + " foi cancelado.");
+                    wppService.sendMessage(phone, "❎ Seu pedido " + order.getNum_order() + " foi cancelado.");
                 } else {
                     Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                 }
@@ -574,7 +574,7 @@ public class GerenciaView {
             }
             System.out.println(phone);
             StringBuilder sb = new StringBuilder();
-            sb.append("#*SEU PEDIDO FOI CONFIRMADO.*");
+            sb.append("# *SEU PEDIDO FOI CONFIRMADO*");
             sb.append("|_Acompanhe abaixo o seu pedido_||");
             sb.append("]*Nº PEDIDO*: ").append(order.getNum_order()).append("||");
             order.getProducts().forEach(p -> {
@@ -614,6 +614,7 @@ public class GerenciaView {
             } else {
                 sb.append("|@ Você optou por retirar no local, para solicitar nosso endereço digite *localização*");
             }
+            sb.append("||² *ATENÇÃO*: Para solicitar alterações no seu pedido nos faça uma ligação.");
             String msg = sb.toString();
             System.out.println(msg);
             if (view.p != null) {
@@ -642,13 +643,13 @@ public class GerenciaView {
             System.out.println(phone);
             if (order.getDelivery()) {
                 if (view.p != null) {
-                    wppService.sendMessage(phone, "Seu pedido acabou de sair para entrega ¢³");
+                    wppService.sendMessage(phone, "Seu pedido acabou de sair para entrega 🏍💨");
                 } else {
                     Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                 }
             } else {
                 if (view.p != null) {
-                    wppService.sendMessage(phone, ".]] Seu pedido está pronto para ser retirado.");
+                    wppService.sendMessage(phone, "🛎 Seu pedido está pronto para ser retirado");
                 } else {
                     Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                 }
