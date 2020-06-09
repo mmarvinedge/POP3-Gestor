@@ -195,7 +195,6 @@ public class GerenciaController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void finalizaNodeJs() {
