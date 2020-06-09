@@ -89,6 +89,9 @@ public class Order {
     }
 
     public Double getTrocoPara() {
+        if (trocoPara == null) {
+            trocoPara = 0.0;
+        }
         return trocoPara;
     }
 
