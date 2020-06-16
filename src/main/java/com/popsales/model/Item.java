@@ -101,6 +101,9 @@ public class Item {
     }
 
     public BigDecimal getQuantity() {
+        if (quantity == null) {
+            quantity = BigDecimal.ONE;
+        }
         return quantity;
     }
 

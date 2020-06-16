@@ -86,7 +86,7 @@ public class ConfiguracaoController implements Initializable {
         printDefault.setPadding(new Insets(0, 0, 0, 25));
         printers.getChildren().add(printDefault);
 
-        for (String ip : Sessao.impressorasProdutos.stream().filter(p -> !p.equalsIgnoreCase("NAO IMPRIMIR")).collect(Collectors.toList())) {
+        for (String ip : Sessao.impressorasProdutos.stream().collect(Collectors.toList())) {
             JFXComboBox<String> printCb = new JFXComboBox<>();
             printCb.setFocusColor(Paint.valueOf("95c70d"));
             printCb.setLabelFloat(true);

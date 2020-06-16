@@ -65,6 +65,17 @@ public class Order {
     }
 
     public Boolean getDelivery() {
+        if (delivery == null) {
+            try {
+                if (address != null && address.getStreet() != null) {
+                    delivery = true;
+                } else {
+                    delivery = false;
+                }
+            } catch (Exception e) {
+                delivery = false;
+            }
+        }
         return delivery;
     }
 

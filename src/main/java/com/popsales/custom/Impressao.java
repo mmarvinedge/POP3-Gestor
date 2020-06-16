@@ -77,26 +77,34 @@ public class Impressao {
                 list.forEach(pp -> {
                     sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
                     if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
-                        sb.append(pp.getFlavors().stream().map(m -> "\t1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
+                        sb.append(pp.getFlavors().stream().map(m -> "   1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
                     }
 
                     if (pp.getAttributes() != null) {
                         for (Attribute at : pp.getAttributes()) {
-                            sb.append("\t").append(at.getDescription());
+                            sb.append("   ").append(at.getDescription());
                             for (AttributeValue va : at.getValues()) {
-                                sb.append("\n\t").append(va.getQuantity()).append(" x ").append(va.getName());
+                                sb.append("\n      ").append(va.getQuantity()).append(" x ").append(va.getName());
                             }
                             sb.append("\n");
                         }
                     }
                     if (pp.getObs().length() > 0) {
-                        sb.append("\t").append(pp.getObs());
+                        sb.append("\t").append(pp.getObs()).append("\n");
+
                     }
                 });
 
                 sb.append("\n\n\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
                 // System.out.println(sb.toString());
-                printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", list.get(0).getPrinter(), String.class));
+                try {
+                    if (!Sessao.ini.get("Printers", list.get(0).getPrinter(), String.class).equalsIgnoreCase("NAO IMPRIMIR")) {
+                        printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", list.get(0).getPrinter(), String.class));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("ERRO AO IMPRIMIR");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,26 +123,26 @@ public class Impressao {
         sb.append(LS);
 
         sb.append("-----------------ITENS--------------------\n\n");
-        for (Item pp : or.getProducts()) {
-            sb.append(String.format(format, (pp.getQuantity() + " x " + Utils.formataParaMoeda(pp.getPrice())), pp.getName().toUpperCase()));
-
+        or.getProducts().forEach(pp -> {
+            sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
             if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
-                sb.append(pp.getFlavors().stream().map(m -> "\t1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
+                sb.append(pp.getFlavors().stream().map(m -> "   1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
             }
 
             if (pp.getAttributes() != null) {
                 for (Attribute at : pp.getAttributes()) {
-                    sb.append("\t").append(at.getDescription());
+                    sb.append("   ").append(at.getDescription());
                     for (AttributeValue va : at.getValues()) {
-                        sb.append("\n\t").append(va.getQuantity()).append(" x ").append(va.getName());
+                        sb.append("\n      ").append(va.getQuantity()).append(" x ").append(va.getName());
                     }
                     sb.append("\n");
                 }
             }
             if (pp.getObs().length() > 0) {
-                sb.append("\t").append(pp.getObs());
+                sb.append("\t").append(pp.getObs()).append("\n");
+
             }
-        }
+        });
         sb.append("\n").append(LD);
         sb.append("PRODUTOS: ").append(Utils.formataParaMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add))).append("\n");
         sb.append("TAXA ENTREGA: ").append(Utils.formataParaMoeda(or.getDeliveryCost())).append("\n");
@@ -160,7 +168,14 @@ public class Impressao {
         }
 
         sb.append("\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
-        printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", "Expedicao", String.class));
+        try {
+            if (!Sessao.ini.get("Printers", "Expedicao", String.class).equalsIgnoreCase("NAO IMPRIMIR")) {
+                printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", "Expedicao", String.class));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERRO AO IMPRIMIR");
+        }
 
     }
 
@@ -175,26 +190,26 @@ public class Impressao {
         sb.append(LS);
 
         sb.append("-----------------ITENS--------------------\n\n");
-        for (Item i : or.getProducts()) {
-            sb.append(String.format(format, (i.getQuantity() + " x " + Utils.formataParaMoeda(i.getPrice())), i.getName().toUpperCase()));
-
-            if (i.getFlavors() != null && i.getFlavors().size() > 0) {
-                sb.append(i.getFlavors().stream().map(m -> "\t1/" + i.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
+        or.getProducts().forEach(pp -> {
+            sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
+            if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
+                sb.append(pp.getFlavors().stream().map(m -> "   1/" + pp.getFlavors().size() + " " + m.getFlavor()).collect(Collectors.joining("\n"))).append("\n");
             }
-            if (i.getAttributes() != null) {
-                for (Attribute at : i.getAttributes()) {
-                    sb.append("\t").append(at.getDescription());
+
+            if (pp.getAttributes() != null) {
+                for (Attribute at : pp.getAttributes()) {
+                    sb.append("   ").append(at.getDescription());
                     for (AttributeValue va : at.getValues()) {
-                        sb.append("\n\t").append(va.getQuantity()).append(" x ").append(Utils.formatToMoney(va.getPrice())).append(" ").append(va.getName())
-                                .append((va.getTotal() != null && va.getTotal().doubleValue() > 0) ? (" = (" + Utils.formatToMoney(va.getTotal()) + ")") : "");
+                        sb.append("\n      ").append(va.getQuantity()).append(" x ").append(va.getName());
                     }
-                    sb.append("\n" + LS + "\n");
+                    sb.append("\n");
                 }
             }
-            if (i.getObs().length() > 0) {
-                sb.append("\t").append(i.getObs());
+            if (pp.getObs().length() > 0) {
+                sb.append("\t").append(pp.getObs()).append("\n");
+
             }
-        }
+        });
         sb.append("\n").append(LD);
         sb.append("PRODUTOS: ").append(Utils.formataParaMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add))).append("\n");
         sb.append("TAXA ENTREGA: ").append(Utils.formataParaMoeda(or.getDeliveryCost())).append("\n");
@@ -220,7 +235,14 @@ public class Impressao {
         }
 
         sb.append("\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
-        printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", "Expedicao", String.class));
+        try {
+            if (!Sessao.ini.get("Printers", "Expedicao", String.class).equalsIgnoreCase("NAO IMPRIMIR")) {
+                printDestination(removeAcentos(sb.toString()), Sessao.ini.get("Printers", "Expedicao", String.class));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERRO AO IMPRIMIR");
+        }
 
     }
 
