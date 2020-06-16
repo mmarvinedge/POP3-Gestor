@@ -8,6 +8,7 @@ package com.popsales.controller;
 import com.popsales.Sessao;
 import com.popsales.components.Mensagem;
 import com.popsales.controller.view.GerenciaView;
+import com.popsales.util.Options;
 import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -100,6 +101,7 @@ public class GerenciaController implements Initializable {
         });
         lblNomeEmpresa.setText(Sessao.company.getName());
         lblUsuario.setText(Sessao.user.getName());
+        finalizaNodeJs();
         runWhatsApp();
     }
 
@@ -193,7 +195,17 @@ public class GerenciaController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    private void finalizaNodeJs() {
+        try {
+            String serviceName = "node.exe";
+            if (Options.isProcessRunning(serviceName)) {
+                Options.killProcess(serviceName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
