@@ -23,6 +23,8 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -593,7 +595,7 @@ public class GerenciaView {
             sb.append("|[ ").append(order.getForma());
             if (order.getTroco() != null) {
                 if (order.getTroco()) {
-                    sb.append("|¨ Troco para ").append(order.getTrocoPara().floatValue());
+                    sb.append("|¨ Troco para ").append(BigDecimal.valueOf(order.getTrocoPara()).setScale(2, RoundingMode.HALF_UP));
                 }
             }
             if (order.getDelivery()) {

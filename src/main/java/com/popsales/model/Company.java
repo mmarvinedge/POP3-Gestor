@@ -17,6 +17,7 @@ public class Company {
     private String fone;
     private String color;
     private String logo;
+    private String cgccpf;
 
     private String companyName;
     private String phone;
@@ -158,6 +159,14 @@ public class Company {
 
     public void setNameUrl(String nameUrl) {
         this.nameUrl = nameUrl;
+    }
+
+    public String getCgccpf() {
+        return cgccpf;
+    }
+
+    public void setCgccpf(String cgccpf) {
+        this.cgccpf = cgccpf;
     }
 
 }
