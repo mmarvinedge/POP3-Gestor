@@ -36,6 +36,11 @@ public class LoginService {
             if (response.code() == 401) {
                 throw new IOException("Usuário ou senha inválida!");
             }
+            if (response.code() == 408) {
+                User uu = new User();
+                uu.setName("block");
+                return uu;
+            }
             if (response.code() == 500) {
                 return u;
             }

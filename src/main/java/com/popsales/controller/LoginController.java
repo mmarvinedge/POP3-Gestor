@@ -247,7 +247,9 @@ public class LoginController implements Initializable {
         if (Sessao.user.getName() != null) {
             if (Sessao.user.getName().equalsIgnoreCase("trialexpired")) {
                 Mensagem.dialogAlert("Seu período teste de 15 dias se encerraram, para continuar utilizando entre em contato com seu agente de vendas!", btnLogin, btnLogin.getScene().getWindow());
-            } else {
+            } else if(Sessao.user.getName().equalsIgnoreCase("block")) {
+                Mensagem.dialogAlert("Sua licença expirou, para renovar acesse nosso site.", btnLogin, btnLogin.getScene().getWindow());
+            } else { 
                 Sessao.company = companyServices.loadCompany(Sessao.user.getCompanyId());
                 List<String> printers = productServices.getPrinters();
                 Sessao.impressorasProdutos = new ArrayList();
