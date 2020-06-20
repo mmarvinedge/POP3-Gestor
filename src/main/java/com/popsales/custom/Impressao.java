@@ -53,6 +53,17 @@ public class Impressao {
     }
 
     public static void imprimirOrder(Order or) {
+        Boolean naoImprimir = false;
+        try {
+            naoImprimir = Sessao.ini.get("Terminal", "ImprimirCozinha", Boolean.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            naoImprimir = false;
+        }
+        if (naoImprimir != null && naoImprimir) {
+            return;
+        }
+
         try {
             //System.out.println("IMPRIMINDO PEDIDO");
             Collection<List<Item>> itensByPrinter = or.getProducts().stream().filter(c -> c.getPrinter() != null && !c.getPrinter().equalsIgnoreCase("nao imprimir")).collect(Collectors.groupingBy(f -> f.getPrinter())).values();
@@ -114,8 +125,18 @@ public class Impressao {
 
     public static void imprimirOrderControle(Order or) {
 
+        Boolean naoImprimir = false;
+        try {
+            naoImprimir = Sessao.ini.get("Terminal", "ImprimirControle", Boolean.class);
+        } catch (Exception e) {
+            naoImprimir = false;
+        }
+        if (naoImprimir != null && naoImprimir) {
+            return;
+        }
+
         StringBuilder sb = new StringBuilder();
-        sb.append("-----------------CONTORLE---------\n\n");
+        sb.append("-----------------CONTROLE---------\n\n");
         sb.append("PEDIDO : ").append(or.getNum_order()).append("\n");
         sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
         sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
@@ -180,6 +201,16 @@ public class Impressao {
     }
 
     public static void imprimirOrderEntrega(Order or) {
+
+        Boolean naoImprimir = false;
+        try {
+            naoImprimir = Sessao.ini.get("Terminal", "ImprimirEntregador", Boolean.class);
+        } catch (Exception e) {
+            naoImprimir = false;
+        }
+        if (naoImprimir != null && naoImprimir) {
+            return;
+        }
 
         StringBuilder sb = new StringBuilder();
         sb.append("-----------------ENTREGADOR---------\n\n");
