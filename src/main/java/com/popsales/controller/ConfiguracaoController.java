@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -47,6 +48,8 @@ public class ConfiguracaoController implements Initializable {
     private JFXButton btnPrinter;
     @FXML
     private VBox vboxButtons;
+    @FXML
+    private JFXButton btnTerminal;
 
     /**
      * Initializes the controller class.
@@ -64,7 +67,7 @@ public class ConfiguracaoController implements Initializable {
         VBox printers = new VBox();
         printers.setSpacing(35);
         HBox pane = new HBox();
-        pane.setStyle("-fx-background-color:  "+Constantes.lemon);
+        pane.setStyle("-fx-background-color:  " + Constantes.lemon);
         Label label = new Label("Impressoras");
 
         label.setStyle("-fx-font-size: 18px; -fx-text-fill: white");;
@@ -99,7 +102,7 @@ public class ConfiguracaoController implements Initializable {
             printers.getChildren().add(printCb);
 
         }
-        if(Sessao.ini.get("Printers", "Expedicao", String.class) != null){
+        if (Sessao.ini.get("Printers", "Expedicao", String.class) != null) {
             JFXComboBox<String> printCb = new JFXComboBox<>();
             printCb.setFocusColor(Paint.valueOf("95c70d"));
             printCb.setLabelFloat(true);
@@ -113,8 +116,8 @@ public class ConfiguracaoController implements Initializable {
         }
 
         JFXButton button = new JFXButton("Salvar");
-        button.setStyle("-fx-background-color:  "+Constantes.green+"; -fx-text-fill: white;");
-        
+        button.setStyle("-fx-background-color:  " + Constantes.green + "; -fx-text-fill: white;");
+
         button.setOnAction((ActionEvent event1) -> {
             try {
                 printers.getChildren().forEach(c -> {
@@ -154,13 +157,30 @@ public class ConfiguracaoController implements Initializable {
         for (Node n : vboxButtons.getChildren()) {
             if (n instanceof JFXButton) {
                 JFXButton b = (JFXButton) n;
-                b.setStyle("-fx-background-color: "+Constantes.lemon);
+                b.setStyle("-fx-background-color: " + Constantes.lemon);
             }
         }
         if (action.equals("printer")) {
             JFXButton bn = (JFXButton) vboxButtons.getChildren().stream().filter(p -> p instanceof JFXButton).collect(Collectors.toList()).get(0);
-            bn.setStyle("-fx-background-color: "+Constantes.green);
+            bn.setStyle("-fx-background-color: " + Constantes.green);
+        } else if (action.equals("terminal")) {
+            JFXButton bn = (JFXButton) vboxButtons.getChildren().stream().filter(p -> p instanceof JFXButton).collect(Collectors.toList()).get(1);
+            bn.setStyle("-fx-background-color: " + Constantes.green);
         }
+    }
+
+    @FXML
+    private void terminal(ActionEvent event) {
+        action = "terminal";
+        changeAction();
+        conteudo.getChildren().clear();
+        FXMLLoader load = new FXMLLoader(getClass().getResource("/fxml/TerminalFXML.fxml"));
+        try {
+            conteudo.getChildren().add(load.load());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

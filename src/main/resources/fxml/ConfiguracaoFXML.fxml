@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.controller.ConfiguracaoController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.popsales.controller.ConfiguracaoController">
    <children>
       <BorderPane layoutX="229.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -38,6 +38,23 @@
                                  <children>
                                     <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="35" />
                                     <Label text="IMPRESSORAS" textFill="WHITE">
+                                       <font>
+                                          <Font size="17.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="15.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="btnTerminal" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="143.0" onAction="#terminal" prefHeight="74.0" prefWidth="447.0" text="IMPRESSORAS" textFill="WHITE">
+                           <graphic>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="TERMINAL" size="35" />
+                                    <Label text="TERMINAL" textFill="WHITE">
                                        <font>
                                           <Font size="17.0" />
                                        </font>
