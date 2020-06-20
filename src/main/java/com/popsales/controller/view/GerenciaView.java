@@ -440,13 +440,8 @@ public class GerenciaView {
         try {
 
             String phone = "";
-            if (order.getClientInfo().getPhone().length() == 14) {
-                phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
-                phone = "55" + phone;
-            } else {
-                phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
-                phone = "55" + phone;
-            }
+            phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+            phone = "55" + phone;
             System.out.println(phone);
             if (order.getDelivery()) {
                 if (view.p != null) {
@@ -536,14 +531,10 @@ public class GerenciaView {
         try {
             if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
                 String phone = "";
-                System.out.println(order.getClientInfo().getPhone().length());
-                if (order.getClientInfo().getPhone().length() == 14) {
-                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
-                    phone = "55" + phone;
-                } else {
-                    phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
-                    phone = "55" + phone;
-                }
+
+                phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+                phone = "55" + phone;
+
                 System.out.println(phone);
                 if (view.p != null) {
                     wppService.sendMessage(phone, "❎ Seu pedido " + order.getNum_order() + " foi cancelado.");
@@ -567,13 +558,9 @@ public class GerenciaView {
         try {
             String phone = "";
             // System.out.println(order.getClientInfo().getPhone().length());
-            if (order.getClientInfo().getPhone().length() == 14) {
-                phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
-                phone = "55" + phone;
-            } else {
-                phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
-                phone = "55" + phone;
-            }
+            phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+            phone = "55" + phone;
+
             System.out.println(phone);
             StringBuilder sb = new StringBuilder();
             sb.append("# *SEU PEDIDO FOI CONFIRMADO*");
@@ -635,13 +622,10 @@ public class GerenciaView {
     public void enviarMensagemSaiuParaEntrega(Order order) {
         try {
             String phone = "";
-            if (order.getClientInfo().getPhone().length() == 14) {
-                phone = order.getClientInfo().getPhone().replace("(", "").replace(")9", "").replace("-", "");
-                phone = "55" + phone;
-            } else {
-                phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
-                phone = "55" + phone;
-            }
+
+            phone = order.getClientInfo().getPhone().replace("(", "").replace(")", "").replace("-", "");
+            phone = "55" + phone;
+
             System.out.println(phone);
             if (order.getDelivery()) {
                 if (view.p != null) {
