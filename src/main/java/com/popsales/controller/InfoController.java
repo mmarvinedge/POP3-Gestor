@@ -28,6 +28,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -66,6 +67,16 @@ public class InfoController implements Initializable {
     public static GerenciaController gerenciaController;
     @FXML
     private Label lblFormaPagamento;
+    @FXML
+    private Label coupon;
+    @FXML
+    private HBox boxCouponCode;
+    @FXML
+    private Label lblDesconto;
+    @FXML
+    private HBox boxTotais;
+    @FXML
+    private AnchorPane boxCoupon;
 
     /**
      * Initializes the controller class.
@@ -76,15 +87,21 @@ public class InfoController implements Initializable {
         lblNome.setText(order.getClientInfo().getName());
         lblTelefone.setText(order.getClientInfo().getPhone());
         lblObs.setText(order.getObservations() == null ? "Sem obs" : order.getObservations());
-
+        if (order.getCoupon() == null || order.getCoupon().isEmpty()) {
+            boxCouponCode.setVisible(false);
+            boxTotais.getChildren().remove(boxCoupon);
+        } else {
+            coupon.setText(order.getCoupon().toUpperCase());
+        }
+        lblDesconto.setText(Utils.formatToMoney(order.getDiscountValue()));
         lblProdutos.setText(Utils.formatToMoney(order.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add)));
         lblTaxas.setText(Utils.formatToMoney(order.getDeliveryCost()));
         lblTotal.setText(Utils.formatToMoney(order.getTotal()));
         lblData.setText(Utils.formataData(order.getDtRegistro(), "dd/MM/yyyy HH:mm:sss"));
         if (order.getDelivery()) {
             lblEndereço.setWrapText(true);
-            lblEndereço.setText(order.getAddress().getStreet() + " - " + (order.getAddress().getSuburb().isEmpty() ? "S/C" : order.getAddress().getSuburb()) +" - "+ order.getAddress().getStreetNumber()+ "\n"
-                    + order.getAddress().getAuto() + (order.getAddress().getCity() == null ? "" : " - " + order.getAddress().getCity())); 
+            lblEndereço.setText(order.getAddress().getStreet() + " - " + (order.getAddress().getSuburb().isEmpty() ? "S/C" : order.getAddress().getSuburb()) + " - " + order.getAddress().getStreetNumber() + "\n"
+                    + order.getAddress().getAuto() + (order.getAddress().getCity() == null ? "" : " - " + order.getAddress().getCity()));
         } else {
             lblEndereço.setText("Retirada em Balcão");
         }
