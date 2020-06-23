@@ -218,6 +218,7 @@ public class GerenciaView {
             try {
                 Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoAceite.getChildren().remove(n);
+                order.setStatus("Cancelado");
                 orderService.update(order);
             } catch (IOException e) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, e);
@@ -400,6 +401,7 @@ public class GerenciaView {
             try {
                 Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoFinalizacao.getChildren().remove(n);
+                order.setStatus("Cancelado");
                 orderService.update(order);
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
@@ -542,7 +544,6 @@ public class GerenciaView {
                     Mensagem.dialogAlert("O WhatsApp não está sendo executado, seu cliente não receberá as mensagens de atualização do pedido.", view.region, view.boxAguardandoAceite.getScene().getWindow());
                 }
 
-                order.setStatus("Cancelado");
                 Thread.sleep(2000);
 
             }
