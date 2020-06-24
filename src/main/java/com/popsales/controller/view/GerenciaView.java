@@ -200,9 +200,11 @@ public class GerenciaView {
 
                 enviarMensagemConfirmacao(order);
                 order.setStatus("Produzindo");
+                order.setDtAcept(new Date());
                 Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoAceite.getChildren().remove(n);
                 this.view.boxAguardandoProducao.getChildren().add(createCardOrderProduzindo(order));
+
                 orderService.update(order);
                 Impressao.imprimirOrder(order);
                 Impressao.imprimirOrderControle(order);
@@ -219,6 +221,9 @@ public class GerenciaView {
                 Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoAceite.getChildren().remove(n);
                 order.setStatus("Cancelado");
+                order.setDtAcept(null);
+                order.setDtRefuse(new Date());
+
                 orderService.update(order);
             } catch (IOException e) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, e);
@@ -298,6 +303,7 @@ public class GerenciaView {
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoProducao.getChildren().remove(n);
                 this.view.boxAguardandoFinalizacao.getChildren().add(createCardOrderFinalizando(order));
+                order.setDtFinish(new Date());
                 orderService.update(order);
                 Impressao.imprimirOrderEntrega(order);
             } catch (IOException ex) {
@@ -312,6 +318,10 @@ public class GerenciaView {
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoProducao.getChildren().remove(n);
                 this.view.boxAguardandoAceite.getChildren().add(createCardOrderAguardando(order));
+                order.setDtAcept(null);
+                order.setDtDelivery(null);
+                order.setDtFinish(null);
+                order.setDtRefuse(null);
                 orderService.update(order);
 
             } catch (IOException ex) {
@@ -387,6 +397,8 @@ public class GerenciaView {
             try {
                 Node n = view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoFinalizacao.getChildren().remove(n);
+                order.setDtDelivery(new Date());
+                order.setDtRefuse(null);
                 orderService.update(order);
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
@@ -402,6 +414,8 @@ public class GerenciaView {
                 Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoFinalizacao.getChildren().remove(n);
                 order.setStatus("Cancelado");
+                order.setDtAcept(null);
+                order.setDtRefuse(new Date());
                 orderService.update(order);
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);

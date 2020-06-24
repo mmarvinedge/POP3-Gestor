@@ -28,7 +28,10 @@ public class Company {
     private Boolean trial;
     private String trialDate;
     private Boolean turnos;
+    private Boolean freeVersion;
     private String nameUrl;
+
+    private Boolean deliveryOnly, withdrawalOnly, decimalQuantity;
 
     public Company() {
     }
@@ -167,6 +170,50 @@ public class Company {
 
     public void setCgccpf(String cgccpf) {
         this.cgccpf = cgccpf;
+    }
+
+    public Boolean getFreeVersion() {
+        if (freeVersion == null) {
+            freeVersion = false;
+        }
+        return freeVersion;
+    }
+
+    public void setFreeVersion(Boolean freeVersion) {
+        this.freeVersion = freeVersion;
+    }
+
+    public Boolean getDeliveryOnly() {
+        if (deliveryOnly == null) {
+            deliveryOnly = true;
+        }
+        return deliveryOnly;
+    }
+
+    public void setDeliveryOnly(Boolean deliveryOnly) {
+        this.deliveryOnly = deliveryOnly;
+    }
+
+    public Boolean getWithdrawalOnly() {
+        if (withdrawalOnly == null) {
+            withdrawalOnly = true;
+        }
+        return withdrawalOnly;
+    }
+
+    public void setWithdrawalOnly(Boolean withdrawalOnly) {
+        this.withdrawalOnly = withdrawalOnly;
+    }
+
+    public Boolean getDecimalQuantity() {
+        if (decimalQuantity == null) {
+            decimalQuantity = false;
+        }
+        return decimalQuantity;
+    }
+
+    public void setDecimalQuantity(Boolean decimalQuantity) {
+        this.decimalQuantity = decimalQuantity;
     }
 
 }

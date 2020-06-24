@@ -46,6 +46,10 @@ public class Order {
     private String discount;
     private String dtRegister;
     private Date dtRegistro;
+    private Date dtAcept;
+    private Date dtRefuse;
+    private Date dtDelivery;
+    private Date dtFinish;
     private String cancelmentReason;
 
     public String getId() {
@@ -316,6 +320,38 @@ public class Order {
 
     public void setCancelmentReason(String cancelmentReason) {
         this.cancelmentReason = cancelmentReason;
+    }
+
+    public Date getDtAcept() {
+        return dtAcept;
+    }
+
+    public void setDtAcept(Date dtAcept) {
+        this.dtAcept = dtAcept;
+    }
+
+    public Date getDtRefuse() {
+        return dtRefuse;
+    }
+
+    public void setDtRefuse(Date dtRefuse) {
+        this.dtRefuse = dtRefuse;
+    }
+
+    public Date getDtDelivery() {
+        return dtDelivery;
+    }
+
+    public void setDtDelivery(Date dtDelivery) {
+        this.dtDelivery = dtDelivery;
+    }
+
+    public Date getDtFinish() {
+        return dtFinish;
+    }
+
+    public void setDtFinish(Date dtFinish) {
+        this.dtFinish = dtFinish;
     }
 
 }
