@@ -6,6 +6,7 @@
 package com.popsales.services;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.popsales.Constantes;
 import com.popsales.Sessao;
@@ -24,6 +25,9 @@ import okhttp3.Response;
 public class OrderService {
 
     public String pathOrders = "/order";
+    
+    Gson gson = new GsonBuilder()
+   .setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
     public List<Order> getOrders(String status) {
         //System.out.println("URL:" + Constantes.URL + pathOrders + "/all/" + Sessao.company.getId() + "/" + status);
@@ -38,7 +42,7 @@ public class OrderService {
             }
             // Get response body
             String json = response.body().string();
-            saida = new Gson().fromJson(json, new TypeToken<List<Order>>() {
+            saida = gson.fromJson(json, new TypeToken<List<Order>>() {
             }.getType());
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,13 +52,14 @@ public class OrderService {
     }
 
     public Order update(Order order) throws IOException {
-        RequestBody body = RequestBody.create(new Gson().toJson(order), Constantes.JSON); // new
+        RequestBody body = RequestBody.create(gson.toJson(order), Constantes.JSON); // new
         Request request = new Request.Builder()
                 .url(Constantes.URL + "/order/")
                 .put(body)
                 .build();
         Response response = Constantes.httpClient.newCall(request).execute();
         String json = response.body().string();
-        return new Gson().fromJson(json, Order.class);
+        System.out.println("RESPONSE: "+json);
+        return gson.fromJson(json, Order.class);
     }
 }

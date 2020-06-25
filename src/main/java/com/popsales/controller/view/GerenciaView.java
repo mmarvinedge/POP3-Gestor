@@ -153,7 +153,7 @@ public class GerenciaView {
     }
 
     public static Date converterData(Order c) throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-ddd hh:mm:ss", new Locale("pt_BR")).parse(c.getDtRegister());
+        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", new Locale("pt_BR")).parse(c.getDtRegister());
     }
 
     public void loadComponents() {
@@ -194,25 +194,34 @@ public class GerenciaView {
         doisdois.setMinWidth(160.0);
         doisdois.setMaxWidth(160.0);
         doisdois.setAlignment(Pos.CENTER_RIGHT);
-        JFXButton bt1 = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
-        bt1.setOnAction((ActionEvent event) -> {
+        JFXButton buttonAceitarPedidoParaProduzir = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
+        buttonAceitarPedidoParaProduzir.setOnAction((ActionEvent event) -> {
             try {
 
-                enviarMensagemConfirmacao(order);
                 order.setStatus("Produzindo");
                 order.setDtAcept(new Date());
+                orderService.update(order);
+                Impressao.imprimirOrder(order);
+                Impressao.imprimirOrderControle(order);
+
                 Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoAceite.getChildren().remove(n);
                 this.view.boxAguardandoProducao.getChildren().add(createCardOrderProduzindo(order));
 
-                orderService.update(order);
-                Impressao.imprimirOrder(order);
-                Impressao.imprimirOrderControle(order);
             } catch (IOException ex) {
+                ex.printStackTrace();
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
+            try {
+                enviarMensagemConfirmacao(order);
+            } catch (Exception e) {
+                System.out.println("ERRO AO ENVIAR A MENSAGEM");
+            }
+
         });
-        doisdois.getChildren().add(bt1);
+        doisdois.getChildren().add(buttonAceitarPedidoParaProduzir);
 
         JFXButton bt2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
         bt2.setOnAction((ActionEvent event) -> {
@@ -295,24 +304,25 @@ public class GerenciaView {
         doisdois.setMinWidth(160.0);
         doisdois.setMaxWidth(160.0);
         doisdois.setAlignment(Pos.CENTER_RIGHT);
-        JFXButton button1 = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
-        button1.setOnAction((ActionEvent event) -> {
+        JFXButton buttonConfirmarEnvio = createButton(FontAwesomeIcon.CHECK, "#00bdaa");
+        buttonConfirmarEnvio.setOnAction((ActionEvent event) -> {
             enviarMensagemSaiuParaEntrega(order);
             try {
+
+                order.setDtDelivery(new Date());
+                orderService.update(order);
+                Impressao.imprimirOrderEntrega(order);
 
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoProducao.getChildren().remove(n);
                 this.view.boxAguardandoFinalizacao.getChildren().add(createCardOrderFinalizando(order));
-                order.setDtFinish(new Date());
-                orderService.update(order);
-                Impressao.imprimirOrderEntrega(order);
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        doisdois.getChildren().add(button1);
-        JFXButton button2 = createButton(FontAwesomeIcon.ARROW_LEFT, "#cd4c51");
-        button2.setOnAction((ActionEvent event) -> {
+        doisdois.getChildren().add(buttonConfirmarEnvio);
+        JFXButton buttonRetornarAguardando = createButton(FontAwesomeIcon.ARROW_LEFT, "#cd4c51");
+        buttonRetornarAguardando.setOnAction((ActionEvent event) -> {
             try {
                 order.setStatus("Aguardando");
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
@@ -328,7 +338,7 @@ public class GerenciaView {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        doisdois.getChildren().add(button2);
+        doisdois.getChildren().add(buttonRetornarAguardando);
 
         JFXButton button3 = createButton(FontAwesomeIcon.INFO, "#400082");
         button3.setOnAction((ActionEvent event) -> {
@@ -395,11 +405,14 @@ public class GerenciaView {
         button1.setOnAction((ActionEvent event) -> {
             enviarMensagemEntregue(order);
             try {
-                Node n = view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
-                this.view.boxAguardandoFinalizacao.getChildren().remove(n);
-                order.setDtDelivery(new Date());
+
+                order.setStatus("Finalizado");
+                order.setDtFinish(new Date());
                 order.setDtRefuse(null);
                 orderService.update(order);
+
+                Node n = view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
+                this.view.boxAguardandoFinalizacao.getChildren().remove(n);
             } catch (IOException ex) {
                 Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -472,7 +485,7 @@ public class GerenciaView {
                     Notifications.create().title("Atençao!").text("Whatsapp não está sendo executado!").showWarning();
                 }
             }
-            order.setStatus("Finalizado");
+
             Thread.sleep(2000);
 
         } catch (WhatsappException ex) {
@@ -582,9 +595,9 @@ public class GerenciaView {
             sb.append("|_Acompanhe abaixo o seu pedido_||");
             sb.append("]*Nº PEDIDO*: ").append(order.getNum_order()).append("||");
             order.getProducts().forEach(p -> {
-                sb.append("/ *Produto*: ").append(p.getName().toUpperCase()).append("|");
-                sb.append("/ *Quantidade*: ").append(p.getQuantity().intValue()).append("|");
-                sb.append("/ *Valor*: R$ ").append(p.getTotal()).append("|");
+                sb.append("/// *Produto*: ").append(p.getName().toUpperCase()).append("|");
+                sb.append("/// *Quantidade*: ").append(p.getQuantity().intValue()).append("|");
+                sb.append("/// *Valor*: R$ ").append(p.getTotal()).append("|");
                 if (p.getAttributes() != null && p.getAttributes().size() > 0) {
                     System.out.println("sizeeeeeeeeeeeeeeeeeeeee " + p.getAttributes().size());
                     sb.append("= *ADICIONAIS*|");
@@ -619,6 +632,10 @@ public class GerenciaView {
                 sb.append("|@ Você optou por retirar no local, para solicitar nosso endereço digite *localização*");
             }
             sb.append("||² *ATENÇÃO*: Para solicitar alterações no seu pedido nos faça uma ligação.");
+            sb.append("||");
+            sb.append("||");
+            sb.append("Para acompanhar o seu pedido acesse o link abaixo||");
+            sb.append("http://food.popsales.ddns.net/popsales/situacao/pedido/"+order.getId());
             String msg = sb.toString();
             System.out.println(msg);
             if (view.p != null) {

@@ -101,8 +101,8 @@ public class GerenciaController implements Initializable {
         });
         lblNomeEmpresa.setText(Sessao.company.getName());
         lblUsuario.setText(Sessao.user.getName());
-        finalizaNodeJs();
-        runWhatsApp();
+        //finalizaNodeJs();
+       // runWhatsApp();
     }
 
     @FXML
