@@ -635,7 +635,7 @@ public class GerenciaView {
             sb.append("||");
             sb.append("||");
             sb.append("Para acompanhar o seu pedido acesse o link abaixo||");
-            sb.append("http://food.popsales.ddns.net/popsales/situacao/pedido/"+order.getId());
+            sb.append("http://food.popsales.com.br/popsales/situacao/pedido/"+order.getId());
             String msg = sb.toString();
             System.out.println(msg);
             if (view.p != null) {
