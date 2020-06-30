@@ -614,9 +614,16 @@ public class GerenciaView {
                 sb.append("|");
             });
             sb.append("----------------|");
+            if (order.getCoupon() != null && order.getCoupon() != "") {
+                sb.append("ª *CUPOM:* ").append(order.getCoupon());
+                sb.append("|*Subtotal:* R$ ").append(order.getSubtotal());
+                sb.append("|*Desconto:* R$ ").append(order.getDiscountValue());
+            }
+
             if (order.getDelivery()) {
                 sb.append("|*Taxa de Entrega:* R$ ").append(order.getDeliveryCost());
             }
+
             sb.append("|*Total:* R$ ").append(order.getTotal());
             sb.append("||;; ").append(order.getClientInfo().getName());
             sb.append("|% ").append(order.getClientInfo().getPhone());
@@ -633,9 +640,8 @@ public class GerenciaView {
             }
             sb.append("||² *ATENÇÃO*: Para solicitar alterações no seu pedido nos faça uma ligação.");
             sb.append("||");
-            sb.append("||");
-            sb.append("Para acompanhar o seu pedido acesse o link abaixo||");
-            sb.append("http://food.popsales.com.br/popsales/situacao/pedido/"+order.getId());
+            sb.append("_Para acompanhar o seu pedido acesse o link abaixo_||");
+            sb.append("http://food.popsales.com.br/popsales/situacao/pedido/" + order.getId());
             String msg = sb.toString();
             System.out.println(msg);
             if (view.p != null) {
