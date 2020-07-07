@@ -69,7 +69,7 @@ public class Impressao {
             Collection<List<Item>> itensByPrinter = or.getProducts().stream().filter(c -> c.getPrinter() != null && !c.getPrinter().equalsIgnoreCase("nao imprimir")).collect(Collectors.groupingBy(f -> f.getPrinter())).values();
             for (List<Item> list : itensByPrinter) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("-----------------" + list.get(0).getPrinter() + "---------\n\n");
+                sb.append("--------------------" + list.get(0).getPrinter() + "--------------------\n\n");
                 sb.append("PEDIDO : ").append(or.getNum_order()).append("\n");
                 sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
                 sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
@@ -84,7 +84,7 @@ public class Impressao {
                     sb.append("RETIRADA EM BALCAO").append("\n\n");
                 }
                 sb.append(LS);
-                sb.append("-----------------ITENS--------------------\n\n");
+                sb.append("--------------------ITENS--------------------\n\n");
                 list.forEach(pp -> {
                     sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
                     if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
@@ -136,14 +136,17 @@ public class Impressao {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("-----------------CONTROLE---------\n\n");
+        sb.append("--------------------CONTROLE--------------------\n\n");
         sb.append("PEDIDO : ").append(or.getNum_order()).append("\n");
         sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
         sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
-        sb.append("DATA HORA: ").append(or.getDtRegister()).append("\n");
+        sb.append("HORA: ").append(Utils.formataData(Utils.getDataByTexto(or.getDtRegister(), "yyyy-MM-dd HH:mm:ss"), "dd/MM/yyyy HH:mm:ss")).append("\n");
+        if (or.getCoupon() != null && or.getCoupon() != "") {
+            sb.append("CUPOM: ").append(or.getCoupon().toUpperCase()).append("\n");
+        }
         sb.append(LS);
 
-        sb.append("-----------------ITENS--------------------\n\n");
+        sb.append("--------------------ITENS--------------------\n\n");
         or.getProducts().forEach(pp -> {
             sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
             if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
@@ -167,6 +170,9 @@ public class Impressao {
         sb.append("\n").append(LD);
         sb.append("PRODUTOS: ").append(Utils.formataParaMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add))).append("\n");
         sb.append("TAXA ENTREGA: ").append(Utils.formataParaMoeda(or.getDeliveryCost())).append("\n");
+        if (or.getCoupon() != null && or.getCoupon() != "") {
+            sb.append("DESCONTO: ").append(Utils.formataParaMoeda(or.getDiscountValue())).append("\n");
+        }
         sb.append("TOTAL: ").append(Utils.formataParaMoeda(or.getTotal())).append("\n");
 
         sb.append(LD);
@@ -180,6 +186,7 @@ public class Impressao {
             sb.append("RETIRADA EM BALCAO").append("\n\n\n");
         }
         if (or.getForma().equalsIgnoreCase("Dinheiro")) {
+            sb.append("FORMA DE PAGTO: " + or.getForma());
             if (or.getTroco()) {
                 sb.append("\n\tLEVAR TROCO PARA ").append(Utils.formatToMoney(new BigDecimal(or.getTrocoPara()))).append("\n\n");
             }
@@ -213,14 +220,14 @@ public class Impressao {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("-----------------ENTREGADOR---------\n\n");
+        sb.append("--------------------ENTREGADOR--------------------\n\n");
         sb.append("PEDIDO : ").append(or.getNum_order()).append("\n");
         sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
         sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
         sb.append("DATA HORA: ").append(or.getDtRegister()).append("\n");
         sb.append(LS);
 
-        sb.append("-----------------ITENS--------------------\n\n");
+        sb.append("--------------------ITENS--------------------\n\n");
         or.getProducts().forEach(pp -> {
             sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
             if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
@@ -244,6 +251,9 @@ public class Impressao {
         sb.append("\n").append(LD);
         sb.append("PRODUTOS: ").append(Utils.formataParaMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add))).append("\n");
         sb.append("TAXA ENTREGA: ").append(Utils.formataParaMoeda(or.getDeliveryCost())).append("\n");
+        if (or.getCoupon() != null && or.getCoupon() != "") {
+            sb.append("DESCONTO: ").append(Utils.formataParaMoeda(or.getDiscountValue()));
+        }
         sb.append("TOTAL: ").append(Utils.formataParaMoeda(or.getTotal())).append("\n");
 
         sb.append(LD);
@@ -257,6 +267,7 @@ public class Impressao {
             sb.append("RETIRADA EM BALCAO").append("\n\n\n");
         }
         if (or.getForma().equalsIgnoreCase("Dinheiro")) {
+            sb.append("FORMA DE PAGTO: " + or.getForma());
             if (or.getTroco()) {
                 sb.append("\n\tLEVAR TROCO PARA ").append(Utils.formatToMoney(new BigDecimal(or.getTrocoPara()))).append("\n\n");
             }

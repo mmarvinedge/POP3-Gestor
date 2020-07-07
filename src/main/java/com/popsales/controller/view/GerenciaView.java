@@ -615,8 +615,8 @@ public class GerenciaView {
             });
             sb.append("----------------|");
             if (order.getCoupon() != null && order.getCoupon() != "") {
-                sb.append("ª *CUPOM:* ").append(order.getCoupon());
-                sb.append("|*Subtotal:* R$ ").append(order.getSubtotal());
+                sb.append("ª *CUPOM:* ").append(order.getCoupon().toUpperCase());
+                sb.append("|*Produtos:* R$ ").append(order.getSubtotal());
                 sb.append("|*Desconto:* R$ ").append(order.getDiscountValue());
             }
 

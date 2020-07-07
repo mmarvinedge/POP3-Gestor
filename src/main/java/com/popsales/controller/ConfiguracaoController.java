@@ -10,10 +10,10 @@ import com.jfoenix.controls.JFXComboBox;
 import com.popsales.Constantes;
 import com.popsales.Sessao;
 import com.popsales.components.Mensagem;
-import com.sun.corba.se.impl.orbutil.closure.Constant;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -88,8 +88,8 @@ public class ConfiguracaoController implements Initializable {
         }
         printDefault.setPadding(new Insets(0, 0, 0, 25));
         printers.getChildren().add(printDefault);
-
-        for (String ip : Sessao.impressorasProdutos.stream().collect(Collectors.toList())) {
+        List<String> impressoras = Sessao.impressorasProdutos.stream().filter(p -> !p.equalsIgnoreCase("NAO IMPRIMIR")).collect(Collectors.toList());
+        for (String ip : impressoras) {
             JFXComboBox<String> printCb = new JFXComboBox<>();
             printCb.setFocusColor(Paint.valueOf("95c70d"));
             printCb.setLabelFloat(true);
