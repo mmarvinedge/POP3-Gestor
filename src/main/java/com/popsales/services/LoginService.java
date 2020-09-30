@@ -36,7 +36,16 @@ public class LoginService {
             if (response.code() == 401) {
                 throw new IOException("Usuário ou senha inválida!");
             }
+            
+            // Company com licença expirada
             if (response.code() == 408) {
+                User uu = new User();
+                uu.setName("expired");
+                return uu;
+            }
+            
+            // Company bloqueada pelo financeiro
+            if(response.code() == 409) {
                 User uu = new User();
                 uu.setName("block");
                 return uu;

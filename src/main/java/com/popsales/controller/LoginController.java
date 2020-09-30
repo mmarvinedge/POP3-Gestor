@@ -20,6 +20,8 @@ import com.popsales.services.ProductService;
 import com.popsales.services.VersaoService;
 import java.awt.Event;
 import com.popsales.util.DateUtil;
+import com.popsales.util.FileUtil;
+import com.popsales.ws.Client_API;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,8 +29,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.Inet4Address;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -52,6 +57,10 @@ import javafx.stage.StageStyle;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.swing.SwingUtilities;
+import javax.websocket.ContainerProvider;
+import javax.websocket.DeploymentException;
+import javax.websocket.Session;
+import javax.websocket.WebSocketContainer;
 
 /**
  * FXML Controller class
@@ -70,6 +79,11 @@ public class LoginController implements Initializable {
     private JFXTextField iptUser;
     @FXML
     private JFXPasswordField iptSenha;
+    static WebSocketContainer container;
+    static String uri;
+
+    public static Session session;
+    public static Client_API clientSocket;
 
     /**
      * Initializes the controller class.
@@ -85,6 +99,7 @@ public class LoginController implements Initializable {
                         + "Versão Disponível: " + v.getVersao(), null, btnLogin.getScene().getWindow());
                 if (new File("C:\\popsales\\update.jar").exists()) {
                     executarUpdate();
+                    downloadSrc();
                     System.exit(0);
                 } else {
                     downloadUpdate();
@@ -93,8 +108,10 @@ public class LoginController implements Initializable {
                 }
 
             }
+            System.out.println("DOWNLOAD EXAMPLE");
 
             downloadExample();
+            System.out.println("DOWNLOAD JS");
             downloadClientJS();
 
             iptSenha.setOnKeyPressed((KeyEvent event) -> {
@@ -218,6 +235,7 @@ public class LoginController implements Initializable {
             e.printStackTrace();
         }
     }
+
     public void downloadClientJS() {
         try {
             URL url = new URL("http://metresistemas.com.br/Client.js");
@@ -261,6 +279,58 @@ public class LoginController implements Initializable {
         }
     }
 
+    public List<String> files
+            = new ArrayList(Arrays.asList("http://metresistemas.com.br/pop_files/factories/ChatFactory.js",
+                    "http://metresistemas.com.br/pop_files/factories/ContactFactory.js",
+                    "http://metresistemas.com.br/pop_files/structures/Base.js",
+                    "http://metresistemas.com.br/pop_files/structures/BusinessContact.js",
+                    "http://metresistemas.com.br/pop_files/structures/Chat.js",
+                    "http://metresistemas.com.br/pop_files/structures/ClientInfo.js",
+                    "http://metresistemas.com.br/pop_files/structures/Contact.js",
+                    "http://metresistemas.com.br/pop_files/structures/GroupChat.js",
+                    "http://metresistemas.com.br/pop_files/structures/GroupNotification.js",
+                    "http://metresistemas.com.br/pop_files/structures/index.js",
+                    "http://metresistemas.com.br/pop_files/structures/Location.js",
+                    "http://metresistemas.com.br/pop_files/structures/Message.js",
+                    "http://metresistemas.com.br/pop_files/structures/MessageMedia.js",
+                    "http://metresistemas.com.br/pop_files/structures/PrivateChat.js",
+                    "http://metresistemas.com.br/pop_files/structures/PrivateContact.js",
+                    "http://metresistemas.com.br/pop_files/util/Constants.js",
+                    "http://metresistemas.com.br/pop_files/util/Injected.js",
+                    "http://metresistemas.com.br/pop_files/util/InterfaceController.js",
+                    "http://metresistemas.com.br/pop_files/util/Util.js"));
+
+    public void downloadSrc() {
+        files.forEach(path -> {
+            try {
+                URL url = new URL(path);
+                HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
+                long completeFileSize = httpConnection.getContentLength();
+
+                java.io.BufferedInputStream in = new java.io.BufferedInputStream(httpConnection.getInputStream());
+
+                String novo = path.replace("http://metresistemas.com.br/pop_files/", "C:\\popsales\\bin\\src\\");
+
+                java.io.FileOutputStream fos = new java.io.FileOutputStream(novo);
+                java.io.BufferedOutputStream bout = new BufferedOutputStream(
+                        fos, 1024);
+                byte[] data = new byte[1024];
+                long downloadedFileSize = 0;
+                int x = 0;
+                while ((x = in.read(data, 0, 1024)) >= 0) {
+                    bout.write(data, 0, x);
+                }
+                bout.close();
+                in.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
     @FXML
     private void entrar(ActionEvent event) {
         if (login()) {
@@ -290,9 +360,9 @@ public class LoginController implements Initializable {
         if (Sessao.user.getName() != null) {
             if (Sessao.user.getName().equalsIgnoreCase("trialexpired")) {
                 Mensagem.dialogAlert("Seu período teste de 15 dias se encerraram, para continuar utilizando entre em contato com seu agente de vendas!", btnLogin, btnLogin.getScene().getWindow());
-            } else if(Sessao.user.getName().equalsIgnoreCase("block")) {
+            } else if (Sessao.user.getName().equalsIgnoreCase("block")) {
                 Mensagem.dialogAlert("Sua licença expirou, para renovar acesse nosso site.", btnLogin, btnLogin.getScene().getWindow());
-            } else { 
+            } else {
                 Sessao.company = companyServices.loadCompany(Sessao.user.getCompanyId());
                 List<String> printers = productServices.getPrinters();
                 Sessao.impressorasProdutos = new ArrayList();
@@ -304,6 +374,7 @@ public class LoginController implements Initializable {
                 for (PrintService ps : printServices) {
                     Sessao.impressorasWindows.add(ps.getName());
                 }
+                socketAPI(Sessao.company);
                 abreJanela();
             }
         } else {
@@ -343,6 +414,26 @@ public class LoginController implements Initializable {
     private void onEnter(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             login();
+        }
+    }
+
+    public static void socketAPI(Company company) {
+        try {
+            container = ContainerProvider.getWebSocketContainer();
+            String url = "popsales.ddns.net/ws";
+            uri = "ws://" + url + "/ws/" + company.getId();
+            System.out.println("URL Socket SG: " + uri);
+            if (session == null) {
+                container.setAsyncSendTimeout(1000);
+                clientSocket = new Client_API();
+                session = container.connectToServer(clientSocket.getClass(), URI.create(uri));
+            }
+        } catch (DeploymentException ex) {
+            System.err.println("O sistema não conseguiu conectar ao websocket (API) - Provavelmente ele está offline ou fora da rede.");
+        } catch (IOException ex) {
+            System.err.println("Não foi possivel conectar no websocket: " + uri);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

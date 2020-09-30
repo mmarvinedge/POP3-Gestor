@@ -69,7 +69,7 @@ public class Impressao {
             Collection<List<Item>> itensByPrinter = or.getProducts().stream().filter(c -> c.getPrinter() != null && !c.getPrinter().equalsIgnoreCase("nao imprimir")).collect(Collectors.groupingBy(f -> f.getPrinter())).values();
             for (List<Item> list : itensByPrinter) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("--------------------" + list.get(0).getPrinter() + "--------------------\n\n");
+                sb.append("-----------------" + list.get(0).getPrinter() + "-----------------\n\n");
                 sb.append("PEDIDO : ").append(or.getNum_order()).append("\n");
                 sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
                 sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
@@ -84,7 +84,7 @@ public class Impressao {
                     sb.append("RETIRADA EM BALCAO").append("\n\n");
                 }
                 sb.append(LS);
-                sb.append("--------------------ITENS--------------------\n\n");
+                sb.append("------------------ITENS------------------\n\n");
                 list.forEach(pp -> {
                     sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
                     if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
@@ -103,10 +103,11 @@ public class Impressao {
                     if (pp.getObs().length() > 0) {
                         sb.append("\t").append(pp.getObs()).append("\n");
 
-                    }
+                    } 
+                    sb.append("\n");
                 });
 
-                sb.append("\n\n\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
+                sb.append("\n\n\n\n\n\n" + "\n" + (char) 27 + (char) 109);
                 // System.out.println(sb.toString());
                 try {
                     if (!Sessao.ini.get("Printers", list.get(0).getPrinter(), String.class).equalsIgnoreCase("NAO IMPRIMIR")) {
@@ -136,7 +137,7 @@ public class Impressao {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("--------------------CONTROLE--------------------\n\n");
+        sb.append("-----------------CONTROLE-----------------\n\n");
         sb.append("PEDIDO : ").append(or.getNum_order()).append("\n");
         sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
         sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
@@ -146,7 +147,7 @@ public class Impressao {
         }
         sb.append(LS);
 
-        sb.append("--------------------ITENS--------------------\n\n");
+        sb.append("------------------ITENS------------------\n\n");
         or.getProducts().forEach(pp -> {
             sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
             if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {
@@ -166,8 +167,9 @@ public class Impressao {
                 sb.append("\t").append(pp.getObs()).append("\n");
 
             }
+            sb.append("\n");
         });
-        sb.append("\n").append(LD);
+        sb.append(LD);
         sb.append("PRODUTOS: ").append(Utils.formataParaMoeda(or.getProducts().stream().map(m -> m.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add))).append("\n");
         sb.append("TAXA ENTREGA: ").append(Utils.formataParaMoeda(or.getDeliveryCost())).append("\n");
         if (or.getCoupon() != null && or.getCoupon() != "") {
@@ -188,7 +190,8 @@ public class Impressao {
         if (or.getForma().equalsIgnoreCase("Dinheiro")) {
             sb.append("FORMA DE PAGTO: " + or.getForma());
             if (or.getTroco()) {
-                sb.append("\n\tLEVAR TROCO PARA ").append(Utils.formatToMoney(new BigDecimal(or.getTrocoPara()))).append("\n\n");
+                sb.append("\n\n\tCLIENTE VAI PAGAR: ").append(Utils.formatToMoney(new BigDecimal(or.getTrocoPara()))).append("\n");
+                sb.append("\tTROCO: ").append(Utils.formatToMoney(new BigDecimal(or.getTrocoPara()).subtract(or.getTotal()))).append("\n");
             }
         } else {
             sb.append("FORMA DE PAGTO: " + or.getForma());

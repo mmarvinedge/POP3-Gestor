@@ -5,6 +5,9 @@
  */
 package com.popsales;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.Normalizer;
@@ -12,6 +15,8 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  *
@@ -77,6 +82,56 @@ public class Utils {
             return date;
         } catch (Exception e) {
             return null;
+        }
+    }
+    
+    public static void extractZipFiles(String filename, String destinationname) {
+        try {
+            // destination folder to extract the contents         
+
+            byte[] buf = new byte[1024];
+            ZipInputStream zipinputstream = null;
+            ZipEntry zipentry;
+            zipinputstream = new ZipInputStream(new FileInputStream(new File(filename)));
+            zipentry = zipinputstream.getNextEntry();
+
+            while (zipentry != null) {
+
+                // for each entry to be extracted
+                String entryName = zipentry.getName();
+
+                int n;
+                FileOutputStream fileoutputstream;
+                File newFile = new File(entryName);
+
+                String directory = newFile.getParent();
+
+                // to creating the parent directories
+                if (directory == null) {
+                    if (newFile.isDirectory()) {
+                        break;
+                    }
+                } else {
+                    System.out.println("DEST: " + destinationname + directory);
+                    new File(destinationname + directory).mkdirs();
+                }
+                
+                if (!zipentry.isDirectory()) {
+                    System.out.println("File to be extracted....." + entryName);
+                    fileoutputstream = new FileOutputStream(destinationname + entryName);
+                    while ((n = zipinputstream.read(buf, 0, 1024)) > -1) {
+                        fileoutputstream.write(buf, 0, n);
+                    }
+                    fileoutputstream.close();
+                }
+
+                zipinputstream.closeEntry();
+                zipentry = zipinputstream.getNextEntry();
+            }// while
+
+            zipinputstream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
