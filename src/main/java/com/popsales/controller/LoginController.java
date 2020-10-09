@@ -99,14 +99,16 @@ public class LoginController implements Initializable {
                         + "Versão Disponível: " + v.getVersao(), null, btnLogin.getScene().getWindow());
                 if (new File("C:\\popsales\\update.jar").exists()) {
                     executarUpdate();
-                    downloadSrc();
+                    executarUpdateBot();
+                    downloadChromePath();
                     System.exit(0);
                 } else {
                     downloadUpdate();
                     executarUpdate();
+                    executarUpdateBot();
+                    downloadChromePath();
                     System.exit(0);
                 }
-
             }
             System.out.println("DOWNLOAD EXAMPLE");
 
@@ -134,6 +136,26 @@ public class LoginController implements Initializable {
     public void executarUpdate() {
         try {
             ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\popsales\" && java -jar update.jar");
+            builder.redirectErrorStream(true);
+            Process p = builder.start();
+            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while (true) {
+                line = r.readLine();
+                if (line == null) {
+                    break;
+                }
+                System.out.println(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void executarUpdateBot() {
+        try {
+            System.out.println("UPDATE DO BOT");
+            ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\popsales\\bin\" && npm update");
             builder.redirectErrorStream(true);
             Process p = builder.start();
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -201,6 +223,49 @@ public class LoginController implements Initializable {
 
             java.io.BufferedInputStream in = new java.io.BufferedInputStream(httpConnection.getInputStream());
             java.io.FileOutputStream fos = new java.io.FileOutputStream("C:\\popsales\\bin\\example.js");
+            java.io.BufferedOutputStream bout = new BufferedOutputStream(
+                    fos, 1024);
+            byte[] data = new byte[1024];
+            long downloadedFileSize = 0;
+            int x = 0;
+            while ((x = in.read(data, 0, 1024)) >= 0) {
+                downloadedFileSize += x;
+
+                // calculate progress
+                final int currentProgress = (int) ((((double) downloadedFileSize) / ((double) completeFileSize)) * 100000d);
+
+                // update progress bar
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println("PROGRESS: " + ((currentProgress / 1000) / 100f));
+                            }
+                        });
+                    }
+                });
+                bout.write(data, 0, x);
+            }
+            bout.close();
+            in.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void downloadChromePath() {
+        try {
+            URL url = new URL("http://metresistemas.com.br/chromepath.ini");
+            HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
+            long completeFileSize = httpConnection.getContentLength();
+
+            java.io.BufferedInputStream in = new java.io.BufferedInputStream(httpConnection.getInputStream());
+            java.io.FileOutputStream fos = new java.io.FileOutputStream("C:\\popsales\\bin\\chromepath.ini");
             java.io.BufferedOutputStream bout = new BufferedOutputStream(
                     fos, 1024);
             byte[] data = new byte[1024];
@@ -361,7 +426,9 @@ public class LoginController implements Initializable {
             if (Sessao.user.getName().equalsIgnoreCase("trialexpired")) {
                 Mensagem.dialogAlert("Seu período teste de 15 dias se encerraram, para continuar utilizando entre em contato com seu agente de vendas!", btnLogin, btnLogin.getScene().getWindow());
             } else if (Sessao.user.getName().equalsIgnoreCase("block")) {
-                Mensagem.dialogAlert("Sua licença expirou, para renovar acesse nosso site.", btnLogin, btnLogin.getScene().getWindow());
+                Mensagem.dialogAlert("Acesso negado! Entre em contato com o financeiro.", btnLogin, btnLogin.getScene().getWindow());
+            } else if (Sessao.user.getName().equalsIgnoreCase("expired")) {
+                Mensagem.dialogAlert("Sua licença expirou, para renovar acesse nosso site!", btnLogin, btnLogin.getScene().getWindow());
             } else {
                 Sessao.company = companyServices.loadCompany(Sessao.user.getCompanyId());
                 List<String> printers = productServices.getPrinters();
@@ -399,7 +466,7 @@ public class LoginController implements Initializable {
             stage.setHeight(bounds.getHeight());
             stage.getIcons().add(new Image("/img/sales.png"));
 
-            stage.setTitle("POP Sales");
+            stage.setTitle("POP3");
             stage.setScene(scene);
             stage.setResizable(true);
             stage.setMaximized(true);
@@ -422,7 +489,7 @@ public class LoginController implements Initializable {
             container = ContainerProvider.getWebSocketContainer();
             String url = "popsales.ddns.net/ws";
             uri = "ws://" + url + "/ws/" + company.getId();
-            System.out.println("URL Socket SG: " + uri);
+            System.out.println("URL Socket POP: " + uri);
             if (session == null) {
                 container.setAsyncSendTimeout(1000);
                 clientSocket = new Client_API();
