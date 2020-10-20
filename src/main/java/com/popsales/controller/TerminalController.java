@@ -28,6 +28,8 @@ public class TerminalController implements Initializable {
     private CheckBox cbEntregador;
     @FXML
     private CheckBox cbControle;
+    @FXML
+    private CheckBox cbViaEntregador;
 
     /**
      * Initializes the controller class.
@@ -50,6 +52,11 @@ public class TerminalController implements Initializable {
         } catch (Exception e) {
             cbControle.setSelected(false);
         }
+        try {
+            cbViaEntregador.setSelected(Sessao.ini.get("Terminal", "ImprimirViaEntregador", Boolean.class));
+        } catch (Exception e) {
+            cbViaEntregador.setSelected(false);
+        }
 
         //REGISTRANDO OS LISTENERS
         cbCozinha.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -71,6 +78,14 @@ public class TerminalController implements Initializable {
         cbControle.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             try {
                 Sessao.ini.put("Terminal", "ImprimirControle", cbControle.isSelected());
+                Sessao.ini.store(new File("C:/popsales/config.ini"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        cbViaEntregador.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            try {
+                Sessao.ini.put("Terminal", "ImprimirViaEntregador", cbViaEntregador.isSelected());
                 Sessao.ini.store(new File("C:/popsales/config.ini"));
             } catch (Exception e) {
                 e.printStackTrace();

@@ -116,6 +116,9 @@ public class LoginController implements Initializable {
             System.out.println("DOWNLOAD JS");
             downloadClientJS();
 
+            System.out.println("DOWNLOAD CHROME.INI");
+            downloadChromePath();
+            
             iptSenha.setOnKeyPressed((KeyEvent event) -> {
                 if (event.getCode() == KeyCode.ENTER) {
                     entrar(new ActionEvent());

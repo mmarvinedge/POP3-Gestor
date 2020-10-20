@@ -223,14 +223,14 @@ public class Impressao {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("--------------------ENTREGADOR--------------------\n\n");
+        sb.append("---------------ENTREGADOR----------------\n\n");
         sb.append("PEDIDO : ").append(or.getNum_order()).append("\n");
         sb.append("CLIENTE : ").append(or.getClientInfo().getName()).append("\n");
         sb.append("TELEFONE: ").append(or.getClientInfo().getPhone()).append("\n");
         sb.append("DATA HORA: ").append(or.getDtRegister()).append("\n");
         sb.append(LS);
 
-        sb.append("--------------------ITENS--------------------\n\n");
+        sb.append("------------------ITENS------------------\n\n");
         or.getProducts().forEach(pp -> {
             sb.append(String.format(formatQntity, pp.getQuantity() + " x ", pp.getName().toUpperCase()));
             if (pp.getFlavors() != null && pp.getFlavors().size() > 0) {

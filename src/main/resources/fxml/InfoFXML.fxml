@@ -220,6 +220,18 @@
                         </AnchorPane>
                      </children>
                   </VBox>
+                  <HBox layoutX="25.0" layoutY="251.0" prefHeight="36.0" prefWidth="750.0">
+                     <children>
+                        <JFXButton fx:id="btnViaEntregador" onAction="#imprimirViaEntregador" prefHeight="28.0" prefWidth="175.0" style="-fx-background-color: #1ea440;" text="Imprimir via Entregador" textFill="WHITE">
+                           <graphic>
+                              <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="25" />
+                           </graphic>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </JFXButton>
+                     </children>
+                  </HBox>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="188.0" VBox.vgrow="NEVER">

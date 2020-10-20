@@ -39,6 +39,11 @@
                         <CheckBox fx:id="cbControle" mnemonicParsing="false" text="NÃO IMPRIMIR VIA CONTROLE" />
                      </children>
                   </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="70.0" prefHeight="30.0" prefWidth="790.0">
+                     <children>
+                        <CheckBox fx:id="cbViaEntregador" mnemonicParsing="false" text="IMPRIME VIA DE ENTREGADOR NO ACEITE" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>

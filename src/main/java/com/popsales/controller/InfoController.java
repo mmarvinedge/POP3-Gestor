@@ -9,6 +9,7 @@ import com.popsales.Utils;
 import com.popsales.components.Mensagem;
 import com.popsales.components.WhatsappException;
 import com.popsales.controller.view.GerenciaView;
+import com.popsales.custom.Impressao;
 import com.popsales.model.Attribute;
 import com.popsales.model.AttributeValue;
 import com.popsales.model.FlavorPizza;
@@ -27,6 +28,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -77,12 +79,17 @@ public class InfoController implements Initializable {
     private HBox boxTotais;
     @FXML
     private AnchorPane boxCoupon;
+    @FXML
+    private Button btnViaEntregador;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if(!order.getDelivery()) {
+            btnViaEntregador.setVisible(false);
+        }
         vBoxTable.getChildren().clear();
         lblNome.setText(order.getClientInfo().getName());
         lblTelefone.setText(order.getClientInfo().getPhone());
@@ -199,6 +206,24 @@ public class InfoController implements Initializable {
             Notifications.create().title("Atenção").text("Whatsapp não rodando!").showWarning();
         }
 
+    }
+
+    @FXML
+    private void imprimirViaControle(ActionEvent event) {
+        try {
+            Impressao.imprimirOrderControle(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void imprimirViaEntregador(ActionEvent event) {
+        try {
+            Impressao.imprimirOrderEntrega(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

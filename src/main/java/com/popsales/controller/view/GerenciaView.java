@@ -203,6 +203,15 @@ public class GerenciaView {
                 orderService.update(order);
                 Impressao.imprimirOrder(order);
                 Impressao.imprimirOrderControle(order);
+                Boolean viaEntrega = false;
+                try {
+                    viaEntrega = Sessao.ini.get("Terminal", "ImprimirViaEntregador", Boolean.class);
+                    if (viaEntrega) {
+                        Impressao.imprimirOrderEntrega(order);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoAceite.getChildren().remove(n);
@@ -311,7 +320,15 @@ public class GerenciaView {
 
                 order.setDtDelivery(new Date());
                 orderService.update(order);
-                Impressao.imprimirOrderEntrega(order);
+                Boolean viaEntrega = false;
+                try {
+                    viaEntrega = Sessao.ini.get("Terminal", "ImprimirViaEntregador", Boolean.class);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (!viaEntrega) {
+                    Impressao.imprimirOrderEntrega(order);
+                }
 
                 Node n = this.view.boxAguardandoProducao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
                 this.view.boxAguardandoProducao.getChildren().remove(n);
