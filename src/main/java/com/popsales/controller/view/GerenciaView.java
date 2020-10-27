@@ -234,17 +234,19 @@ public class GerenciaView {
 
         JFXButton bt2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
         bt2.setOnAction((ActionEvent event) -> {
-            enviarMensagemCancelamento(order);
-            try {
-                Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
-                this.view.boxAguardandoAceite.getChildren().remove(n);
-                order.setStatus("Cancelado");
-                order.setDtAcept(null);
-                order.setDtRefuse(new Date());
+            if (enviarMensagemCancelamento(order)) {
+                try {
+                    Node n = this.view.boxAguardandoAceite.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
+                    this.view.boxAguardandoAceite.getChildren().remove(n);
+                    order.setStatus("Cancelado");
+                    order.setDtAcept(null);
+                    order.setDtRefuse(new Date());
 
-                orderService.update(order);
-            } catch (IOException e) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, e);
+                    orderService.update(order);
+                } catch (IOException e) {
+                    Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, e);
+                }
+            } else {
             }
         });
         doisdois.getChildren().add(bt2);
@@ -326,7 +328,10 @@ public class GerenciaView {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (!viaEntrega) {
+                System.out.println("viaEntrega: " + viaEntrega);
+                if (viaEntrega == null) {
+                    Impressao.imprimirOrderEntrega(order);
+                } else if (!viaEntrega) {
                     Impressao.imprimirOrderEntrega(order);
                 }
 
@@ -439,16 +444,18 @@ public class GerenciaView {
 
         JFXButton button2 = createButton(FontAwesomeIcon.CLOSE, "#cd4c51");
         button2.setOnAction((ActionEvent event) -> {
-            enviarMensagemCancelamento(order);
-            try {
-                Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
-                this.view.boxAguardandoFinalizacao.getChildren().remove(n);
-                order.setStatus("Cancelado");
-                order.setDtAcept(null);
-                order.setDtRefuse(new Date());
-                orderService.update(order);
-            } catch (IOException ex) {
-                Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+            if (enviarMensagemCancelamento(order)) {
+                try {
+                    Node n = this.view.boxAguardandoFinalizacao.getChildren().stream().filter(p -> p.getId().equals(order.getId())).findAny().get();
+                    this.view.boxAguardandoFinalizacao.getChildren().remove(n);
+                    order.setStatus("Cancelado");
+                    order.setDtAcept(null);
+                    order.setDtRefuse(new Date());
+                    orderService.update(order);
+                } catch (IOException ex) {
+                    Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
             }
         });
 
@@ -573,7 +580,7 @@ public class GerenciaView {
         }
     }
 
-    public void enviarMensagemCancelamento(Order order) {
+    public Boolean enviarMensagemCancelamento(Order order) {
         try {
             if (Mensagem.dialogConfirm("Atenção!", "Desejsa cancelar o pedido?", view.region, view.boxAguardandoAceite.getScene().getWindow())) {
                 String phone = "";
@@ -589,7 +596,9 @@ public class GerenciaView {
                 }
 
                 Thread.sleep(2000);
-
+                return true;
+            } else {
+                return false;
             }
 
         } catch (WhatsappException ex) {
@@ -597,6 +606,7 @@ public class GerenciaView {
         } catch (InterruptedException ex) {
             Logger.getLogger(GerenciaView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
     public void enviarMensagemConfirmacao(Order order) {

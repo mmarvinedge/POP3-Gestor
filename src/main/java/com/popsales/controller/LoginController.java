@@ -10,7 +10,6 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.popsales.Constantes;
 import com.popsales.Sessao;
-import com.popsales.Utils;
 import com.popsales.components.Mensagem;
 import com.popsales.model.Company;
 import com.popsales.model.User;
@@ -18,9 +17,6 @@ import com.popsales.services.CompanyServices;
 import com.popsales.services.LoginService;
 import com.popsales.services.ProductService;
 import com.popsales.services.VersaoService;
-import java.awt.Event;
-import com.popsales.util.DateUtil;
-import com.popsales.util.FileUtil;
 import com.popsales.ws.Client_API;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -29,19 +25,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.Inet4Address;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -100,24 +93,22 @@ public class LoginController implements Initializable {
                 if (new File("C:\\popsales\\update.jar").exists()) {
                     executarUpdate();
                     executarUpdateBot();
-                    downloadChromePath();
                     System.exit(0);
                 } else {
                     downloadUpdate();
                     executarUpdate();
                     executarUpdateBot();
-                    downloadChromePath();
                     System.exit(0);
                 }
             }
-            System.out.println("DOWNLOAD EXAMPLE");
-
-            downloadExample();
-            System.out.println("DOWNLOAD JS");
-            downloadClientJS();
-
-            System.out.println("DOWNLOAD CHROME.INI");
-            downloadChromePath();
+//            System.out.println("DOWNLOAD EXAMPLE");
+//
+//            downloadExample();
+//            System.out.println("DOWNLOAD JS");
+//            downloadClientJS();
+//
+//            System.out.println("DOWNLOAD CHROME.INI");
+//            downloadChromePath();
             
             iptSenha.setOnKeyPressed((KeyEvent event) -> {
                 if (event.getCode() == KeyCode.ENTER) {
@@ -497,6 +488,7 @@ public class LoginController implements Initializable {
                 container.setAsyncSendTimeout(1000);
                 clientSocket = new Client_API();
                 session = container.connectToServer(clientSocket.getClass(), URI.create(uri));
+                System.out.println("Conectei ao socket!");
             }
         } catch (DeploymentException ex) {
             System.err.println("O sistema não conseguiu conectar ao websocket (API) - Provavelmente ele está offline ou fora da rede.");
