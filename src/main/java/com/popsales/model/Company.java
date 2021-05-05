@@ -30,6 +30,8 @@ public class Company {
     private Boolean turnos;
     private Boolean freeVersion;
     private String nameUrl;
+    
+    private Boolean onlyMenu;
 
     private Boolean deliveryOnly, withdrawalOnly, decimalQuantity;
 
@@ -215,5 +217,15 @@ public class Company {
     public void setDecimalQuantity(Boolean decimalQuantity) {
         this.decimalQuantity = decimalQuantity;
     }
+
+    public Boolean getOnlyMenu() {
+        return onlyMenu;
+    }
+
+    public void setOnlyMenu(Boolean onlyMenu) {
+        this.onlyMenu = onlyMenu;
+    }
+    
+    
 
 }

@@ -20,10 +20,12 @@ import okhttp3.Response;
 public class WhatsAppService {
 
     public void sendMessage(String num, String msg) throws WhatsappException {
-        RequestBody body = RequestBody.create(MediaType.parse("application/json"), "{\"number\" : \""+ num +"\", \"message\": \""+ msg +"\"}");
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), "{\"number\" : \"" + num + "\", \"message\": \"" + msg + "\"}");
+        
+
         //RequestBody body = RequestBody.create("{number : "+ num +", message: "+ msg +"}", MediaType.get("text/plain;chatset=UTF-8"));
         Request request = new Request.Builder()
-                .url(Constantes.WURL)
+                .url("http://localhost:3300"+ "/whats")
                 .post(body)
                 .build();
         Response response;

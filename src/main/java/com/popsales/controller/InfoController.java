@@ -5,6 +5,7 @@
  */
 package com.popsales.controller;
 
+import com.popsales.Sessao;
 import com.popsales.Utils;
 import com.popsales.components.Mensagem;
 import com.popsales.components.WhatsappException;

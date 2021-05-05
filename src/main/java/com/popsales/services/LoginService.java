@@ -50,6 +50,7 @@ public class LoginService {
                 uu.setName("block");
                 return uu;
             }
+            
             if (response.code() == 500) {
                 return u;
             }
@@ -63,7 +64,9 @@ public class LoginService {
             User uu = new User();
             uu.setName("trialexpired");
             return uu;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-
     }
 }

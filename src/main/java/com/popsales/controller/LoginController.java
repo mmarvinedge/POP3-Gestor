@@ -109,7 +109,7 @@ public class LoginController implements Initializable {
 //
 //            System.out.println("DOWNLOAD CHROME.INI");
 //            downloadChromePath();
-            
+
             iptSenha.setOnKeyPressed((KeyEvent event) -> {
                 if (event.getCode() == KeyCode.ENTER) {
                     entrar(new ActionEvent());
@@ -415,7 +415,6 @@ public class LoginController implements Initializable {
             e.printStackTrace();
             return true;
         }
-        System.out.println(Sessao.user.getName());
         if (Sessao.user.getName() != null) {
             if (Sessao.user.getName().equalsIgnoreCase("trialexpired")) {
                 Mensagem.dialogAlert("Seu período teste de 15 dias se encerraram, para continuar utilizando entre em contato com seu agente de vendas!", btnLogin, btnLogin.getScene().getWindow());
@@ -425,6 +424,10 @@ public class LoginController implements Initializable {
                 Mensagem.dialogAlert("Sua licença expirou, para renovar acesse nosso site!", btnLogin, btnLogin.getScene().getWindow());
             } else {
                 Sessao.company = companyServices.loadCompany(Sessao.user.getCompanyId());
+                if (Sessao.company.getFreeVersion()) {
+                    Mensagem.dialogAlert("Sua licença não permite acesso ao gestor!", btnLogin, btnLogin.getScene().getWindow());
+                    return false;
+                }
                 List<String> printers = productServices.getPrinters();
                 Sessao.impressorasProdutos = new ArrayList();
                 Sessao.impressorasWindows = new ArrayList();
